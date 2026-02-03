@@ -10,7 +10,7 @@ from unittest import result
 
 REFACTORING = 'refactoring/coc_reduktion'
 PATH = 'force-di'
-ITERATIONS = 1
+ITERATIONS = 10
 GEMINI3 = 'gemini-3-pro-preview'
 GEMINI2 = 'gemini-2.5-flash'
 LLAMA = 'llama-3.3-70b-versatile'
