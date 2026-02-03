@@ -1,5 +1,5 @@
 global with sharing class di_BindingConfigWrapper {
-    // Constructor to inject the data through test class.
+    
     global di_BindingConfigWrapper(   String qualifiedAPIName
                                     , String developerName
                                     , String namespacePrefix
@@ -19,7 +19,7 @@ global with sharing class di_BindingConfigWrapper {
         this.BindingObjectAlternate = bindingObjectAlternate;
         this.BindingSequence = bindingSequence;
     }
-   //Constructor to inject the data  from a metadata  by giving reference of metadata
+   
     global di_BindingConfigWrapper(di_Binding__mdt bindingConfig){
         this.QualifiedAPIName = bindingConfig.QualifiedApiName;
         this.DeveloperName = bindingConfig.BindingName__c == null ? bindingConfig.DeveloperName : bindingConfig.BindingName__c;

@@ -1,0 +1,107 @@
+Cognitive Complexity Reduction
+Task Description
+You are a strict code‑refactoring engine. You follow all rules exactly as written. Your task is to refactor code so that its cognitive complexity score is minimized while preserving behavior.
+
+Please note:
+1. The code must still function perfectly after the refactoring.
+2. All imports, references, and function calls must be updated accordingly.
+3. The style and formatting of the code must be preserved.
+4. Do not introduce any new functionality, logic changes, or unrelated formatting changes.
+5. For every modified file, return the complete updated file content to ensure that no changes are overlooked.
+6. The semantics and behavior of the code must not change.
+7. Only include files that require changes.
+8. Respond with the code blocks only. Your entire response must be machine-readable. Do not include any conversational filler.
+9. If you are unsure, do not guess. Only modify code when the change is certain.
+
+Definitions:
+Cognitive complexity increases with:
+- Deeply nested control structures
+- Multiple branching paths
+- Boolean logic with many operators
+- Long functions with mixed responsibilities
+- Repeated condition checks
+- Hard‑to‑follow flow or side effects
+
+Cognitive complexity decreases with:
+- Early returns instead of deep nesting
+- Extracting helper functions
+- Flattening conditionals
+- Replacing complex boolean expressions with named variables
+- Clear, linear control flow
+- Removing duplication
+
+Examples of cognitive complexity reduction tasks:
+Example 1:
+Original Code: 
+File `process.py`:
+```python
+def process(items):
+    result = []
+    for item in items:
+        if item.is_valid():
+            if not item.is_expired():
+                if item.value > 10:
+                    result.append(item.value)
+    return result
+```
+Task:
+1. Refactor the following code to reduce cognitive complexity while preserving behavior.
+2. For EACH modified file, respond exactly in the following format:
+File `filename.py`:
+```python
+[Complete updated file content]
+
+Output:
+File `process.py`:
+```python
+def process(items):
+    result = []
+    for item in items:
+        if not item.is_valid():
+            continue
+        if item.is_expired():
+            continue
+        if item.value <= 10:
+            continue
+        result.append(item.value)
+    return result
+```
+
+Example 2:
+Original Code: 
+File `compute.py`:
+```python
+def compute(x, y, z):
+    if x > 0:
+        if y > 0:
+            return x + y + z
+        else:
+            return x + z
+    else:
+        return z
+```
+
+Task:
+1. Refactor the following code to reduce cognitive complexity while preserving behavior.
+2. For EACH modified file, respond exactly in the following format:
+File `filename.py`:
+```python
+[Complete updated file content]
+
+Output:
+File `compute.py`:
+```python
+def compute(x, y, z):
+    if x <= 0:
+        return z
+    if y <= 0:
+        return x + z
+    return x + y + z
+```
+
+Task:
+1. Choose only one method and reduce the cognitive complexity while preserving behavior.
+2. For EACH modified file, respond exactly in the following format:
+File `filename.py`:
+```python
+[Complete updated file content]

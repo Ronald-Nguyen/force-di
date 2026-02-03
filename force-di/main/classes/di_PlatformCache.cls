@@ -1,9 +1,9 @@
 public with sharing class di_PlatformCache
 {
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // Data Members
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // number of seconds for a 24 hour period
+    
+    
+    
+    
     public static final Integer NUM_OF_SECS_IN24HR =  86400;
 
     @TestVisible
@@ -14,21 +14,21 @@ public with sharing class di_PlatformCache
     private Map<String, Map<Schema.SObjectType, Set<String> > > cacheKeyIndexMap = new Map<String, Map<Schema.SObjectType, Set<String> > >();
     @TestVisible
     private static Map<String, String> generatedKeyNames = new Map<String, String>();
-    // Used for turning on logging (if needed)
+    
     @TestVisible
     private static Boolean DEBUGGING = false;
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    //  Constructors
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // singleton
+    
+    
+    
+    
     private di_PlatformCache() 
     {
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // Public Methods
-    //////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
     public static di_PlatformCache getInstance()
     {
         if ( instance == null )
@@ -51,7 +51,7 @@ public with sharing class di_PlatformCache
         {
             try 
             {
-                // if there IS NO Partition created; let's not FAIL
+                
                 Cache.OrgPartition orgPartition = getPartition();
                 if ( orgPartition != null ) 
                 {
@@ -60,7 +60,7 @@ public with sharing class di_PlatformCache
             }
             catch (Cache.Org.OrgCacheException ex) 
             {
-                // this indicates a potentially corrupt cache, so clear the map and let it rebuild
+                
                 cacheKeyIndexMap = null;
             }
 
@@ -78,40 +78,40 @@ public with sharing class di_PlatformCache
         Boolean result = false;
         if ( isStoringBindingInPlatformCache() )
         {
-            // if there IS NO Partition created; let's not FAIL
+            
             Cache.OrgPartition orgPartition = getPartition();
             if ( orgPartition != null ) 
             {
                 String theKeyName = getKeyName(binding);
                 
-                // add the binding to the platform cache directly
+                
                 List<di_Binding> workingBindings = new List<di_Binding>();
 
-                // the binding may be a group of bindings.  
-                //  if there are bindings already cached on this key... 
+                
+                
                 if ( orgPartition.contains(theKeyName) )
                 {
-                    // ... then retrieve those bindings first 
+                    
                     workingBindings.addAll((List<di_Binding>) orgPartition.get(theKeyName));
                 }
-                // ... add the new binding to the working group.
+                
                 workingBindings.add( binding );
                 log('Adding binding for hash => ' + theKeyName + ' && developerName => ' + binding.developerName + ' && object => ' + binding.bindingObject);
-                // ... then put the working list back in cache on this key
+                
                 try 
                 {
                     orgPartition.put(theKeyName, workingBindings, getPartitionTTL(), Cache.Visibility.ALL, false);    
                 }
                 catch (cache.Org.OrgCacheException oce)
                 {
-                    // there are some objects that cannot be serialized and thus cannot be stored in cache.  
-                    //  in those situations, we simply bypass storing that object. 
+                    
+                    
                     log( oce );
                 }
 
-                // add the binding's cache key name to the bindingKeyIndex
+                
                 addBindingToKeyIndex(binding);
-                // log('Adding binding for hash => ' + theKeyName + ' && developerName => ' + binding.developerName + ' && object => ' + binding.bindingObject);
+                
                 result = true;
             }
         }
@@ -127,7 +127,7 @@ public with sharing class di_PlatformCache
              && bindingSObjectType != null)
         {
             log('Retrieving from Cache Key => ' + developerName + ' && Cache Key Index => ' + bindingSObjectType);
-            // if there IS NO Partition created; let's not FAIL
+            
             Cache.OrgPartition orgPartition = getPartition();
             Map<Schema.SObjectType, Set<String> > keyIndexBySObjectTypeMap = getCacheKeyIndexMap().get(developerName.toLowerCase().trim());
             if ( keyIndexBySObjectTypeMap != null && orgPartition != null )
@@ -159,7 +159,7 @@ public with sharing class di_PlatformCache
         {
             String partitionKey = getPartitionName();
             Cache.OrgPartition partition = getPartition();
-            // clear current bindings
+            
             for (String key : partition.getKeys() ) 
             {
                 try 
@@ -174,25 +174,22 @@ public with sharing class di_PlatformCache
         }
     }
 
-    /**
-     * getPartitionKeys get partition keys
-     * @return   return Set<String> partition keys
-     */
+    
     public static Set<String> getPartitionKeys() 
     {
         Set<String> keys = null;
         Cache.OrgPartition partition = getPartition();
         if ( partition != null ) 
         {
-            // get partition keys
+            
             keys = partition.getKeys();
         }
         return keys;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // Private Methods
-    //////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
 
     @TestVisible
     private static di_Configurations__c getConfig()
@@ -203,7 +200,7 @@ public with sharing class di_PlatformCache
         {
             config = new di_Configurations__c();
             config.SetupOwnerId = ConnectApi.Organization.getSettings().orgId;
-            // make CheckMarx happy
+            
             if (di_Configurations__c.SObjectType.getDescribe().isCreateable() )
             {
                 insert config;
@@ -222,7 +219,7 @@ public with sharing class di_PlatformCache
     @TestVisible
     private Integer getPartitionTTL()
     {
-        return NUM_OF_SECS_IN24HR; // number of seconds for a 24 hour period
+        return NUM_OF_SECS_IN24HR; 
     }
 
     @TestVisible
@@ -243,7 +240,7 @@ public with sharing class di_PlatformCache
     @TestVisible
     private boolean pushCacheKeyIndexMapToCache()
     {
-        // if there IS NO Partition created; let's not FAIL
+        
         Cache.OrgPartition orgPartition = getPartition();
         if ( orgPartition != null ) 
         {
@@ -279,8 +276,8 @@ public with sharing class di_PlatformCache
         String key = ( ( bindingSObjectType != null ) ? bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__','') : '' )
                      + ( String.isBlank(developerName) ? '' : developerName.toLowerCase().trim() );
 
-        // put generated hash into a map on first pass, so that we do not perform hashcode() operation more than once per "key"
-        // hashcode() is a more expensive operation than map.get()
+        
+        
         if (generatedKeyNames.containsKey(key)) 
         { 
             return generatedKeyNames.get(key); 
@@ -310,15 +307,12 @@ public with sharing class di_PlatformCache
         return di_PlatformCache.BINDING_KEY;
     }
 
-    /**
-     * log centralize to encapsulate and refactor later
-     * @param  excp to display in sink
-     */
+    
     @TestVisible
     private static Boolean log(Exception excp)
     {
         Boolean before = DEBUGGING, result;
-        // always show exceptions
+        
         DEBUGGING = true;
         result = log('Exception: ' + excp.getMessage());
         DEBUGGING = before;
@@ -326,10 +320,7 @@ public with sharing class di_PlatformCache
 
     }
 
-    /**
-     * log centralize to encapsulate and refactor later
-     * @param  message message to display in sink
-     */
+    
     @TestVisible
     private static Boolean log(String message)
     {

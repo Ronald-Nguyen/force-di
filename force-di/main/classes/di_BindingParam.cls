@@ -1,34 +1,10 @@
-/**
- * Copyright (c) 2018, Andrew Fawcett
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- *   are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice,
- *      this list of conditions and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright notice,
- *      this list of conditions and the following disclaimer in the documentation
- *      and/or other materials provided with the distribution.
- * - Neither the name of the Andrew Fawcett, nor the names of its contributors
- *      may be used to endorse or promote products derived from this software without
- *      specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- *  THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- *  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
- *  OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-**/
+
 
 public with sharing class di_BindingParam {
 
     public static Map<String, Object> parameters { get; set; }
 
-    // -----------------------------------------------------------
+    
 
     @InvocableMethod(
         label = 'Get Value'
@@ -47,7 +23,7 @@ public with sharing class di_BindingParam {
 
                 if ( value != null ) {
 
-                    if ( value instanceof Decimal ) { // handles Decimal, Long, Double, Integer
+                    if ( value instanceof Decimal ) { 
 
                         Decimal decimalValue = (Decimal) value;
                         res.longValue = toLongValue( decimalValue );
@@ -159,7 +135,7 @@ public with sharing class di_BindingParam {
 
                     }
 
-                    // if a collection was provided, then as convenience populate the single result value of same type
+                    
                     if ( res.longValue     == null && !res.longValues.isEmpty() )     { res.longValue = res.longValues[0]; }
                     if ( res.decimalValue  == null && !res.decimalValues.isEmpty() )  { res.decimalValue = res.decimalValues[0]; }
                     if ( res.stringValue   == null && !res.stringValues.isEmpty() )   { res.stringValue = res.stringValues[0]; }
@@ -167,7 +143,7 @@ public with sharing class di_BindingParam {
                     if ( res.dateValue     == null && !res.dateValues.isEmpty() )     { res.dateValue = res.dateValues[0]; }
                     if ( res.dateTimeValue == null && !res.dateTimeValues.isEmpty() ) { res.dateTimeValue = res.dateTimeValues[0]; }
 
-                    // if a single value was provided, then as convenience add it to empty collection of same type
+                    
                     if ( res.longValue     != null && res.longValues.isEmpty() )     { res.longValues.add( res.longValue ); }
                     if ( res.decimalValue  != null && res.decimalValues.isEmpty() )  { res.decimalValues.add( res.decimalValue ); }
                     if ( res.stringValue   != null && res.stringValues.isEmpty() )   { res.stringValues.add( res.stringValue ); }
@@ -197,8 +173,8 @@ public with sharing class di_BindingParam {
         return responses;
     }
 
-    // toLongValue
-    // -----------------------------------------------------------
+    
+    
 
     private static Long toLongValue( Decimal value ) {
         return ( value == null ? null : value.longValue() );
@@ -222,8 +198,8 @@ public with sharing class di_BindingParam {
         return ( value == null ? null : value.getTime() );
     }
 
-    // toDecimalValue
-    // -----------------------------------------------------------
+    
+    
 
     private static Decimal toDecimalValue( String value ) {
         return ( ( value == null || !value.isNumeric() ) ? null : Decimal.valueOf( value ) );
@@ -243,13 +219,13 @@ public with sharing class di_BindingParam {
         return ( value == null ? null : value.getTime() );
     }
 
-    // toStringValue
-    // -----------------------------------------------------------
+    
+    
 
-    // Because of oddity that Date, when cast to Object,
-    // will output the date and time, then providing a method
-    // to ensure dates are handled as we'd actually expect them to be.
-    // https://twitter.com/DouglasCAyers/status/1023410001103269890
+    
+    
+    
+    
     private static String toStringValue( Date value ) {
         return ( value == null ? null : String.valueOf( value ) );
     }
@@ -262,8 +238,8 @@ public with sharing class di_BindingParam {
         return ( value == null ? null : String.valueOf( value ) );
     }
 
-    // toBooleanValue
-    // -----------------------------------------------------------
+    
+    
 
     private static Boolean toBooleanValue( Decimal value ) {
         return ( value == null ? false : ( value > 0 ) );
@@ -281,8 +257,8 @@ public with sharing class di_BindingParam {
         return ( value == null ? false : true );
     }
 
-    // toDateValue
-    // -----------------------------------------------------------
+    
+    
 
     private static Date toDateValue( Decimal value ) {
         return ( value == null ? null : DateTime.newInstance( value.longValue() ).date() );
@@ -290,7 +266,7 @@ public with sharing class di_BindingParam {
 
     private static Date toDateValue( String value ) {
         try {
-            return ( value == null ? null : Date.valueOf( value ) ); // yyyy-MM-dd or yyyy-MM-dd HH:mm:ss
+            return ( value == null ? null : Date.valueOf( value ) ); 
         } catch ( Exception e ) {
             return null;
         }
@@ -304,8 +280,8 @@ public with sharing class di_BindingParam {
         return ( value == null ? null : value.date() );
     }
 
-    // toDateTimeValue
-    // -----------------------------------------------------------
+    
+    
 
     private static DateTime toDateTimeValue( Decimal value ) {
         return ( value == null ? null : DateTime.newInstance( value.longValue() ) );
@@ -313,9 +289,9 @@ public with sharing class di_BindingParam {
 
     private static DateTime toDateTimeValue( String value ) {
         try {
-            return ( value == null ? null : DateTime.valueOf( value ) ); // yyyy-MM-dd HH:mm:ss
+            return ( value == null ? null : DateTime.valueOf( value ) ); 
         } catch ( Exception e ) {
-            return toDateValue( value ); // retry, maybe string is only yyyy-MM-dd
+            return toDateValue( value ); 
         }
     }
 
@@ -327,7 +303,7 @@ public with sharing class di_BindingParam {
         return ( value == null ? null : DateTime.newInstance( value.year(), value.month(), value.day(), 0, 0, 0 ) );
     }
 
-    // -----------------------------------------------------------
+    
 
     public class Request {
 
