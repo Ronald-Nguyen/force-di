@@ -1,0 +1,165 @@
+Iteration 1
+Timestamp: 2026-02-04T00:12:52.186294
+Success: False
+
+============================================================
+STDOUT:
+───── Deploying Metadata ─────
+Stages:
+1. Preparing
+2. Waiting for the org to respond
+3. Deploying Metadata
+4. Running Tests
+5. Updating Source Tracking
+6. Done
+
+▶ Preparing…
+   Deploying v63.0 metadata to test-fivrjnbnxx0e@example.com using the v65.0 SOAP API.
+   Deploy ID: 0AfAs00000TsME9KAN
+   Target Org: test-fivrjnbnxx0e@example.com
+✔ Preparing (224ms)
+◯ Waiting for the org to respond - Skipped
+▶ Deploying Metadata…
+   Components: 0/9 (0%)
+✘ Deploying Metadata (1.87s)
+   Components: 7/140 (5%)
+
+Deploying v63.0 metadata to test-fivrjnbnxx0e@example.com using the v65.0 SOAP API.
+Status: Failed
+Deploy ID: 0AfAs00000TsME9KAN
+Target Org: test-fivrjnbnxx0e@example.com
+
+Elapsed time: 2.10s
+
+[1m[31mComponent Failures [122][39m[22m
+ Type       Name                                     Problem                                                                                                                                  Line:Column 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ApexClass  di_BindingParam                          InvocableMethod methods do not support parameter type of List<di_BindingParam.Request> (8:34)                                            8:34        
+ ApexClass  di_BindingParam                          Constructor not defined: [di_BindingParam.Response].<Constructor>() (12:28)                                                              12:28       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (333:9)                                                                                                            333:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (333:10)                                                                                     333:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (334:19)                                                                                              334:19      
+ ApexClass  di_BindingParam                          Invalid type: label (334:19)                                                                                                             334:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (334:19)                                                                                                           334:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (335:22)                                                                                                           335:22      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (335:22)                                                                                              335:22      
+ ApexClass  di_BindingParam                          Invalid type: required (335:22)                                                                                                          335:22      
+ ApexClass  di_BindingParam                          Unexpected token '='. (335:22)                                                                                                           335:22      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (337:9)                                                                                                       337:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (341:9)                                                                                                            341:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (341:10)                                                                                     341:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (342:19)                                                                                              342:19      
+ ApexClass  di_BindingParam                          Invalid type: label (342:19)                                                                                                             342:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (342:19)                                                                                                           342:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (343:25)                                                                                                           343:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (343:25)                                                                                              343:25      
+ ApexClass  di_BindingParam                          Invalid type: description (343:25)                                                                                                       343:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (343:25)                                                                                                           343:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (345:9)                                                                                                       345:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (347:9)                                                                                                            347:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (347:10)                                                                                     347:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (347:10)  347:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (348:19)                                                                                              348:19      
+ ApexClass  di_BindingParam                          Invalid type: label (348:19)                                                                                                             348:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (348:19)                                                                                                           348:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (349:25)                                                                                                           349:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (349:25)                                                                                              349:25      
+ ApexClass  di_BindingParam                          Invalid type: description (349:25)                                                                                                       349:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (349:25)                                                                                                           349:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (351:9)                                                                                                       351:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (353:9)                                                                                                            353:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (353:10)                                                                                     353:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (353:10)  353:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (354:19)                                                                                              354:19      
+ ApexClass  di_BindingParam                          Invalid type: label (354:19)                                                                                                             354:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (354:19)                                                                                                           354:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (355:25)                                                                                                           355:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (355:25)                                                                                              355:25      
+ ApexClass  di_BindingParam                          Invalid type: description (355:25)                                                                                                       355:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (355:25)                                                                                                           355:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (357:9)                                                                                                       357:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (359:9)                                                                                                            359:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (359:10)                                                                                     359:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (359:10)  359:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (360:19)                                                                                              360:19      
+ ApexClass  di_BindingParam                          Invalid type: label (360:19)                                                                                                             360:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (360:19)                                                                                                           360:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (361:25)                                                                                                           361:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (361:25)                                                                                              361:25      
+ ApexClass  di_BindingParam                          Invalid type: description (361:25)                                                                                                       361:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (361:25)                                                                                                           361:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (363:9)                                                                                                       363:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (375:9)                                                                                                            375:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (375:10)                                                                                     375:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (375:10)  375:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (376:19)                                                                                              376:19      
+ ApexClass  di_BindingParam                          Invalid type: label (376:19)                                                                                                             376:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (376:19)                                                                                                           376:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (377:25)                                                                                                           377:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (377:25)                                                                                              377:25      
+ ApexClass  di_BindingParam                          Invalid type: description (377:25)                                                                                                       377:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (377:25)                                                                                                           377:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (379:9)                                                                                                       379:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (381:9)                                                                                                            381:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (381:10)                                                                                     381:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (381:10)  381:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (382:19)                                                                                              382:19      
+ ApexClass  di_BindingParam                          Invalid type: label (382:19)                                                                                                             382:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (382:19)                                                                                                           382:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (383:25)                                                                                                           383:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (383:25)                                                                                              383:25      
+ ApexClass  di_BindingParam                          Invalid type: description (383:25)                                                                                                       383:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (383:25)                                                                                                           383:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (385:9)                                                                                                       385:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (387:9)                                                                                                            387:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (387:10)                                                                                     387:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (387:10)  387:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (388:19)                                                                                              388:19      
+ ApexClass  di_BindingParam                          Invalid type: label (388:19)                                                                                                             388:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (388:19)                                                                                                           388:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (389:25)                                                                                                           389:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (389:25)                                                                                              389:25      
+ ApexClass  di_BindingParam                          Invalid type: description (389:25)                                                                                                       389:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (389:25)                                                                                                           389:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (391:9)                                                                                                       391:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (393:9)                                                                                                            393:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (393:10)                                                                                     393:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (393:10)  393:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (394:19)                                                                                              394:19      
+ ApexClass  di_BindingParam                          Invalid type: label (394:19)                                                                                                             394:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (394:19)                                                                                                           394:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (395:25)                                                                                                           395:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (395:25)                                                                                              395:25      
+ ApexClass  di_BindingParam                          Invalid type: description (395:25)                                                                                                       395:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (395:25)                                                                                                           395:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (397:9)                                                                                                       397:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (399:9)                                                                                                            399:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (399:10)                                                                                     399:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (399:10)  399:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (400:19)                                                                                              400:19      
+ ApexClass  di_BindingParam                          Invalid type: label (400:19)                                                                                                             400:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (400:19)                                                                                                           400:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (401:25)                                                                                                           401:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (401:25)                                                                                              401:25      
+ ApexClass  di_BindingParam                          Invalid type: description (401:25)                                                                                                       401:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (401:25)                                                                                                           401:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (403:9)                                                                                                       403:9       
+ ApexClass  di_BindingParam                          Unexpected token '@'. (405:9)                                                                                                            405:9       
+ ApexClass  di_BindingParam                          Invalid constructor name: InvocableVariable (405:10)                                                                                     405:10      
+ ApexClass  di_BindingParam                          Method already defined: <init> void di_BindingParam.Response.<init>(label, description) from the type di_BindingParam.Response (405:10)  405:10      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (406:19)                                                                                              406:19      
+ ApexClass  di_BindingParam                          Invalid type: label (406:19)                                                                                                             406:19      
+ ApexClass  di_BindingParam                          Unexpected token '='. (406:19)                                                                                                           406:19      
+ ApexClass  di_BindingParam                          Duplicate variable: = (407:25)                                                                                                           407:25      
+ ApexClass  di_BindingParam                          Invalid character in identifier: = (407:25)                                                                                              407:25      
+ ApexClass  di_BindingParam                          Invalid type: description (407:25)                                                                                                       407:25      
+ ApexClass  di_BindingParam                          Unexpected token '='. (407:25)                                                                                                           407:25      
+ ApexClass  di_BindingParam                          Unexpected token 'public'. (409:9)                                                                                                       409:9       
+ ApexClass  di_InjectorComponentFlowProxyController  Dependent class is invalid and needs recompilation:                                                                                      333:9       
+                                                     Class di_BindingParam : Unexpected token '@'. (333:9)                                                                                                
+
+
+
+============================================================
+STDERR:
+DEPLOY FAILED (Level 0):
