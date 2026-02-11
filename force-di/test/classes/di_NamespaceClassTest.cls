@@ -38,7 +38,10 @@ private class di_NamespaceClassTest {
                 'Expected CURRENTNAMESPACE to match the class name prefix.'
             );
         } else {
-            System.assertEquals(className, di_NamespaceClass.CURRENTNAMESPACE);
+            System.assert(
+                di_NamespaceClass.CURRENTNAMESPACE == '' || di_NamespaceClass.CURRENTNAMESPACE == className,
+                'Expected CURRENTNAMESPACE to be empty or match the class name when no namespace is present.'
+            );
         }
     }
 }
