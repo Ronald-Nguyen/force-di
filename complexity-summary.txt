@@ -2,18 +2,27 @@ Project Structure & Complexity Report
 =====================================
 Type   | File Path                                                                | Compl. | LOC
 ----------------------------------------------------------------------------------------------------
-[PROD] | ./force-di/main\classes\di_Binding.cls                                   | 261    | 485
-[PROD] | ./force-di/main\classes\di_BindingConfigWrapper.cls                      | 1      | 43
-[PROD] | ./force-di/main\classes\di_BindingParam.cls                              | 318    | 416
-[PROD] | ./force-di/main\classes\di_Flow.cls                                      | 4      | 98
-[PROD] | ./force-di/main\classes\di_Injector.cls                                  | 114    | 195
-[PROD] | ./force-di/main\classes\di_InjectorComponentController.cls               | 1      | 63
-[PROD] | ./force-di/main\classes\di_InjectorComponentFlowProxyController.cls      | 4      | 65
-[PROD] | ./force-di/main\classes\di_InjectorController.cls                        | 0      | 43
-[PROD] | ./force-di/main\classes\di_Module.cls                                    | 4      | 221
-[PROD] | ./force-di/main\classes\di_NamespaceClass.cls                            | 0      | 4
-[PROD] | ./force-di/main\classes\di_PlatformCache.cls                             | 125    | 343
+[PROD] | ./force-di/main/classes/di_Binding.cls                                   | 0      | 394
+[PROD] | ./force-di/main/classes/di_BindingConfigWrapper.cls                      | 0      | 43
+[PROD] | ./force-di/main/classes/di_BindingParam.cls                              | 0      | 392
+[PROD] | ./force-di/main/classes/di_Flow.cls                                      | 0      | 62
+[PROD] | ./force-di/main/classes/di_Injector.cls                                  | 0      | 143
+[PROD] | ./force-di/main/classes/di_InjectorComponentController.cls               | 0      | 39
+[PROD] | ./force-di/main/classes/di_InjectorComponentFlowProxyController.cls      | 0      | 41
+[PROD] | ./force-di/main/classes/di_InjectorController.cls                        | 0      | 19
+[PROD] | ./force-di/main/classes/di_Module.cls                                    | 0      | 155
+[PROD] | ./force-di/main/classes/di_NamespaceClass.cls                            | 0      | 4
+[PROD] | ./force-di/main/classes/di_PlatformCache.cls                             | 0      | 334
+[PROD] | .\force-di\main\classes\di_Binding.cls                                   | 261    | 0
+[PROD] | .\force-di\main\classes\di_BindingConfigWrapper.cls                      | 1      | 0
+[PROD] | .\force-di\main\classes\di_BindingParam.cls                              | 318    | 0
+[PROD] | .\force-di\main\classes\di_Flow.cls                                      | 4      | 0
+[PROD] | .\force-di\main\classes\di_Injector.cls                                  | 114    | 0
+[PROD] | .\force-di\main\classes\di_InjectorComponentController.cls               | 1      | 0
+[PROD] | .\force-di\main\classes\di_InjectorComponentFlowProxyController.cls      | 4      | 0
+[PROD] | .\force-di\main\classes\di_Module.cls                                    | 4      | 0
+[PROD] | .\force-di\main\classes\di_PlatformCache.cls                             | 125    | 0
 ----------------------------------------------------------------------------------------------------
-SUMMARY PROD  (11 files): Complexity: 832    | LOC: 1976
+SUMMARY PROD  (20 files): Complexity: 832    | LOC: 1626
 SUMMARY TEST  (0 files): Complexity: 0      | LOC: 0
-GRAND TOTAL   (11 files): Complexity: 832    | LOC: 1976
+GRAND TOTAL   (20 files): Complexity: 832    | LOC: 1626
