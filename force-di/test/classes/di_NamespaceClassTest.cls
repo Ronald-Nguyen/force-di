@@ -27,7 +27,7 @@
 @IsTest
 private class di_NamespaceClassTest {
     @IsTest
-    private static void givenNamespaceClassWhenAccessedThenNamespaceMatchesClassName() {
+    private static void testCurrentNamespaceMatchesClassName() {
         String className = di_NamespaceClass.class.getName();
         String expectedNamespace = className.contains('.') ? className.substringBefore('.') : className;
 
