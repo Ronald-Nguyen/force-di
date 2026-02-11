@@ -28,7 +28,8 @@
 private class di_NamespaceClassTest {
     @IsTest
     private static void givenNamespaceClassWhenAccessedThenNamespaceMatchesClassName() {
-        String expectedNamespace = di_NamespaceClass.class.getName().substringBefore('.');
+        String className = di_NamespaceClass.class.getName();
+        String expectedNamespace = className.contains('.') ? className.substringBefore('.') : className;
 
         System.assertNotEquals(null, di_NamespaceClass.CURRENTNAMESPACE);
         System.assertEquals(expectedNamespace, di_NamespaceClass.CURRENTNAMESPACE);
