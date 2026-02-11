@@ -27,11 +27,18 @@
 @IsTest
 private class di_NamespaceClassTest {
     @IsTest
-    private static void testCurrentNamespaceMatchesClassName() {
+    private static void test_CURRENTNAMESPACE_matchesClassPrefix() {
         String className = di_NamespaceClass.class.getName();
-        String expectedNamespace = className.contains('.') ? className.substringBefore('.') : className;
 
         System.assertNotEquals(null, di_NamespaceClass.CURRENTNAMESPACE);
-        System.assertEquals(expectedNamespace, di_NamespaceClass.CURRENTNAMESPACE);
+
+        if (className.contains('.')) {
+            System.assert(
+                className.startsWith(di_NamespaceClass.CURRENTNAMESPACE + '.'),
+                'Expected CURRENTNAMESPACE to match the class name prefix.'
+            );
+        } else {
+            System.assertEquals(className, di_NamespaceClass.CURRENTNAMESPACE);
+        }
     }
 }
