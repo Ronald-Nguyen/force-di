@@ -11,8 +11,21 @@ import difflib
 import time
 import json
 import xml.etree.ElementTree as ET
+#python refactoring.py
+#python refactoring.py --all-refactorings
+#python refactoring.py --refactoring rename
 
-REFACTORING = 'refactoring/coc_reduktion'
+REFACTORINGS = [
+    "coc_reduktion",
+    "getter_setter",
+    "guard_clauses",
+    "inline_variable",
+    "rename",
+    "strategy_pattern",
+]
+REFACTORING_BASE_DIR = "refactoring"
+DEFAULT_REFACTORING = "guard_clauses"
+
 PATH = 'force-di'
 ITERATIONS = 10
 GEMINI3 = 'gemini-3-pro-preview'
@@ -61,12 +74,12 @@ elif LLM_API_KEY == GROQ_API_KEY:
 
 parser = argparse.ArgumentParser(description="Projektpfad angeben")
 parser.add_argument("--project-path", type=str, default=PATH, help="Pfad des Projekts")
+parser.add_argument("--all-refactorings", action="store_true",
+                    help="Wenn gesetzt: führt alle Refactorings nacheinander aus.")
+parser.add_argument("--refactoring", type=str, default=DEFAULT_REFACTORING,
+                    choices=REFACTORINGS,
+                    help="Welches Refactoring ausgeführt werden soll (wenn --all-refactorings nicht gesetzt ist).")
 args = parser.parse_args()
-
-PROJECT_DIR = Path(args.project_path)
-PROMPT_TEMPLATE = Path(f"{REFACTORING}.txt").read_text(encoding='utf-8')
-RESULTS_DIR = Path(REFACTORING + "_results_" + MODEL)
-RESULTS_DIR.mkdir(exist_ok=True)
 
 
 def format_pmd_metrics_summary(pmd_before: dict, pmd_after: dict) -> str:
@@ -338,9 +351,10 @@ def save_results(
     with open(result_dir / "diff.txt", 'w', encoding='utf-8') as f:
         f.write(diff_text or "")
 
-def write_summary(text: str) -> None:
-    with open(RESULTS_DIR / f"{MODEL}_summary_results.txt", "a", encoding="utf-8") as f:
+def write_summary(results_dir: Path, text: str) -> None:
+    with open(results_dir / f"{MODEL}_summary_results.txt", "a", encoding="utf-8") as f:
         f.write(text)
+
 
 def _usage_to_dict(usage) -> dict | None:
     if usage is None:
@@ -598,120 +612,591 @@ def save_metrics(result_dir: Path, metrics: dict) -> None:
         encoding="utf-8"
     )
 
+
+def _get_refactoring_type_from_path(refactoring_path: str) -> str:
+    """
+    Extracts refactoring type from paths like 'refactoring/coc_reduktion'.
+    """
+    name = Path(refactoring_path).name.strip().lower()
+    return name
+
+def _strip_apex_comments(code: str) -> str:
+    """
+    Removes // line comments and /* */ block comments (best-effort).
+    """
+    if not code:
+        return ""
+    code = code.replace("\r\n", "\n").replace("\r", "\n")
+    code = re.sub(r"/\*.*?\*/", "", code, flags=re.DOTALL)
+    code = re.sub(r"//.*?$", "", code, flags=re.MULTILINE)
+    return code
+
+def _read_project_file_text(project_root: Path, rel_path: str) -> str:
+    p = (project_root / Path(rel_path)).resolve()
+    try:
+        p.relative_to(project_root.resolve())
+    except Exception:
+        return ""
+    return _read_text_best_effort(p)
+
+def _iter_apex_files(project_root: Path) -> list[Path]:
+    files: list[Path] = []
+    for root, dirs, filenames in os.walk(project_root):
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d not in {'__pycache__', 'tests', 'test', 'pathlib2.egg-info', '.git'}]
+        for fn in filenames:
+            if fn.lower().endswith((".cls", ".trigger")):
+                files.append(Path(root) / fn)
+    return files
+
+def _scan_project_for_regex(project_root: Path, pattern: str) -> list[str]:
+    """
+    Returns list of relative file paths where pattern matches (comments stripped).
+    """
+    rx = re.compile(pattern)
+    hits: list[str] = []
+    for fp in _iter_apex_files(project_root):
+        rel = str(fp.relative_to(project_root)).replace("\\", "/")
+        content = _strip_apex_comments(_read_text_best_effort(fp))
+        if rx.search(content):
+            hits.append(rel)
+    return hits
+
+def _extract_method_body_apex(code: str, method_name: str) -> str | None:
+    """
+    Best-effort extraction: finds first occurrence of '<name>(' and returns brace-matched body.
+    """
+    if not code or not method_name:
+        return None
+    code_nc = _strip_apex_comments(code)
+    # Match typical Apex signatures: modifiers + return type + name + '('
+    sig_rx = re.compile(r"\b" + re.escape(method_name) + r"\s*\(", re.MULTILINE)
+    m = sig_rx.search(code_nc)
+    if not m:
+        return None
+
+    # Find first '{' after signature
+    start = code_nc.find("{", m.end())
+    if start == -1:
+        return None
+
+    depth = 0
+    for i in range(start, len(code_nc)):
+        ch = code_nc[i]
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return code_nc[start:i+1]
+    return None
+
+def _max_if_nesting_apex(code: str) -> int:
+    """
+    Heuristic nesting score: counts max number of active 'if' blocks based on brace depth.
+    """
+    code_nc = _strip_apex_comments(code)
+    if not code_nc:
+        return 0
+
+    # Track brace depth and count of 'if' entering at each depth
+    depth = 0
+    max_score = 0
+    if_stack: list[int] = []
+
+    token_rx = re.compile(r"\bif\s*\(|\{|\}", re.MULTILINE)
+    for m in token_rx.finditer(code_nc):
+        tok = m.group(0)
+        if tok == "{":
+            depth += 1
+        elif tok == "}":
+            # Pop any ifs that were recorded at deeper depths
+            while if_stack and if_stack[-1] >= depth:
+                if_stack.pop()
+            depth = max(depth - 1, 0)
+        else:
+            # if(
+            if_stack.append(depth)
+            max_score = max(max_score, len(if_stack))
+    return max_score
+
+def _parse_prompt_targets(prompt_text: str, ref_type: str) -> dict:
+    """
+    Extracts task-specific targets from the prompt text using regex.
+    Returns a dict with keys depending on ref_type.
+    """
+    t = prompt_text or ""
+    ref_type = (ref_type or "").lower()
+
+    if ref_type == "rename":
+        m = re.search(
+            r"Rename the method\s+`([^`]+)`\s+in the file:\s+`([^`]+)`\s+to\s+`([^`]+)`",
+            t,
+            flags=re.IGNORECASE
+        )
+        if m:
+            return {"old_method": m.group(1), "file": m.group(2), "new_method": m.group(3)}
+
+    if ref_type == "inline_variable":
+        m = re.search(
+            r"Inline the temporary variable\s+`([^`]+)`\s+in the method\s+([A-Za-z_]\w*)\s+in the file\s+`([^`]+)`",
+            t,
+            flags=re.IGNORECASE
+        )
+        if m:
+            return {"var": m.group(1), "method": m.group(2), "file": m.group(3)}
+
+    if ref_type == "getter_setter":
+        m = re.search(
+            r"Encapsulate the attribute\s+`([^`]+)`\s+within the class\s+`([^`]+)`\s+in the file\s+`([^`]+)`",
+            t,
+            flags=re.IGNORECASE
+        )
+        if m:
+            return {"attr": m.group(1), "class": m.group(2), "file": m.group(3)}
+
+    if ref_type == "strategy_pattern":
+        m = re.search(
+            r"Refactor the method\s+`?([A-Za-z_]\w*)`?\s+in the file\s+`([^`]+)`\s+to use the Strategy pattern",
+            t,
+            flags=re.IGNORECASE
+        )
+        if m:
+            return {"method": m.group(1), "file": m.group(2)}
+
+    return {}
+
+def build_refactoring_check(
+    refactoring_path: str,
+    prompt_text: str,
+    backup_dir: Path,
+    project_dir: Path,
+    changed_rel_paths: list[str],
+    metrics: dict | None = None,
+) -> dict:
+    """
+    Returns a dict for metrics.json: { "type": ..., "ok": bool, "checks": {...} }
+
+    Scope:
+    - Runs only the checks relevant to refactoring type derived from refactoring_path.
+    - Uses regex-parsed targets from prompt_text wherever possible.
+    """
+    ref_type = _get_refactoring_type_from_path(refactoring_path)
+    targets = _parse_prompt_targets(prompt_text, ref_type)
+
+    checks: dict[str, dict] = {}
+    overall_ok = True
+
+    # ---- helper for recording results ----
+    def _record(name: str, passed: bool, details: dict) -> None:
+        nonlocal overall_ok
+        checks[name] = {"passed": bool(passed), **(details or {})}
+        if not passed:
+            overall_ok = False
+
+    # ---- rename ----
+    if ref_type == "rename":
+        old_m = targets.get("old_method")
+        new_m = targets.get("new_method")
+        file_hint = targets.get("file")
+        if not old_m or not new_m:
+            _record("rename", False, {"reason": "targets_not_parsed", "targets": targets})
+        else:
+            # Stronger: scan whole project (comments stripped)
+            old_hits = _scan_project_for_regex(project_dir, r"\b" + re.escape(old_m) + r"\s*\(")
+            new_hits = _scan_project_for_regex(project_dir, r"\b" + re.escape(new_m) + r"\s*\(")
+
+            passed = (len(old_hits) == 0) and (len(new_hits) > 0)
+            _record(
+                "rename",
+                passed,
+                {
+                    "old_method": old_m,
+                    "new_method": new_m,
+                    "file_hint": file_hint,
+                    "old_method_hits": old_hits[:25],
+                    "new_method_hits": new_hits[:25],
+                },
+            )
+
+    # ---- inline_variable ----
+    if ref_type == "inline_variable":
+        var_name = targets.get("var")
+        method_name = targets.get("method")
+        file_path = targets.get("file")
+        if not var_name or not method_name or not file_path:
+            _record("inline_variable", False, {"reason": "targets_not_parsed", "targets": targets})
+        else:
+            after_text = _read_project_file_text(project_dir, file_path)
+            before_text = _read_text_best_effort(backup_dir / Path(file_path))
+
+            after_nc = _strip_apex_comments(after_text)
+            before_nc = _strip_apex_comments(before_text)
+
+            # method exists
+            after_body = _extract_method_body_apex(after_nc, method_name)
+            before_body = _extract_method_body_apex(before_nc, method_name)
+
+            decl_rx = re.compile(r"\b\w+\s+" + re.escape(var_name) + r"\s*=")
+            return_rx = re.compile(r"\breturn\s+" + re.escape(var_name) + r"\s*;")
+
+            passed = True
+            reasons: list[str] = []
+
+            if before_body is None or after_body is None:
+                passed = False
+                reasons.append("method_not_found")
+
+            # After: declaration gone (or at least fewer)
+            if after_body is not None:
+                if decl_rx.search(after_body):
+                    passed = False
+                    reasons.append("var_declaration_still_present")
+                if return_rx.search(after_body):
+                    passed = False
+                    reasons.append("return_var_still_present")
+
+            # Before should have had declaration (best-effort)
+            had_decl_before = bool(before_body and decl_rx.search(before_body))
+            _record(
+                "inline_variable",
+                passed,
+                {
+                    "file": file_path,
+                    "method": method_name,
+                    "var": var_name,
+                    "had_declaration_before": had_decl_before,
+                    "reasons": reasons,
+                },
+            )
+
+    # ---- getter_setter ----
+    if ref_type == "getter_setter":
+        attr = targets.get("attr")
+        cls = targets.get("class")
+        file_path = targets.get("file")
+        if not attr or not cls or not file_path:
+            _record("getter_setter", False, {"reason": "targets_not_parsed", "targets": targets})
+        else:
+            after_text = _strip_apex_comments(_read_project_file_text(project_dir, file_path))
+
+            # Expect getters/setters like getProjectName/setProjectName based on attr
+            cap = attr[:1].upper() + attr[1:]
+            get_name = f"get{cap}"
+            set_name = f"set{cap}"
+
+            has_get = re.search(r"\b" + re.escape(get_name) + r"\s*\(", after_text) is not None
+            has_set = re.search(r"\b" + re.escape(set_name) + r"\s*\(", after_text) is not None
+
+            # No public field 'public <type> projectName;'
+            public_field = re.search(r"\bpublic\s+\w+\s+" + re.escape(attr) + r"\s*;", after_text) is not None
+
+            # Heuristic: no remaining direct dot-access `.projectName` anywhere in project
+            direct_access_hits = _scan_project_for_regex(project_dir, r"\." + re.escape(attr) + r"\b")
+
+            passed = has_get and has_set and (not public_field) and (len(direct_access_hits) == 0)
+            _record(
+                "getter_setter",
+                passed,
+                {
+                    "file": file_path,
+                    "class": cls,
+                    "attr": attr,
+                    "expected_getter": get_name,
+                    "expected_setter": set_name,
+                    "has_getter": has_get,
+                    "has_setter": has_set,
+                    "public_field_still_present": public_field,
+                    "direct_access_hits": direct_access_hits[:25],
+                },
+            )
+
+    # ---- guard_clauses ----
+    if ref_type == "guard_clauses":
+        # Evaluate nesting reduction on changed files, best-effort.
+        improved_files: list[str] = []
+        compared: list[dict] = []
+        for rel in changed_rel_paths:
+            if not rel.lower().endswith(".cls"):
+                continue
+            before = _strip_apex_comments(_read_text_best_effort(backup_dir / Path(rel)))
+            after = _strip_apex_comments(_read_project_file_text(project_dir, rel))
+            b = _max_if_nesting_apex(before)
+            a = _max_if_nesting_apex(after)
+            compared.append({"file": rel, "before_max_if_nesting": b, "after_max_if_nesting": a})
+            if a < b:
+                improved_files.append(rel)
+
+        passed = len(improved_files) > 0
+        _record(
+            "guard_clauses",
+            passed,
+            {
+                "improved_files": improved_files[:25],
+                "comparisons": compared[:25],
+                "note": "heuristic_if_nesting_reduction",
+            },
+        )
+
+    # ---- strategy_pattern ----
+    if ref_type == "strategy_pattern":
+        method_name = targets.get("method")
+        file_path = targets.get("file")
+        if not method_name or not file_path:
+            _record("strategy_pattern", False, {"reason": "targets_not_parsed", "targets": targets})
+        else:
+            before_text = _strip_apex_comments(_read_text_best_effort(backup_dir / Path(file_path)))
+            after_text = _strip_apex_comments(_read_project_file_text(project_dir, file_path))
+
+            before_body = _extract_method_body_apex(before_text, method_name) or ""
+            after_body = _extract_method_body_apex(after_text, method_name) or ""
+
+            # Heuristics: fewer else-if in method body + presence of Map/containsKey and interface/class strategy declaration in file
+            before_else_if = len(re.findall(r"\belse\s+if\b", before_body))
+            after_else_if = len(re.findall(r"\belse\s+if\b", after_body))
+
+            has_map = re.search(r"\bMap<", after_text) is not None
+            has_contains = re.search(r"\bcontainsKey\s*\(", after_text) is not None
+            has_strategy_interface = re.search(r"\binterface\b", after_text) is not None or re.search(r"\bStrategy\b", after_text) is not None
+
+            passed = (after_else_if < before_else_if) and has_map and has_contains and has_strategy_interface
+            _record(
+                "strategy_pattern",
+                passed,
+                {
+                    "file": file_path,
+                    "method": method_name,
+                    "else_if_before": before_else_if,
+                    "else_if_after": after_else_if,
+                    "has_map": has_map,
+                    "has_containsKey": has_contains,
+                    "has_interface_or_strategy": has_strategy_interface,
+                    "note": "heuristic_dispatch_rewrite",
+                },
+            )
+
+    # ---- coc_reduktion ----
+    if ref_type == "coc_reduktion":
+        # Use PMD delta if available, else fall back to nesting heuristic.
+        delta_total = None
+        if metrics and isinstance(metrics, dict):
+            d = metrics.get("pmd_delta", {}).get("total", {}).get("complexity")
+            if d is not None:
+                try:
+                    delta_total = int(d)
+                except Exception:
+                    delta_total = None
+
+        if delta_total is not None:
+            passed = delta_total <= 0
+            _record(
+                "coc_reduktion",
+                passed,
+                {"pmd_delta_total_complexity": delta_total, "rule": "delta<=0"},
+            )
+        else:
+            improved_files: list[str] = []
+            compared: list[dict] = []
+            for rel in changed_rel_paths:
+                if not rel.lower().endswith(".cls"):
+                    continue
+                before = _strip_apex_comments(_read_text_best_effort(backup_dir / Path(rel)))
+                after = _strip_apex_comments(_read_project_file_text(project_dir, rel))
+                b = _max_if_nesting_apex(before)
+                a = _max_if_nesting_apex(after)
+                compared.append({"file": rel, "before_max_if_nesting": b, "after_max_if_nesting": a})
+                if a <= b:
+                    improved_files.append(rel)
+            passed = len(improved_files) > 0
+            _record(
+                "coc_reduktion",
+                passed,
+                {
+                    "improved_files": improved_files[:25],
+                    "comparisons": compared[:25],
+                    "note": "fallback_heuristic_if_nesting_non_increase",
+                },
+            )
+
+    # If unknown type: mark as n/a but ok
+    if ref_type not in {"rename", "inline_variable", "getter_setter", "guard_clauses", "strategy_pattern", "coc_reduktion"}:
+        _record("refactoring_type", True, {"note": "unknown_refactoring_type_no_checks_run", "type": ref_type})
+
+    return {
+        "type": ref_type,
+        "targets": targets,
+        "ok": bool(overall_ok),
+        "checks": checks,
+    }
+
+def format_refactoring_check_summary(ref_check: dict | None) -> str:
+    """
+    Returns a short one-liner: "REF:ok" or "REF:fail(<check1>,<check2>)"
+    """
+    if not ref_check:
+        return "REF:n/a"
+    if ref_check.get("ok"):
+        return "REF:ok"
+    checks = ref_check.get("checks", {}) or {}
+    failed = [k for k, v in checks.items() if isinstance(v, dict) and not v.get("passed")]
+    if not failed:
+        return "REF:fail"
+    return "REF:fail(" + ",".join(failed[:3]) + ")"
+
 def main():
-    YOUR_PROMPT = PROMPT_TEMPLATE
+    PROJECT_DIR = Path(args.project_path)
+
+    if args.all_refactorings:
+        selected_refactorings = REFACTORINGS
+    else:
+        selected_refactorings = [args.refactoring]
+
     print(f"{'='*60}\nStarte Refactoring-Experiment\n{'='*60}\n")
 
     backup_dir = Path("backup_original")
     backup_project(PROJECT_DIR, backup_dir)
 
-    project_structure = get_project_structure(PROJECT_DIR)
-    code_block = get_all_apex_files(PROJECT_DIR)
+    for ref_name in selected_refactorings:
+        REFACTORING = f"{REFACTORING_BASE_DIR}/{ref_name}"
 
-    final_prompt = f"{YOUR_PROMPT}\n\nStruktur:\n{project_structure}\n\nCode:\n{code_block}"
-    successful_iterations = 0
+        PROMPT_TEMPLATE = Path(f"{REFACTORING}.txt").read_text(encoding="utf-8")
+        RESULTS_DIR = Path(REFACTORING + "_results_" + MODEL)
+        RESULTS_DIR.mkdir(exist_ok=True)
 
-    with open(RESULTS_DIR / "full_prompt.txt", "w", encoding="utf-8") as f:
-        f.write(final_prompt)
+        YOUR_PROMPT = PROMPT_TEMPLATE
 
-    i = 1
-    while i <= ITERATIONS:
-        print(f"\nITERATION {i}/{ITERATIONS}")
-        restore_project(backup_dir, PROJECT_DIR)
+        print(f"{'='*60}\nRefactoring: {ref_name}\n{'='*60}\n")
 
-        iteration_dir = RESULTS_DIR / f"iteration_{i:02d}"
+        project_structure = get_project_structure(PROJECT_DIR)
+        code_block = get_all_apex_files(PROJECT_DIR)
+        final_prompt = f"{YOUR_PROMPT}\n\nStruktur:\n{project_structure}\n\nCode:\n{code_block}"
 
-        try:
-            usage = None
-            if LLM_API_KEY == MISTRAL_API_KEY:
-                response_text, usage = mistral_generate(final_prompt)
-            elif LLM_API_KEY == GEMINI_API_KEY:
-                response_text, usage = gemini_generate(final_prompt)
-            elif LLM_API_KEY == GROQ_API_KEY:
-                response_text, usage = groq_generate(final_prompt)
+        with open(RESULTS_DIR / "full_prompt.txt", "w", encoding="utf-8") as f:
+            f.write(final_prompt)
 
-            files = parse_ai_response(response_text)
-            if not files:
-                i += 1
-                continue
+        successful_iterations = 0
 
-            # Only changed files that are real Apex classes
-            changed_rel_paths = sorted({str(Path(p)) for p in files.keys()})
-            changed_rel_paths = [p for p in changed_rel_paths if p.lower().endswith(".cls")]
+        i = 1
+        while i <= ITERATIONS:
+            print(f"\nITERATION {i}/{ITERATIONS}")
+            restore_project(backup_dir, PROJECT_DIR)
 
-            # PMD metrics BEFORE changes: subset only (based on original restored project)
-            metrics_before = build_metrics_with_pmd_subset(PROJECT_DIR, changed_rel_paths, iteration_dir / "pmd_before")
+            iteration_dir = RESULTS_DIR / f"iteration_{i:02d}"
 
-            apply_changes(PROJECT_DIR, files)
+            try:
+                usage = None
+                if LLM_API_KEY == MISTRAL_API_KEY:
+                    response_text, usage = mistral_generate(final_prompt)
+                elif LLM_API_KEY == GEMINI_API_KEY:
+                    response_text, usage = gemini_generate(final_prompt)
+                elif LLM_API_KEY == GROQ_API_KEY:
+                    response_text, usage = groq_generate(final_prompt)
+                else:
+                    raise RuntimeError("Kein gültiger LLM_API_KEY gesetzt")
 
-            # PMD metrics AFTER changes: subset only (same file set, new content)
-            metrics_after = build_metrics_with_pmd_subset(PROJECT_DIR, changed_rel_paths, iteration_dir / "pmd_after")
+                files = parse_ai_response(response_text)
+                if not files:
+                    i += 1
+                    continue
 
-            has_diff, diff_text = build_diff_between_backup_and_refactored(
-                backup_dir=backup_dir,
-                project_src=PROJECT_DIR,
-                snapshot_files=files,
-            )
-            diff_status = "passed" if has_diff else "failed"
+                changed_rel_paths = sorted({str(Path(p)) for p in files.keys()})
+                changed_rel_paths = [p for p in changed_rel_paths if p.lower().endswith(".cls")]
 
-            test_result = run_apex_tests()
-            test_status = "passed" if test_result['success'] else "failed"
+                metrics_before = build_metrics_with_pmd_subset(
+                    PROJECT_DIR,
+                    changed_rel_paths,
+                    iteration_dir / "pmd_before"
+                )
 
-            iteration_status = "passed" if (test_result['success'] and has_diff) else "failed"
-            token_info = format_token_usage(usage)
+                apply_changes(PROJECT_DIR, files)
 
-            if iteration_status == "passed":
-                successful_iterations += 1
+                metrics_after = build_metrics_with_pmd_subset(
+                    PROJECT_DIR,
+                    changed_rel_paths,
+                    iteration_dir / "pmd_after"
+                )
 
-            pmd_summary = format_pmd_metrics_summary(metrics_before, metrics_after)
-            write_summary(f"iteration {i} {iteration_status} test {test_status} diff {diff_status} {token_info} {pmd_summary}\n")
+                has_diff, diff_text = build_diff_between_backup_and_refactored(
+                    backup_dir=backup_dir,
+                    project_src=PROJECT_DIR,
+                    snapshot_files=files,
+                )
+                diff_status = "passed" if has_diff else "failed"
 
+                test_result = run_apex_tests()
+                test_status = "passed" if test_result.get("success") else "failed"
 
-            if test_result['success']:
-                print(" Tests bestanden.")
-            else:
-                print(" Tests fehlgeschlagen.")
+                token_info = format_token_usage(usage)
+                pmd_summary = format_pmd_metrics_summary(metrics_before, metrics_after)
 
-            save_results(i, iteration_dir, files, test_result, response_text, diff_text)
+                save_results(i, iteration_dir, files, test_result, response_text, diff_text)
 
-            metrics = {
-                "iteration": i,
-                "timestamp": datetime.now().isoformat(),
-                "refactoring": REFACTORING,
-                "changed_files_scope": changed_rel_paths,
-                "test": {"status": test_status, "success": bool(test_result.get("success")), "level": test_result.get("level")},
-                "diff": {"status": diff_status, "has_diff": bool(has_diff)},
-                "tokens": token_info,
-                "pmd_before": metrics_before,
-                "pmd_after": metrics_after,
-            }
-
-            if metrics_before.get("ok") and metrics_after.get("ok"):
-                b = metrics_before.get("summary", {})
-                a = metrics_after.get("summary", {})
-                def _delta(cat: str, key: str) -> int:
-                    return int((a.get(cat, {}).get(key, 0) or 0)) - int((b.get(cat, {}).get(key, 0) or 0))
-                metrics["pmd_delta"] = {
-                    "prod": {"complexity": _delta("prod", "complexity"), "loc": _delta("prod", "loc"), "count": _delta("prod", "count")},
-                    "test": {"complexity": _delta("test", "complexity"), "loc": _delta("test", "loc"), "count": _delta("test", "count")},
-                    "total": {"complexity": _delta("total", "complexity"), "loc": _delta("total", "loc"), "count": _delta("total", "count")},
+                metrics = {
+                    "iteration": i,
+                    "timestamp": datetime.now().isoformat(),
+                    "refactoring": REFACTORING,
+                    "changed_files_scope": changed_rel_paths,
+                    "test": {"status": test_status, "success": bool(test_result.get("success")), "level": test_result.get("level")},
+                    "diff": {"status": diff_status, "has_diff": bool(has_diff)},
+                    "tokens": token_info,
+                    "pmd_before": metrics_before,
+                    "pmd_after": metrics_after,
                 }
 
-            save_metrics(iteration_dir, metrics)
+                if metrics_before.get("ok") and metrics_after.get("ok"):
+                    b = metrics_before.get("summary", {})
+                    a = metrics_after.get("summary", {})
 
-            i += 1
+                    def _delta(cat: str, key: str) -> int:
+                        return int((a.get(cat, {}).get(key, 0) or 0)) - int((b.get(cat, {}).get(key, 0) or 0))
 
-        except Exception as e:
-            if _is_rate_limit_error(e):
+                    metrics["pmd_delta"] = {
+                        "prod": {"complexity": _delta("prod", "complexity"), "loc": _delta("prod", "loc"), "count": _delta("prod", "count")},
+                        "test": {"complexity": _delta("test", "complexity"), "loc": _delta("test", "loc"), "count": _delta("test", "count")},
+                        "total": {"complexity": _delta("total", "complexity"), "loc": _delta("total", "loc"), "count": _delta("total", "count")},
+                    }
+
+                ref_check = build_refactoring_check(
+                    refactoring_path=REFACTORING,
+                    prompt_text=YOUR_PROMPT,
+                    backup_dir=backup_dir,
+                    project_dir=PROJECT_DIR,
+                    changed_rel_paths=changed_rel_paths,
+                    metrics=metrics,
+                )
+                metrics["refactoring_check"] = ref_check
+
+                ref_summary = format_refactoring_check_summary(ref_check)
+                ref_ok = bool(ref_check.get("ok")) if isinstance(ref_check, dict) else False
+
+                iteration_status = "passed" if (test_result.get("success") and has_diff and ref_ok) else "failed"
+
+                if iteration_status == "passed":
+                    successful_iterations += 1
+
+                line = f"iteration {i} {iteration_status} test {test_status} diff {diff_status} {token_info} {pmd_summary} {ref_summary}\n"
+                write_summary(RESULTS_DIR, line)
+                print(line.strip())
+
+                save_metrics(iteration_dir, metrics)
+
+                i += 1
+
+            except Exception as e:
+                if _is_rate_limit_error(e):
+                    print(f"Fehler: {e}")
+                    print("Rate limit erhalten. Warte 60 Sekunden und wiederhole die Iteration.")
+                    time.sleep(60)
+                    continue
                 print(f"Fehler: {e}")
-                print("Rate limit erhalten. Warte 60 Sekunden und wiederhole die Iteration.")
-                time.sleep(60)
-                continue
-            print(f"Fehler: {e}")
-            i += 1
+                i += 1
 
-    print(f"\nFertig. Erfolgsrate: {successful_iterations/ITERATIONS*100:.1f}%")
+        success_rate = (successful_iterations / ITERATIONS * 100.0) if ITERATIONS else 0.0
+        final_line = f"Fertig. Erfolgsrate: {success_rate:.1f}% ({successful_iterations}/{ITERATIONS})\n"
+        write_summary(RESULTS_DIR, final_line)
+        print(final_line.strip())
+
     restore_project(backup_dir, PROJECT_DIR)
+
 
 if __name__ == "__main__":
     main()
