@@ -116,7 +116,7 @@ account.setBalance(500);
 ```
 
 Your Task:
-1. Encapsulate the attribute `projectName` within the class `PluginManager` in the file `Manager.cls`.
+1. Encapsulate the attributes `BindingNameValue`, `BindingIdValue`, and `ParametersValu` within the class `di_InjectorComponentController` in the file `di_InjectorComponentController.cls`.
 2. Replace all direct attribute accesses with getter and setter methods.
 3. Update all references both inside the class and from external calls.
 4. For EACH modified file, respond exactly in the following format:

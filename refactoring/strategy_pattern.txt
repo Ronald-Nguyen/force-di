@@ -149,7 +149,7 @@ public class EventHandler {
 ```
 
 Your Task:
-1. Refactor the method `multicall` in the file `Callers.cls` to use the Strategy pattern.
+1. Refactor the method `invoke` in the file `di_BindingParam.cls` to use the Strategy pattern.
 2. Extract each command specific behavior into its own strategy class.
 3. Ensure that the original method is completely removed or replaced, and that only the new strategy based dispatch implementation remains in the class.
 4. For EACH modified file, respond exactly in the following format:

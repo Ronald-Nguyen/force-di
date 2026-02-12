@@ -99,7 +99,7 @@ public class FindMaximum {
 ```
 
 Your Task:
-1. Rename the method `hasSpec` in the file: `Hooks.cls` to `hasSpecification`
+1. Rename the method `getInject` in the file: `di_InjectorComponentController.cls` to `getInjectedComponent`
 2. Update every relevant occurrence across the entire project.
 3. For EACH modified file, respond exactly in the following format:
 
