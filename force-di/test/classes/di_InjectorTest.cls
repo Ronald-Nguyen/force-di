@@ -300,7 +300,7 @@ private class di_InjectorTest {
         Boolean hasException = false;
         // When
         try {
-            injector.getInstance(null, Account.SObjectType, null);
+            injector.getInstance((String)null, Account.SObjectType, null);
         } catch (di_Injector.InjectorException excp) {
             hasException = true;
         }
