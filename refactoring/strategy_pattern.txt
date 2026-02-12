@@ -1,0 +1,160 @@
+Task Description
+You are a strict code refactoring engine. You follow all rules exactly as written. Your task is to refactor an Apex project to apply the Strategy pattern.
+
+Please note:
+1. The code must still function perfectly after the refactoring.
+2. All imports, references, and method calls must be updated accordingly.
+3. The style, formatting, and structure of the code must be preserved.
+4. Do not introduce any new functionality, logic changes, or unrelated formatting changes.
+5. For every modified file, return the complete updated file content to ensure that no changes are overlooked.
+6. The semantics and behavior of the code must not change.
+7. Only include files that required changes.
+8. Respond with the code blocks only. Your entire response must be machine readable. Do not include any conversational filler.
+9. If you are unsure, do not guess. Only modify code when the change is certain.
+10. Every response must include meaningful modifications, improvements, or transformations. Returning the same code, even partially or with superficial edits, is strictly prohibited.
+11. Your final output must pass the existing test suite. If your changes would cause any test to fail, revise your refactor until all tests pass.
+
+Examples of strategy pattern refactorings:
+
+Example 1:
+Original Code:
+File `Greet.cls`:
+```apex
+public class Greet {
+    public static String greet(String name) {
+        if (name == 'Alice') {
+            return 'Hello Alice';
+        } else if (name == 'Bob') {
+            return 'Hello Bob';
+        } else {
+            return 'Hello stranger';
+        }
+    }
+}
+```
+
+Task Description:
+1. Refactor the method greet in the file Greet.cls to use the Strategy pattern.
+2. Extract each command specific behavior into its own strategy class or method.
+3. Ensure that the original method is completely removed or replaced, and that only the new strategy based dispatch implementation remains in the class.
+
+Output:
+File `Greet.cls`:
+```apex
+public class Greet {
+
+    private interface GreetingStrategy {
+        String execute(String name);
+    }
+
+    private class AliceStrategy implements GreetingStrategy {
+        public String execute(String name) {
+            return 'Hello Alice';
+        }
+    }
+
+    private class BobStrategy implements GreetingStrategy {
+        public String execute(String name) {
+            return 'Hello Bob';
+        }
+    }
+
+    private static Map<String, GreetingStrategy> STRATEGIES = new Map<String, GreetingStrategy>{
+        'Alice' => new AliceStrategy(),
+        'Bob'   => new BobStrategy()
+    };
+
+    public static String greet(String name) {
+        if (STRATEGIES.containsKey(name)) {
+            return STRATEGIES.get(name).execute(name);
+        }
+        return 'Hello stranger';
+    }
+}
+```
+
+Example 2:
+Original Code:
+File `EventHandler.cls`:
+```apex
+public class EventHandler {
+    public static String handleEvent(String eventType, String payload) {
+        if (eventType == 'start') {
+            return 'Starting with ' + payload;
+        } else if (eventType == 'stop') {
+            return 'Stopping with ' + payload;
+        } else if (eventType == 'pause') {
+            return 'Pausing with ' + payload;
+        } else if (eventType == 'resume') {
+            return 'Resuming with ' + payload;
+        } else {
+            throw new IllegalArgumentException('Unknown event');
+        }
+    }
+}
+```
+
+Task Description:
+1. Refactor the method handleEvent in the file EventHandler.cls to use the Strategy pattern.
+2. Extract each command specific behavior into its own strategy class.
+3. Ensure that the original method is completely removed or replaced, and that only the new strategy based dispatch implementation remains in the class.
+
+Output:
+File `EventHandler.cls`:
+```apex
+public class EventHandler {
+
+    private interface EventStrategy {
+        String execute(String payload, String eventType);
+    }
+
+    private class StartStrategy implements EventStrategy {
+        public String execute(String payload, String eventType) {
+            return 'Starting with ' + payload;
+        }
+    }
+
+    private class StopStrategy implements EventStrategy {
+        public String execute(String payload, String eventType) {
+            return 'Stopping with ' + payload;
+        }
+    }
+
+    private class PauseStrategy implements EventStrategy {
+        public String execute(String payload, String eventType) {
+            return 'Pausing with ' + payload;
+        }
+    }
+
+    private class ResumeStrategy implements EventStrategy {
+        public String execute(String payload, String eventType) {
+            return 'Resuming with ' + payload;
+        }
+    }
+
+    private static Map<String, EventStrategy> EVENT_STRATEGIES = new Map<String, EventStrategy>{
+        'start'  => new StartStrategy(),
+        'stop'   => new StopStrategy(),
+        'pause'  => new PauseStrategy(),
+        'resume' => new ResumeStrategy()
+    };
+
+    public static String handleEvent(String eventType, String payload) {
+        if (EVENT_STRATEGIES.containsKey(eventType)) {
+            return EVENT_STRATEGIES.get(eventType).execute(payload, eventType);
+        }
+        throw new IllegalArgumentException('Unknown event');
+    }
+}
+```
+
+Task Description:
+1. Refactor the method multicall in the file Callers.cls to use the Strategy pattern.
+2. Extract each command specific behavior into its own strategy class.
+3. Ensure that the original method is completely removed or replaced, and that only the new strategy based dispatch implementation remains in the class.
+4. For EACH modified file, respond exactly in the following format:
+
+File `Filename.cls`:
+```apex
+[Complete updated file content]
+```

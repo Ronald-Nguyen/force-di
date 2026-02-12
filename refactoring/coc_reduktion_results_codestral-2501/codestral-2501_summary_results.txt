@@ -1,0 +1,10 @@
+iteration 1 passed test passed diff passed Tokens: prompt=12067, completion=8900, total=20967
+iteration 2 passed test passed diff passed Tokens: prompt=12067, completion=6356, total=18423
+iteration 3 failed test failed diff passed Tokens: prompt=12067, completion=9217, total=21284
+iteration 4 failed test failed diff passed Tokens: prompt=12067, completion=10075, total=22142
+iteration 5 passed test passed diff passed Tokens: prompt=12067, completion=9041, total=21108
+iteration 6 failed test failed diff passed Tokens: prompt=12067, completion=9424, total=21491
+iteration 7 passed test passed diff passed Tokens: prompt=12067, completion=2483, total=14550
+iteration 8 passed test passed diff passed Tokens: prompt=12067, completion=6272, total=18339
+iteration 9 failed test failed diff passed Tokens: prompt=12067, completion=10812, total=22879
+iteration 10 passed test passed diff passed Tokens: prompt=12067, completion=9385, total=21452

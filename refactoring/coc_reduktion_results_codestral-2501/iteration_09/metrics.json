@@ -1,0 +1,131 @@
+{
+  "iteration": 9,
+  "timestamp": "2026-02-12T18:50:32.935427",
+  "refactoring": "refactoring/coc_reduktion",
+  "changed_files_scope": [
+    "main\\classes\\di_Binding.cls",
+    "main\\classes\\di_BindingConfigWrapper.cls",
+    "main\\classes\\di_BindingParam.cls",
+    "main\\classes\\di_Flow.cls",
+    "main\\classes\\di_Injector.cls",
+    "main\\classes\\di_InjectorComponentController.cls",
+    "main\\classes\\di_InjectorComponentFlowProxyController.cls",
+    "main\\classes\\di_InjectorController.cls",
+    "main\\classes\\di_Module.cls",
+    "main\\classes\\di_NamespaceClass.cls",
+    "main\\classes\\di_PlatformCache.cls"
+  ],
+  "test": {
+    "status": "failed",
+    "success": false,
+    "level": 0
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=12067, completion=10812, total=22879",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-12T18:50:22.943474",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronal\\force-di\\force-di",
+      "subset_root": "C:\\Users\\ronal\\force-di\\refactoring\\coc_reduktion_results_codestral-2501\\iteration_09\\pmd_before\\subset_src",
+      "files": [
+        "main/classes/di_Binding.cls",
+        "main/classes/di_BindingConfigWrapper.cls",
+        "main/classes/di_BindingParam.cls",
+        "main/classes/di_Flow.cls",
+        "main/classes/di_Injector.cls",
+        "main/classes/di_InjectorComponentController.cls",
+        "main/classes/di_InjectorComponentFlowProxyController.cls",
+        "main/classes/di_InjectorController.cls",
+        "main/classes/di_Module.cls",
+        "main/classes/di_NamespaceClass.cls",
+        "main/classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronal\\force-di\\refactoring\\coc_reduktion_results_codestral-2501\\iteration_09\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronal\\force-di\\refactoring\\coc_reduktion_results_codestral-2501\\iteration_09\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 832,
+        "loc": 1626,
+        "count": 11
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 832,
+        "loc": 1626,
+        "count": 11
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-12T18:50:25.931655",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronal\\force-di\\force-di",
+      "subset_root": "C:\\Users\\ronal\\force-di\\refactoring\\coc_reduktion_results_codestral-2501\\iteration_09\\pmd_after\\subset_src",
+      "files": [
+        "main/classes/di_Binding.cls",
+        "main/classes/di_BindingConfigWrapper.cls",
+        "main/classes/di_BindingParam.cls",
+        "main/classes/di_Flow.cls",
+        "main/classes/di_Injector.cls",
+        "main/classes/di_InjectorComponentController.cls",
+        "main/classes/di_InjectorComponentFlowProxyController.cls",
+        "main/classes/di_InjectorController.cls",
+        "main/classes/di_Module.cls",
+        "main/classes/di_NamespaceClass.cls",
+        "main/classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronal\\force-di\\refactoring\\coc_reduktion_results_codestral-2501\\iteration_09\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronal\\force-di\\refactoring\\coc_reduktion_results_codestral-2501\\iteration_09\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 685,
+        "loc": 1494,
+        "count": 11
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 685,
+        "loc": 1494,
+        "count": 11
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": -147,
+      "loc": -132,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": -147,
+      "loc": -132,
+      "count": 0
+    }
+  }
+}

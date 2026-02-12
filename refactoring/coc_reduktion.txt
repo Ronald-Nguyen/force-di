@@ -1,107 +1,153 @@
 Cognitive Complexity Reduction
 Task Description
-You are a strict code‑refactoring engine. You follow all rules exactly as written. Your task is to refactor code so that its cognitive complexity score is minimized while preserving behavior.
+You are a strict code refactoring engine. You follow all rules exactly as written. Your task is to refactor code so that its cognitive complexity score is minimized while preserving behavior in an Apex project.
 
 Please note:
 1. The code must still function perfectly after the refactoring.
-2. All imports, references, and function calls must be updated accordingly.
-3. The style and formatting of the code must be preserved.
+2. All imports, references, and method calls must be updated accordingly.
+3. The style, formatting, and structure of the code must be preserved.
 4. Do not introduce any new functionality, logic changes, or unrelated formatting changes.
 5. For every modified file, return the complete updated file content to ensure that no changes are overlooked.
 6. The semantics and behavior of the code must not change.
-7. Only include files that require changes.
-8. Respond with the code blocks only. Your entire response must be machine-readable. Do not include any conversational filler.
+7. Only include files that required changes.
+8. Respond with the code blocks only. Your entire response must be machine readable. Do not include any conversational filler.
 9. If you are unsure, do not guess. Only modify code when the change is certain.
+10. Every response must include meaningful modifications, improvements, or transformations. Returning the same code, even partially or with superficial edits, is strictly prohibited.
+11. Your final output must pass the existing test suite. If your changes would cause any test to fail, revise your refactor until all tests pass.
 
-Definitions:
+Definitions
 Cognitive complexity increases with:
 - Deeply nested control structures
 - Multiple branching paths
 - Boolean logic with many operators
-- Long functions with mixed responsibilities
+- Long methods with mixed responsibilities
 - Repeated condition checks
-- Hard‑to‑follow flow or side effects
+- Hard to follow flow or side effects
 
 Cognitive complexity decreases with:
 - Early returns instead of deep nesting
-- Extracting helper functions
+- Extracting helper methods
 - Flattening conditionals
 - Replacing complex boolean expressions with named variables
 - Clear, linear control flow
 - Removing duplication
 
 Examples of cognitive complexity reduction tasks:
+
 Example 1:
-Original Code: 
-File `process.py`:
-```python
-def process(items):
-    result = []
-    for item in items:
-        if item.is_valid():
-            if not item.is_expired():
-                if item.value > 10:
-                    result.append(item.value)
-    return result
+Original Code:
+File `ItemProcessor.cls`:
+```apex
+public class ItemProcessor {
+    public static List<Integer> process(List<ItemWrapper> items) {
+        List<Integer> result = new List<Integer>();
+        for (ItemWrapper item : items) {
+            if (item.isValid()) {
+                if (!item.isExpired()) {
+                    if (item.value > 10) {
+                        result.add(item.value);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public class ItemWrapper {
+        public Integer value;
+        public Boolean isValid() { return true; }
+        public Boolean isExpired() { return false; }
+    }
+}
 ```
+
 Task:
 1. Refactor the following code to reduce cognitive complexity while preserving behavior.
 2. For EACH modified file, respond exactly in the following format:
-File `filename.py`:
-```python
+
+File `Filename.cls`:
+```apex
 [Complete updated file content]
+```
 
 Output:
-File `process.py`:
-```python
-def process(items):
-    result = []
-    for item in items:
-        if not item.is_valid():
-            continue
-        if item.is_expired():
-            continue
-        if item.value <= 10:
-            continue
-        result.append(item.value)
-    return result
+File `ItemProcessor.cls`:
+```apex
+public class ItemProcessor {
+    public static List<Integer> process(List<ItemWrapper> items) {
+        List<Integer> result = new List<Integer>();
+        for (ItemWrapper item : items) {
+            if (!item.isValid()) {
+                continue;
+            }
+            if (item.isExpired()) {
+                continue;
+            }
+            if (item.value <= 10) {
+                continue;
+            }
+            result.add(item.value);
+        }
+        return result;
+    }
+
+    public class ItemWrapper {
+        public Integer value;
+        public Boolean isValid() { return true; }
+        public Boolean isExpired() { return false; }
+    }
+}
 ```
 
 Example 2:
-Original Code: 
-File `compute.py`:
-```python
-def compute(x, y, z):
-    if x > 0:
-        if y > 0:
-            return x + y + z
-        else:
-            return x + z
-    else:
-        return z
+Original Code:
+File `Compute.cls`:
+```apex
+public class Compute {
+    public static Integer compute(Integer x, Integer y, Integer z) {
+        if (x > 0) {
+            if (y > 0) {
+                return x + y + z;
+            } else {
+                return x + z;
+            }
+        } else {
+            return z;
+        }
+    }
+}
 ```
 
 Task:
 1. Refactor the following code to reduce cognitive complexity while preserving behavior.
 2. For EACH modified file, respond exactly in the following format:
-File `filename.py`:
-```python
+
+File `Filename.cls`:
+```apex
 [Complete updated file content]
+```
 
 Output:
-File `compute.py`:
-```python
-def compute(x, y, z):
-    if x <= 0:
-        return z
-    if y <= 0:
-        return x + z
-    return x + y + z
+File `Compute.cls`:
+```apex
+public class Compute {
+    public static Integer compute(Integer x, Integer y, Integer z) {
+        if (x <= 0) {
+            return z;
+        }
+        if (y <= 0) {
+            return x + z;
+        }
+        return x + y + z;
+    }
+}
 ```
 
 Task:
 1. Refactor the following code to reduce cognitive complexity while preserving behavior.
 2. For EACH modified file, respond exactly in the following format:
-File `filename.py`:
-```python
+
+File `Filename.cls`:
+```apex
 [Complete updated file content]
+```

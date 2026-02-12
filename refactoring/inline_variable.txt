@@ -1,0 +1,80 @@
+Inline_Variable
+Task Description
+You are a strict code refactoring engine. You follow all rules exactly as written. Your task is to perform an Inline Variable refactoring in an Apex project. Certain temporary variables should be inlined by replacing the variable with its defining value or expression wherever it is used.
+
+Please note:
+1. The code must still function perfectly after the refactoring.
+2. All imports, references, and method calls must be updated accordingly.
+3. The style, formatting, and structure of the code must be preserved.
+4. Do not introduce any new functionality, logic changes, or unrelated formatting changes.
+5. For every modified file, return the complete updated file content to ensure that no changes are overlooked.
+6. The semantics and behavior of the code must not change.
+7. Only include files that required changes.
+8. Respond with the code blocks only. Your entire response must be machine readable. Do not include any conversational filler.
+9. If you are unsure, do not guess. Only modify code when the change is certain.
+10. Every response must include meaningful modifications, improvements, or transformations. Returning the same code, even partially or with superficial edits, is strictly prohibited.
+11. Your final output must pass the existing test suite. If your changes would cause any test to fail, revise your refactor until all tests pass.
+
+Examples of inline variable tasks:
+
+Example 1:
+Original Code:
+File `CalculateTotal.cls`:
+```apex
+public class CalculateTotal {
+    public static Decimal calculateTotal(Decimal price, Integer quantity) {
+        Decimal subtotal = price * quantity;
+        return subtotal;
+    }
+}
+```
+
+Task:
+1. Inline the temporary variable `subtotal` in the method calculateTotal in the file CalculateTotal.cls.
+2. Update every relevant occurrence across the entire project.
+3. Output format (for EACH modified file):
+
+File `CalculateTotal.cls`:
+```apex
+public class CalculateTotal {
+    public static Decimal calculateTotal(Decimal price, Integer quantity) {
+        return price * quantity;
+    }
+}
+```
+
+Example 2:
+Original Code:
+File `UserUtil.cls`:
+```apex
+public class UserUtil {
+    public static String getUserName(Map<String, Object> user) {
+        String name = (String)user.get('name');
+        return name;
+    }
+}
+```
+
+Task:
+1. Inline the temporary variable `name` in the method getUserName in the file UserUtil.cls.
+2. Update every relevant occurrence across the entire project.
+3. Output format (for EACH modified file):
+
+File `UserUtil.cls`:
+```apex
+public class UserUtil {
+    public static String getUserName(Map<String, Object> user) {
+        return (String)user.get('name');
+    }
+}
+```
+
+Your Task:
+1. Inline the temporary variable `name` in the method projectName in the file Manager.cls.
+2. Update every relevant occurrence across the entire project.
+3. For EACH modified file, respond exactly in the following format:
+
+File `Filename.cls`:
+```apex
+[Complete updated file content]
+```

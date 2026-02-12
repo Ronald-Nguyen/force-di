@@ -1,0 +1,389 @@
+public with sharing class di_BindingParam {
+
+    public static Map<String, Object> parameters { get; set; }
+
+    @InvocableMethod(
+        label = 'Get Value'
+    )
+    public static List<Response> invoke(List<Request> requests) {
+        List<Response> responses = new List<Response>();
+
+        for (Request req : requests) {
+            Response res = new Response();
+
+            if (parameters == null) {
+                System.debug(LoggingLevel.WARN, 'BindingParam.parameters is null');
+                responses.add(res);
+                continue;
+            }
+
+            Object value = parameters.get(req.paramName);
+
+            if (value == null) {
+                System.debug(LoggingLevel.WARN, 'BindingParam.parameters.get("' + req + '") is null');
+                responses.add(res);
+                continue;
+            }
+
+            processValue(value, res);
+
+            setDefaultValues(res);
+
+            responses.add(res);
+        }
+
+        return responses;
+    }
+
+    private static void processValue(Object value, Response res) {
+        if (value instanceof Decimal) {
+            processDecimalValue((Decimal) value, res);
+        } else if (value instanceof Decimal[]) {
+            processDecimalArrayValue((Decimal[]) value, res);
+        } else if (value instanceof String) {
+            processStringValue((String) value, res);
+        } else if (value instanceof String[]) {
+            processStringArrayValue((String[]) value, res);
+        } else if (value instanceof Boolean) {
+            processBooleanValue((Boolean) value, res);
+        } else if (value instanceof Boolean[]) {
+            processBooleanArrayValue((Boolean[]) value, res);
+        } else if (value instanceof Date) {
+            processDateValue((Date) value, res);
+        } else if (value instanceof Date[]) {
+            processDateArrayValue((Date[]) value, res);
+        } else if (value instanceof DateTime) {
+            processDateTimeValue((DateTime) value, res);
+        } else if (value instanceof DateTime[]) {
+            processDateTimeArrayValue((DateTime[]) value, res);
+        }
+    }
+
+    private static void processDecimalValue(Decimal decimalValue, Response res) {
+        res.longValue = toLongValue(decimalValue);
+        res.decimalValue = decimalValue;
+        res.stringValue = toStringValue(decimalValue);
+        res.booleanValue = toBooleanValue(decimalValue);
+        res.dateValue = toDateValue(decimalValue);
+        res.dateTimeValue = toDateTimeValue(decimalValue);
+    }
+
+    private static void processDecimalArrayValue(Decimal[] decimalValues, Response res) {
+        res.decimalValues = decimalValues;
+        for (Decimal decimalValue : decimalValues) {
+            res.longValues.add(toLongValue(decimalValue));
+            res.stringValues.add(toStringValue(decimalValue));
+            res.booleanValues.add(toBooleanValue(decimalValue));
+            res.dateValues.add(toDateValue(decimalValue));
+            res.dateTimeValues.add(toDateTimeValue(decimalValue));
+        }
+    }
+
+    private static void processStringValue(String stringValue, Response res) {
+        res.longValue = toLongValue(stringValue);
+        res.decimalValue = toDecimalValue(stringValue);
+        res.stringValue = stringValue;
+        res.booleanValue = toBooleanValue(stringValue);
+        res.dateValue = toDateValue(stringValue);
+        res.dateTimeValue = toDateTimeValue(stringValue);
+    }
+
+    private static void processStringArrayValue(String[] stringValues, Response res) {
+        res.stringValues = stringValues;
+        for (String stringValue : stringValues) {
+            res.longValues.add(toLongValue(stringValue));
+            res.decimalValues.add(toDecimalValue(stringValue));
+            res.booleanValues.add(toBooleanValue(stringValue));
+            res.dateValues.add(toDateValue(stringValue));
+            res.dateTimeValues.add(toDateTimeValue(stringValue));
+        }
+    }
+
+    private static void processBooleanValue(Boolean booleanValue, Response res) {
+        res.longValue = toLongValue(booleanValue);
+        res.decimalValue = toDecimalValue(booleanValue);
+        res.stringValue = toStringValue(booleanValue);
+        res.booleanValue = booleanValue;
+        res.dateValue = toDateValue(booleanValue);
+        res.dateTimeValue = toDateTimeValue(booleanValue);
+    }
+
+    private static void processBooleanArrayValue(Boolean[] booleanValues, Response res) {
+        res.booleanValues = booleanValues;
+        for (Boolean booleanValue : booleanValues) {
+            res.longValues.add(toLongValue(booleanValue));
+            res.decimalValues.add(toDecimalValue(booleanValue));
+            res.stringValues.add(toStringValue(booleanValue));
+            res.dateValues.add(toDateValue(booleanValue));
+            res.dateTimeValues.add(toDateTimeValue(booleanValue));
+        }
+    }
+
+    private static void processDateValue(Date dateValue, Response res) {
+        res.longValue = toLongValue(dateValue);
+        res.decimalValue = toDecimalValue(dateValue);
+        res.stringValue = toStringValue(dateValue);
+        res.booleanValue = toBooleanValue(dateValue);
+        res.dateValue = dateValue;
+        res.dateTimeValue = toDateTimeValue(dateValue);
+    }
+
+    private static void processDateArrayValue(Date[] dateValues, Response res) {
+        res.dateValues = dateValues;
+        for (Date dateValue : dateValues) {
+            res.longValues.add(toLongValue(dateValue));
+            res.decimalValues.add(toDecimalValue(dateValue));
+            res.stringValues.add(toStringValue(dateValue));
+            res.booleanValues.add(toBooleanValue(dateValue));
+            res.dateTimeValues.add(toDateTimeValue(dateValue));
+        }
+    }
+
+    private static void processDateTimeValue(DateTime dateTimeValue, Response res) {
+        res.longValue = toLongValue(dateTimeValue);
+        res.decimalValue = toDecimalValue(dateTimeValue);
+        res.stringValue = toStringValue(dateTimeValue);
+        res.booleanValue = toBooleanValue(dateTimeValue);
+        res.dateValue = toDateValue(dateTimeValue);
+        res.dateTimeValue = dateTimeValue;
+    }
+
+    private static void processDateTimeArrayValue(DateTime[] dateTimeValues, Response res) {
+        res.dateTimeValues = dateTimeValues;
+        for (DateTime dateTimeValue : dateTimeValues) {
+            res.longValues.add(toLongValue(dateTimeValue));
+            res.decimalValues.add(toDecimalValue(dateTimeValue));
+            res.stringValues.add(toStringValue(dateTimeValue));
+            res.booleanValues.add(toBooleanValue(dateTimeValue));
+            res.dateValues.add(toDateValue(dateTimeValue));
+        }
+    }
+
+    private static void setDefaultValues(Response res) {
+        if (res.longValue == null && !res.longValues.isEmpty()) {
+            res.longValue = res.longValues[0];
+        }
+        if (res.decimalValue == null && !res.decimalValues.isEmpty()) {
+            res.decimalValue = res.decimalValues[0];
+        }
+        if (res.stringValue == null && !res.stringValues.isEmpty()) {
+            res.stringValue = res.stringValues[0];
+        }
+        if (res.booleanValue == null && !res.booleanValues.isEmpty()) {
+            res.booleanValue = res.booleanValues[0];
+        }
+        if (res.dateValue == null && !res.dateValues.isEmpty()) {
+            res.dateValue = res.dateValues[0];
+        }
+        if (res.dateTimeValue == null && !res.dateTimeValues.isEmpty()) {
+            res.dateTimeValue = res.dateTimeValues[0];
+        }
+
+        if (res.longValue != null && res.longValues.isEmpty()) {
+            res.longValues.add(res.longValue);
+        }
+        if (res.decimalValue != null && res.decimalValues.isEmpty()) {
+            res.decimalValues.add(res.decimalValue);
+        }
+        if (res.stringValue != null && res.stringValues.isEmpty()) {
+            res.stringValues.add(res.stringValue);
+        }
+        if (res.booleanValue != null && res.booleanValues.isEmpty()) {
+            res.booleanValues.add(res.booleanValue);
+        }
+        if (res.dateValue != null && res.dateValues.isEmpty()) {
+            res.dateValues.add(res.dateValue);
+        }
+        if (res.dateTimeValue != null && res.dateTimeValues.isEmpty()) {
+            res.dateTimeValues.add(res.dateTimeValue);
+        }
+    }
+
+    private static Long toLongValue(Decimal value) {
+        return (value == null ? null : value.longValue());
+    }
+
+    private static Long toLongValue(String value) {
+        return ((value == null || !value.isNumeric()) ? null : Long.valueOf(value));
+    }
+
+    private static Long toLongValue(Boolean value) {
+        return (value == null ? null : value ? 1 : 0);
+    }
+
+    private static Long toLongValue(Date value) {
+        return (value == null ? null : toLongValue(
+            DateTime.newInstance(value.year(), value.month(), value.day(), 0, 0, 0)
+        ));
+    }
+
+    private static Long toLongValue(DateTime value) {
+        return (value == null ? null : value.getTime());
+    }
+
+    private static Decimal toDecimalValue(String value) {
+        return ((value == null || !value.isNumeric()) ? null : Decimal.valueOf(value));
+    }
+
+    private static Decimal toDecimalValue(Boolean value) {
+        return (value == null ? null : value ? 1 : 0);
+    }
+
+    private static Decimal toDecimalValue(Date value) {
+        return (value == null ? null : toDecimalValue(
+            DateTime.newInstance(value.year(), value.month(), value.day(), 0, 0, 0)
+        ));
+    }
+
+    private static Decimal toDecimalValue(DateTime value) {
+        return (value == null ? null : value.getTime());
+    }
+
+    private static String toStringValue(Date value) {
+        return (value == null ? null : String.valueOf(value));
+    }
+
+    private static String toStringValue(DateTime value) {
+        return (value == null ? null : String.valueOf(value));
+    }
+
+    private static String toStringValue(Object value) {
+        return (value == null ? null : String.valueOf(value));
+    }
+
+    private static Boolean toBooleanValue(Decimal value) {
+        return (value == null ? false : (value > 0));
+    }
+
+    private static Boolean toBooleanValue(String value) {
+        return (value == null ? false : Boolean.valueOf(value));
+    }
+
+    private static Boolean toBooleanValue(Date value) {
+        return (value == null ? false : true);
+    }
+
+    private static Boolean toBooleanValue(DateTime value) {
+        return (value == null ? false : true);
+    }
+
+    private static Date toDateValue(Decimal value) {
+        return (value == null ? null : DateTime.newInstance(value.longValue()).date());
+    }
+
+    private static Date toDateValue(String value) {
+        try {
+            return (value == null ? null : Date.valueOf(value));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static Date toDateValue(Boolean value) {
+        return null;
+    }
+
+    private static Date toDateValue(DateTime value) {
+        return (value == null ? null : value.date());
+    }
+
+    private static DateTime toDateTimeValue(Decimal value) {
+        return (value == null ? null : DateTime.newInstance(value.longValue()));
+    }
+
+    private static DateTime toDateTimeValue(String value) {
+        try {
+            return (value == null ? null : DateTime.valueOf(value));
+        } catch (Exception e) {
+            return toDateValue(value);
+        }
+    }
+
+    private static DateTime toDateTimeValue(Boolean value) {
+        return null;
+    }
+
+    private static DateTime toDateTimeValue(Date value) {
+        return (value == null ? null : DateTime.newInstance(value.year(), value.month(), value.day(), 0, 0, 0));
+    }
+
+    public class Request {
+        @InvocableVariable(
+            label = 'Parameter Name'
+            required = true
+        )
+        public String paramName;
+    }
+
+    public class Response {
+        @InvocableVariable(
+            label = 'Number'
+            description = 'Whole number (no decimals)'
+        )
+        public Long longValue;
+
+        @InvocableVariable(
+            label = 'Decimal'
+            description = 'Number that may include decimal places'
+        )
+        public Decimal decimalValue;
+
+        @InvocableVariable(
+            label = 'Text'
+            description = 'Text value'
+        )
+        public String stringValue;
+
+        @InvocableVariable(
+            label = 'Boolean'
+            description = 'true/false'
+        )
+        public Boolean booleanValue;
+
+        @InvocableVariable(
+            label = 'Date'
+        )
+        public Date dateValue;
+
+        @InvocableVariable(
+            label = 'Date/Time'
+        )
+        public DateTime dateTimeValue;
+
+        @InvocableVariable(
+            label = 'Number Collection'
+            description = 'Collection of whole numbers'
+        )
+        public Long[] longValues = new Long[] {};
+
+        @InvocableVariable(
+            label = 'Decimal Collection'
+            description = 'Collection of numbers that may include decimal places'
+        )
+        public Decimal[] decimalValues = new Decimal[] {};
+
+        @InvocableVariable(
+            label = 'Text Collection'
+            description = 'Collection of text values'
+        )
+        public String[] stringValues = new String[] {};
+
+        @InvocableVariable(
+            label = 'Boolean Collection'
+            description = 'Collection of true/false values'
+        )
+        public Boolean[] booleanValues = new Boolean[] {};
+
+        @InvocableVariable(
+            label = 'Date Collection'
+            description = 'Collection of date values'
+        )
+        public Date[] dateValues = new Date[] {};
+
+        @InvocableVariable(
+            label = 'Date/Time Collection'
+            description = 'Collection of date/time values'
+        )
+        public DateTime[] dateTimeValues = new DateTime[] {};
+    }
+}

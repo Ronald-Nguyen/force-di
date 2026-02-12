@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 
 REFACTORING = 'refactoring/coc_reduktion'
 PATH = 'force-di'
-ITERATIONS = 1
+ITERATIONS = 10
 GEMINI3 = 'gemini-3-pro-preview'
 GEMINI2 = 'gemini-2.5-flash'
 LLAMA = 'llama-3.3-70b-versatile'
@@ -133,7 +133,7 @@ def build_diff_between_backup_and_refactored(
 def get_project_structure(project_dir: Path) -> str:
     structure = []
     for root, dirs, files in os.walk(project_dir):
-        dirs[:] = [d for d in dirs if not d.startswith('.') and d not in {'__pycache__', 'tests', 'pathlib2.egg-info'}]
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d not in {'__pycache__', 'tests', 'pathlib2.egg-info', 'test'}]
         level = root.replace(str(project_dir), '').count(os.sep)
         indent = ' ' * 2 * level
         structure.append(f'{indent}{os.path.basename(root)}/')
@@ -146,7 +146,7 @@ def get_project_structure(project_dir: Path) -> str:
 def get_all_apex_files(project_dir: Path) -> str:
     code_block = ""
     for root, dirs, files in os.walk(project_dir):
-        dirs[:] = [d for d in dirs if not d.startswith('.') and d not in {'__pycache__', 'tests', 'pathlib2.egg-info'}]
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d not in {'__pycache__', 'tests', 'pathlib2.egg-info', 'test'}]
         for file in files:
             if "test" in file.lower():
                 continue

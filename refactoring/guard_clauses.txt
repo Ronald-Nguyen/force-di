@@ -1,0 +1,158 @@
+Task Description
+You are a strict code refactoring engine. You follow all rules exactly as written. Your task is to refactor an Apex project by applying the "Replace Nested Conditional with Guard Clauses" pattern to improve readability and reduce cognitive complexity.
+
+Please note:
+1. The code must still function perfectly after the refactoring.
+2. All imports, references, and method calls must be updated accordingly.
+3. The style, formatting, and structure of the code must be preserved.
+4. Do not introduce any new functionality, logic changes, or unrelated formatting changes.
+5. For every modified file, return the complete updated file content to ensure that no changes are overlooked.
+6. The semantics and behavior of the code must not change.
+7. Only include files that required changes.
+8. Respond with the code blocks only. Your entire response must be machine readable. Do not include any conversational filler.
+9. If you are unsure, do not guess. Only modify code when the change is certain.
+10. Every response must include meaningful modifications, improvements, or transformations. Returning the same code, even partially or with superficial edits, is strictly prohibited.
+11. Your final output must pass the existing test suite. If your changes would cause any test to fail, revise your refactor until all tests pass.
+
+Examples:
+
+Example 1:
+Original Code:
+File `OrderProcessor.cls`:
+```apex
+public class OrderProcessor {
+    public static Decimal processOrder(OrderWrapper order) {
+        if (order != null) {
+            if (order.isValid()) {
+                if (order.hasItems()) {
+                    return order.calculateTotal();
+                } else {
+                    return 0;
+                }
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public class OrderWrapper {
+        public Boolean isValid() { return true; }
+        public Boolean hasItems() { return true; }
+        public Decimal calculateTotal() { return 0; }
+    }
+}
+```
+
+Task Description:
+1. Analyze the provided codebase to identify methods containing deeply nested conditional logic, specifically if else blocks with a nesting depth greater than 2.
+2. Evaluate the complexity of these methods and select the two candidates with the highest cognitive complexity or deepest nesting.
+3. Refactor these two selected methods by applying the "Replace Nested Conditional with Guard Clauses" pattern. Invert conditional checks to handle edge cases, errors, or early exits immediately using return, continue, break, or throw. Flatten the remaining happy path logic to reduce indentation levels.
+
+Output:
+File `OrderProcessor.cls`:
+```apex
+public class OrderProcessor {
+    public static Decimal processOrder(OrderWrapper order) {
+        if (order == null) {
+            return null;
+        }
+        if (!order.isValid()) {
+            return null;
+        }
+        if (!order.hasItems()) {
+            return 0;
+        }
+        return order.calculateTotal();
+    }
+
+    public class OrderWrapper {
+        public Boolean isValid() { return true; }
+        public Boolean hasItems() { return true; }
+        public Decimal calculateTotal() { return 0; }
+    }
+}
+```
+
+Example 2:
+Original Code:
+File `UserProcessor.cls`:
+```apex
+public class UserProcessor {
+    public static List<String> processUsers(List<UserWrapper> users) {
+        List<String> activeEmails = new List<String>();
+        for (UserWrapper user : users) {
+            if (user.isActive) {
+                if (user.hasEmail) {
+                    if (!user.isBanned) {
+                        activeEmails.add(user.email);
+                    }
+                }
+            }
+        }
+        return activeEmails;
+    }
+
+    public class UserWrapper {
+        public Boolean isActive;
+        public Boolean hasEmail;
+        public Boolean isBanned;
+        public String email;
+    }
+}
+```
+
+Task Description:
+1. Analyze the provided codebase to identify methods containing deeply nested conditional logic, specifically if else blocks with a nesting depth greater than 2.
+2. Evaluate the complexity of these methods and select the two candidates with the highest cognitive complexity or deepest nesting.
+3. Refactor these two selected methods by applying the "Replace Nested Conditional with Guard Clauses" pattern. Invert conditional checks to handle edge cases, errors, or early exits immediately using return, continue, break, or throw. Flatten the remaining happy path logic to reduce indentation levels.
+
+Output:
+File `UserProcessor.cls`:
+```apex
+public class UserProcessor {
+    public static List<String> processUsers(List<UserWrapper> users) {
+        List<String> activeEmails = new List<String>();
+        for (UserWrapper user : users) {
+            // Guard Clause 1: Handle inactive users immediately
+            if (!user.isActive) {
+                continue;
+            }
+
+            // Guard Clause 2: Handle users without email immediately
+            if (!user.hasEmail) {
+                continue;
+            }
+
+            // Guard Clause 3: Handle banned users immediately
+            if (user.isBanned) {
+                continue;
+            }
+
+            // Happy Path: No indentation needed here
+            activeEmails.add(user.email);
+        }
+        return activeEmails;
+    }
+
+    public class UserWrapper {
+        public Boolean isActive;
+        public Boolean hasEmail;
+        public Boolean isBanned;
+        public String email;
+    }
+}
+```
+
+Task Description:
+1. Analyze the provided codebase to identify methods containing deeply nested conditional logic, specifically if else blocks with a nesting depth greater than 2.
+2. Evaluate the complexity of these methods and select the two candidates with the highest cognitive complexity or deepest nesting.
+3. Refactor these two selected methods by applying the "Replace Nested Conditional with Guard Clauses" pattern. Invert conditional checks to handle edge cases, errors, or early exits immediately using return, continue, break, or throw. Flatten the remaining happy path logic to reduce indentation levels.
+
+For EACH modified file, respond exactly in the following format:
+
+File `Filename.cls`:
+```apex
+[Complete updated file content]
+```

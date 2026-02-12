@@ -1,0 +1,109 @@
+Rename
+Task Description
+You are a strict code refactoring engine. You follow all rules exactly as written. Your task is to perform a refactoring change in an Apex project. A method needs to be renamed.
+The renaming must be applied consistently across the entire project by updating every instance where it is used.
+
+Please note:
+1. The code must still function perfectly after the refactoring.
+2. All imports, references, and method calls must be updated accordingly.
+3. The style, formatting, and structure of the code must be preserved.
+4. Do not introduce any new functionality, logic changes, or unrelated formatting changes.
+5. For every modified file, return the complete updated file content to ensure that no changes are overlooked.
+6. The semantics and behavior of the code must not change.
+7. Only include files that required changes.
+8. Respond with the code blocks only. Your entire response must be machine readable. Do not include any conversational filler.
+9. If you are unsure, do not guess. Only modify code when the change is certain.
+10. Every response must include meaningful modifications, improvements, or transformations. Returning the same code, even partially or with superficial edits, is strictly prohibited.
+11. Your final output must pass the existing test suite. If your changes would cause any test to fail, revise your refactor until all tests pass.
+
+Examples of renaming tasks:
+
+Example 1:
+Original Code:
+File `CalculateSum.cls`:
+```apex
+public class CalculateSum {
+    public static Integer calculateSum(Integer a, Integer b) {
+        return a + b;
+    }
+
+    public static void runExample() {
+        System.debug(calculateSum(2, 3));
+    }
+}
+```
+
+Task:
+1. Rename the method `calculateSum` in the file: `CalculateSum.cls` to `add`.
+2. Update every relevant occurrence across the entire project.
+3. Output format (for EACH modified file):
+
+File `CalculateSum.cls`:
+```apex
+public class CalculateSum {
+    public static Integer add(Integer a, Integer b) {
+        return a + b;
+    }
+
+    public static void runExample() {
+        System.debug(add(2, 3));
+    }
+}
+```
+
+Example 2:
+Original Code:
+File `FindMaximum.cls`:
+```apex
+public class FindMaximum {
+    public static Integer findMaximum(List<Integer> numbers) {
+        Integer maxVal = null;
+        for (Integer n : numbers) {
+            if (maxVal == null || n > maxVal) {
+                maxVal = n;
+            }
+        }
+        return maxVal;
+    }
+
+    public static void runExample() {
+        Integer result = findMaximum(new List<Integer>{1, 2, 3});
+        System.debug(result);
+    }
+}
+```
+
+Task:
+1. Rename the method `findMaximum` in the file: `FindMaximum.cls` to `getMax`.
+2. Update every relevant occurrence across the entire project.
+3. Output format (for EACH modified file):
+
+File `FindMaximum.cls`:
+```apex
+public class FindMaximum {
+    public static Integer getMax(List<Integer> numbers) {
+        Integer maxVal = null;
+        for (Integer n : numbers) {
+            if (maxVal == null || n > maxVal) {
+                maxVal = n;
+            }
+        }
+        return maxVal;
+    }
+
+    public static void runExample() {
+        Integer result = getMax(new List<Integer>{1, 2, 3});
+        System.debug(result);
+    }
+}
+```
+
+Your Task:
+1. Rename the method `hasSpec` in the file: `Hooks.cls` to `hasSpecification`
+2. Update every relevant occurrence across the entire project.
+3. For EACH modified file, respond exactly in the following format:
+
+File `Filename.cls`:
+```apex
+[Complete updated file content]
+```
