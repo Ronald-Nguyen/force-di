@@ -254,4 +254,142 @@ private class di_BindingTest {
             return new Bob((String) params);
         }
     }
+
+    @isTest
+    private static void givenBindingWhenCompareToSameThenReturnZero() {
+        // Given
+        di_Binding binding1 = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, null, Bob.class.getName(), null);
+        di_Binding binding2 = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, null, Bob.class.getName(), null);
+        // When
+        Integer result = binding1.compareTo(binding2);
+        // Then
+        System.assertEquals(0, result);
+    }
+
+    @isTest
+    private static void givenBindingWhenGetInstanceNoParamsThenGetInstance() {
+        // Given
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, null, Bob.class.getName(), null);
+        // When
+        Object result = binding.getInstance();
+        // Then
+        System.assert(result instanceof Bob);
+    }
+
+    @isTest
+    private static void givenBindingWhenToStringWithObjectThenReturnObjectName() {
+        // Given
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), Account.SObjectType, null, Bob.class.getName(), null);
+        // When
+        String result = binding.toString();
+        // Then
+        System.assertEquals('Account', result);
+    }
+
+    @isTest
+    private static void givenBindingWhenToStringWithoutObjectThenReturnDeveloperName() {
+        // Given
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, null, Bob.class.getName(), null);
+        // When
+        String result = binding.toString();
+        // Then
+        System.assertEquals(Bob.class.getName(), result);
+    }
+
+    @isTest
+    private static void givenBindingWhenGetBindingTypeAsStringThenReturnString() {
+        // Given
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, null, Bob.class.getName(), null);
+        // When
+        String result = binding.BindingTypeAsString;
+        // Then
+        System.assertEquals('Apex', result);
+    }
+
+    @isTest
+    private static void givenBindingWithDataWhenGetDataThenReturnData() {
+        // Given
+        String testData = 'testData';
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, null, Bob.class.getName(), testData);
+        // When
+        Object result = binding.Data;
+        // Then
+        System.assertEquals(testData, result);
+    }
+
+    @isTest
+    private static void givenBindingWithSequenceWhenGetSequenceThenReturnSequence() {
+        // Given
+        Integer testSequence = 5;
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, testSequence, Bob.class.getName(), null);
+        // When
+        Integer result = binding.BindingSequence;
+        // Then
+        System.assertEquals(testSequence, result);
+    }
+
+    @isTest
+    private static void givenBindingWithObjectWhenGetObjectThenReturnObject() {
+        // Given
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), Account.SObjectType, null, Bob.class.getName(), null);
+        // When
+        SObjectType result = binding.BindingObject;
+        // Then
+        System.assertEquals(Account.SObjectType, result);
+    }
+
+    @isTest
+    private static void givenBindingWithDeveloperNameWhenGetDeveloperNameThenReturnName() {
+        // Given
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, null, Bob.class.getName(), null);
+        // When
+        String result = binding.DeveloperName;
+        // Then
+        System.assertEquals(Bob.class.getName(), result);
+    }
+
+    @isTest
+    private static void givenBindingWhenSortEmptyListThenReturnEmptyList() {
+        // Given
+        List<di_Binding> bindings = new List<di_Binding>();
+        // When
+        bindings.sort();
+        // Then
+        System.assertEquals(0, bindings.size());
+    }
+
+    @isTest
+    private static void givenBindingWhenSortSingleItemThenReturnSameList() {
+        // Given
+        List<di_Binding> bindings = new List<di_Binding>();
+        di_Binding binding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            Bob.class.getName(), null, null, Bob.class.getName(), null);
+        bindings.add(binding);
+        // When
+        bindings.sort();
+        // Then
+        System.assertEquals(1, bindings.size());
+        System.assertEquals(binding, bindings[0]);
+    }
 }
