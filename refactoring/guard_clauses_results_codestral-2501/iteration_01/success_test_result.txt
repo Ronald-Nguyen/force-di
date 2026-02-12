@@ -1,0 +1,110 @@
+Iteration 1
+Timestamp: 2026-02-12T21:35:51.369096
+Success: True
+
+============================================================
+STDOUT:
+=== Test Results
+TEST NAME                                                                                           OUTCOME  MESSAGE  RUNTIME (MS)
+──────────────────────────────────────────────────────────────────────────────────────────────────  ───────  ───────  ────────────
+di_ModuleTest.givenBadBindingTypeThenGetModuleException                                             Pass              47          
+di_ModuleTest.givenBindingInModuleWhenSetTypeThenGetModule                                          Pass              8           
+di_ModuleTest.givenModuleWhenSettingValuesThenGet                                                   Pass              17          
+di_NamespaceClassTest.test_CURRENTNAMESPACE_matchesClassPrefix                                      Pass              37          
+di_BindingTest.givenApexBindingWhenGetInstanceThenInstance                                          Pass              22          
+di_BindingTest.givenApexBindingWhenGetInstanceWithParamThenInstanceWithParam                        Pass              20          
+di_BindingTest.givenApexBindingWhenGetNewInstanceThenNewInstance                                    Pass              6           
+di_BindingTest.givenApexBindingsWithDeveloperNamesWhenSortThenReturnSortedBindingsList              Pass              7           
+di_BindingTest.givenApexBindingsWithSequenceAndWithoutObjectWhenSortThenReturnSortedBindingsList    Pass              6           
+di_BindingTest.givenApexBindingsWithSequenceWhenSortThenReturnSortedBindingsList                    Pass              21          
+di_BindingTest.givenApexBindingsWithSobjectTypesWhenSortThenReturnSortedBindingsList                Pass              17          
+di_BindingTest.givenIncorrectApexBindingWhenGetInstanceThenThrowException                           Pass              6           
+di_BindingTest.shouldConvertBindingToStringWhenObjectIsEmptyAndSequenceIsProvided                   Pass              6           
+di_InjectorComponentControllerTest.givenApexPageComponentGetInjectorIsValid                         Pass              29          
+di_InjectorComponentControllerTest.givenFlowNameWhenGetInjectorFlowProxyInstanceThenMethodCall      Pass              33          
+di_InjectorComponentControllerTest.givenLightningComponentGetBindingId                              Pass              3           
+di_InjectorComponentControllerTest.givenWrongBindingNameValueWhenGetInjectThenThrowException        Pass              9           
+di_PlatformCacheTest.givenANewConfigSettingThenGetThatInstance                                      Pass              543         
+di_PlatformCacheTest.givenCacheMapAddedThenGetKeys                                                  Pass              5           
+di_PlatformCacheTest.givenCachedBindingsClearThenGetEmpty                                           Pass              31          
+di_PlatformCacheTest.givenDataInCachePartitionIsEnabledThenGetEmptyKeys                             Pass              24          
+di_PlatformCacheTest.givenDataInCachePartitionIsNotEnabledThenGetEmptyKeys                          Pass              18          
+di_PlatformCacheTest.givenDevNameAndSTypeThenGetHashAndKey                                          Pass              7           
+di_PlatformCacheTest.givenInvalidDeveloperNameThenGetEmptyKeys                                      Pass              20          
+di_PlatformCacheTest.givenInvalidSObjectTypeThenGetEmptyKeys                                        Pass              19          
+di_PlatformCacheTest.givenKeyIndexNameThenGetKey                                                    Pass              4           
+di_PlatformCacheTest.givenLogMethodThenGetKeys                                                      Pass              3           
+di_PlatformCacheTest.givenNoDataInCachePartitionThenGetEmptyKeys                                    Pass              22          
+di_PlatformCacheTest.givenNoPlatformCacheInstanceThenCreate                                         Pass              3           
+di_PlatformCacheTest.givenPartitionNameSetThenGetNonNull                                            Pass              18          
+di_PlatformCacheTest.givenPartitionTTLSetThenGetSeconds                                             Pass              3           
+di_PlatformCacheTest.givenPlatformCacheConfigThenCreate                                             Pass              5           
+di_PlatformCacheTest.givenReadOnlyAccessThenGetInstance                                             Pass              176         
+di_PlatformCacheTest.givenStoringBindingIsTrueThenGet                                               Pass              21          
+di_PlatformCacheTest.givenValidBindingThenAddBinding                                                Pass              6           
+di_PlatformCacheTest.givenValidSTypeAndNameThenHash                                                 Pass              5           
+di_PlatformCacheTest.givenValidTSTypeAndNameThenHash                                                Pass              4           
+di_InjectorTest.givenBindingsWithAlternateObjectNameThenBindingIsReturned                           Pass              55          
+di_InjectorTest.givenInjectorWithBindingsThenBindingIsReturned                                      Pass              4           
+di_InjectorTest.givenInstanceNameThenGetException                                                   Pass              2           
+di_InjectorTest.givenInstanceThenGetThatInstance                                                    Pass              15          
+di_InjectorTest.givenListOfModulesBindThenGetCount                                                  Pass              3           
+di_InjectorTest.givenNoBindingsGetInstanceShouldThrowException                                      Pass              3           
+di_InjectorTest.givenNullParamterInGetInstanceThenThrowException                                    Pass              4           
+di_InjectorTest.givenNullSTypeParamterInGetInstanceThenThrowException                               Pass              3           
+di_InjectorTest.test                                                                                Pass              12          
+di_InjectorTest.whenDeveloperNameIsEmptyThenGetInstanceShouldThrowException                         Pass              2           
+di_BindingConfigWrapperTest.givenBindingWrapperThenExtractAndValidate                               Pass              58          
+di_BindingConfigWrapperTest.givenBindingWrapperWithBindingNameExpectDeveloperNameEqualsBindingName  Pass              3           
+di_BindingConfigWrapperTest.givenBindingWrapperWithMDTThenExtractAndValidate                        Pass              2           
+di_InjectorCMPFlowProxyControllerTest.givenValueWhenGetInjectThenThrowException                     Pass              44          
+di_FlowTest.givenNullInputWhenObjectCreatedThenSetInitialized                                       Pass              40          
+di_FlowTest.givenStringValueWhenOutputThenStringAddedToSet                                          Pass              7           
+di_FlowTest.givenVariableNameWhenRequiredThenValueAddedToSet                                        Pass              7           
+di_InjectorControllerTest.givenStandardControllerWhenObjectCreatedThenConstructorCalled             Pass              42          
+di_BindingParamTest.givenBooleansWhenGetParameterThenGetValues                                      Pass              24          
+di_BindingParamTest.givenDateTimesWhenGetParameterThenGetValues                                     Pass              58          
+di_BindingParamTest.givenDatesWhenGetParameterThenGetValues                                         Pass              8           
+di_BindingParamTest.givenDecimalsWhenGetParameterThenGetValues                                      Pass              9           
+di_BindingParamTest.givenNullInputWhenGetParameterThenGetNullValue                                  Pass              6           
+di_BindingParamTest.givenStringsWhenGetParameterThenGetValues                                       Pass              10          
+di_BindingParamTest.givenUnknownKeyWhenGetParameterThenGetNullValue                                 Pass              6           
+
+
+=== Apex Code Coverage by Class
+CLASSES                                  PERCENT  UNCOVERED LINES    
+───────────────────────────────────────  ───────  ───────────────────
+di_Injector                              97%      110,127            
+di_Binding                               74%      92,93,95,96,109,...
+di_Module                                82%      38,39,40,44,45,... 
+di_NamespaceClass                        100%                        
+di_BindingParam                          100%                        
+di_BindingConfigWrapper                  100%                        
+di_InjectorComponentFlowProxyController  64%      26,27,28,29,31     
+di_InjectorComponentController           94%      13                 
+di_PlatformCache                         64%      47,51,53,58,73,... 
+di_Flow                                  50%      28,29,30,31,32,... 
+di_InjectorController                    100%                        
+
+
+
+
+=== Test Summary
+NAME                 VALUE                        
+───────────────────  ─────────────────────────────
+Outcome              Passed                       
+Tests Ran            62                           
+Pass Rate            100%                         
+Fail Rate            0%                           
+Skip Rate            0%                           
+Test Run Id          707Aw00001AsCuA              
+Test Setup Time      0 ms                         
+Test Execution Time  1658 ms                      
+Test Total Time      1658 ms                      
+Org Id               00DAw00000CHOrxMAH           
+Username             test-ygivbuoev3ia@example.com
+Org Wide Coverage    82%                          
+
+
+============================================================
+STDERR:

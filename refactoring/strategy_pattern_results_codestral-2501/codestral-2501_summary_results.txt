@@ -1,0 +1,2 @@
+iteration 1 failed test failed diff passed Tokens: prompt=12284, completion=3184, total=15468 PMD:ok CoCΔ(total=260, prod=260, test=0) REF:fail(strategy_pattern)
+Fertig. Erfolgsrate: 0.0% (0/1)

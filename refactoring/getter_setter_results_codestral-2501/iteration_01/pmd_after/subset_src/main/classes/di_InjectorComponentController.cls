@@ -1,0 +1,57 @@
+public with sharing class di_InjectorComponentController {
+
+    private String _bindingNameValue;
+    private String _bindingIdValue;
+    private Object _parametersValue;
+
+    public String getBindingNameValue() {
+        return _bindingNameValue;
+    }
+
+    public void setBindingNameValue(String value) {
+        _bindingNameValue = value;
+    }
+
+    public String getBindingIdValue() {
+        return _bindingIdValue;
+    }
+
+    public void setBindingIdValue(String value) {
+        _bindingIdValue = value;
+    }
+
+    public Object getParametersValue() {
+        return _parametersValue;
+    }
+
+    public void setParametersValue(Object value) {
+        _parametersValue = value;
+    }
+
+    public ApexPages.Component getInject() {
+        ApexPages.Component cmp = null;
+        di_Binding bindingInfo = getBinding(getBindingNameValue());
+        switch on bindingInfo.BindingType {
+            when Flow {
+                cmp = (ApexPages.Component) getInjectorFlowProxyInstance((String) bindingInfo.To, getParametersValue());
+            }
+            when else {
+                cmp = (ApexPages.Component) di_Injector.Org.getInstance(getBindingNameValue(), getParametersValue());
+            }
+        }
+        return cmp;
+    }
+
+    public static di_Binding getBinding(String bindingName) {
+        return di_Injector.Org.Bindings.byName(bindingName).get()[0];
+    }
+
+    @testVisible
+    private Object getInjectorFlowProxyInstance(String flowName, Object params) {
+        return new Component.di_injectorFlowProxy(
+            flowName = flowName,
+            inputVariables = params
+            );
+    }
+
+}

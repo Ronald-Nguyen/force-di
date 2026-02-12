@@ -1,0 +1,2 @@
+iteration 1 failed test failed diff passed Tokens: prompt=11537, completion=2223, total=13760 PMD:ok CoCΔ(total=5, prod=5, test=0) REF:fail(inline_variable)
+Fertig. Erfolgsrate: 0.0% (0/1)

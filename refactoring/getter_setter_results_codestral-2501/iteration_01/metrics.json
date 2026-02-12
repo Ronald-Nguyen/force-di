@@ -1,0 +1,113 @@
+{
+  "iteration": 1,
+  "timestamp": "2026-02-12T21:34:59.289547",
+  "refactoring": "refactoring/getter_setter",
+  "changed_files_scope": [
+    "main\\classes\\di_InjectorComponentController.cls"
+  ],
+  "test": {
+    "status": "failed",
+    "success": false,
+    "level": 0
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=11806, completion=369, total=12175",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-12T21:34:50.712613",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronal\\force-di\\force-di",
+      "subset_root": "C:\\Users\\ronal\\force-di\\refactoring\\getter_setter_results_codestral-2501\\iteration_01\\pmd_before\\subset_src",
+      "files": [
+        "main/classes/di_InjectorComponentController.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronal\\force-di\\refactoring\\getter_setter_results_codestral-2501\\iteration_01\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronal\\force-di\\refactoring\\getter_setter_results_codestral-2501\\iteration_01\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 1,
+        "loc": 39,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 1,
+        "loc": 39,
+        "count": 1
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-12T21:34:53.209329",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronal\\force-di\\force-di",
+      "subset_root": "C:\\Users\\ronal\\force-di\\refactoring\\getter_setter_results_codestral-2501\\iteration_01\\pmd_after\\subset_src",
+      "files": [
+        "main/classes/di_InjectorComponentController.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronal\\force-di\\refactoring\\getter_setter_results_codestral-2501\\iteration_01\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronal\\force-di\\refactoring\\getter_setter_results_codestral-2501\\iteration_01\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 1,
+        "loc": 57,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 1,
+        "loc": 57,
+        "count": 1
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": 0,
+      "loc": 18,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": 0,
+      "loc": 18,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "getter_setter",
+    "targets": {},
+    "ok": false,
+    "checks": {
+      "getter_setter": {
+        "passed": false,
+        "reason": "targets_not_parsed",
+        "targets": {}
+      }
+    }
+  }
+}

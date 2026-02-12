@@ -1,0 +1,44 @@
+Iteration 1
+Timestamp: 2026-02-12T21:36:06.815204
+Success: False
+
+============================================================
+STDOUT:
+───── Deploying Metadata ─────
+Stages:
+1. Preparing
+2. Waiting for the org to respond
+3. Deploying Metadata
+4. Running Tests
+5. Updating Source Tracking
+6. Done
+
+▶ Preparing…
+   Deploying v63.0 metadata to test-ygivbuoev3ia@example.com using the v65.0 SOAP API.
+   Deploy ID: 0AfAw00000MZnZ3KAL
+   Target Org: test-ygivbuoev3ia@example.com
+✔ Preparing (171ms)
+◯ Waiting for the org to respond - Skipped
+▶ Deploying Metadata…
+   Components: 0/2 (0%)
+✘ Deploying Metadata (578ms)
+
+Deploying v63.0 metadata to test-ygivbuoev3ia@example.com using the v65.0 SOAP API.
+Status: Failed
+Deploy ID: 0AfAw00000MZnZ3KAL
+Target Org: test-ygivbuoev3ia@example.com
+
+Elapsed time: 750ms
+
+[1m[31mComponent Failures [2][39m[22m
+ Type       Name              Problem                                              Line:Column 
+-----------------------------------------------------------------------------------------------
+ ApexClass  di_Binding        Unreachable statement (59:9)                         59:9        
+ ApexClass  di_PlatformCache  Dependent class is invalid and needs recompilation:  59:9        
+                              Class di_Binding : Unreachable statement (59:9)                  
+
+
+
+============================================================
+STDERR:
+DEPLOY FAILED (Level 0):

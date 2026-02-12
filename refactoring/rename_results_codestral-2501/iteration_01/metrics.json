@@ -1,0 +1,127 @@
+{
+  "iteration": 1,
+  "timestamp": "2026-02-12T21:36:41.848014",
+  "refactoring": "refactoring/rename",
+  "changed_files_scope": [
+    "main\\classes\\di_InjectorComponentController.cls"
+  ],
+  "test": {
+    "status": "failed",
+    "success": false,
+    "level": 1
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=11825, completion=265, total=12090",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-12T21:36:10.649516",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronal\\force-di\\force-di",
+      "subset_root": "C:\\Users\\ronal\\force-di\\refactoring\\rename_results_codestral-2501\\iteration_01\\pmd_before\\subset_src",
+      "files": [
+        "main/classes/di_InjectorComponentController.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronal\\force-di\\refactoring\\rename_results_codestral-2501\\iteration_01\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronal\\force-di\\refactoring\\rename_results_codestral-2501\\iteration_01\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 1,
+        "loc": 39,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 1,
+        "loc": 39,
+        "count": 1
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-12T21:36:12.931655",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronal\\force-di\\force-di",
+      "subset_root": "C:\\Users\\ronal\\force-di\\refactoring\\rename_results_codestral-2501\\iteration_01\\pmd_after\\subset_src",
+      "files": [
+        "main/classes/di_InjectorComponentController.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronal\\force-di\\refactoring\\rename_results_codestral-2501\\iteration_01\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronal\\force-di\\refactoring\\rename_results_codestral-2501\\iteration_01\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 1,
+        "loc": 34,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 1,
+        "loc": 34,
+        "count": 1
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": 0,
+      "loc": -5,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": 0,
+      "loc": -5,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "rename",
+    "targets": {
+      "old_method": "calculateSum",
+      "file": "CalculateSum.cls",
+      "new_method": "add"
+    },
+    "ok": true,
+    "checks": {
+      "rename": {
+        "passed": true,
+        "old_method": "calculateSum",
+        "new_method": "add",
+        "file_hint": "CalculateSum.cls",
+        "old_method_hits": [],
+        "new_method_hits": [
+          "main/classes/di_Binding.cls",
+          "main/classes/di_BindingParam.cls",
+          "main/classes/di_Flow.cls",
+          "main/classes/di_Injector.cls",
+          "main/classes/di_Module.cls",
+          "main/classes/di_PlatformCache.cls"
+        ]
+      }
+    }
+  }
+}

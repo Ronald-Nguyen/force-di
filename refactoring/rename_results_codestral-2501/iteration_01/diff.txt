@@ -1,0 +1,5 @@
+--- backup/main\classes\di_InjectorComponentController.cls
++++ refactored/main\classes\di_InjectorComponentController.cls
+@@ -5 +5 @@
+-publicApexPages.ComponentgetInject(){
++publicApexPages.ComponentgetInjectedComponent(){

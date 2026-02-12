@@ -1,0 +1,75 @@
+--- backup/main\classes\di_Binding.cls
++++ refactored/main\classes\di_Binding.cls
+@@ -102,26 +102,21 @@
+-BooleanisMatch=false;
+-if(String.isNotBlank(this.developerName)&&this.bindingObject!=null)
+-{
+-if((this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-&&this.bindingObject==bind.BindingObject)
+-{
+-isMatch=true;
+-}
+-}
+-else{
+-if(String.isNotBlank(this.developerName)
+-&&(this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-)
+-{
+-isMatch=true;
+-}
+-elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject)
+-{
+-isMatch=true;
+-}
+-}
+-returnisMatch;
++//GuardClause1:IfneitherdeveloperNamenorbindingObjectisspecified,it'snotamatch
++if(String.isBlank(this.developerName)&&this.bindingObject==null){
++returnfalse;
++}
++//GuardClause2:IfbothdeveloperNameandbindingObjectarespecified
++if(String.isNotBlank(this.developerName)&&this.bindingObject!=null){
++return(this.developerName.equalsIgnoreCase(bind.DeveloperName)
++||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))
++&&this.bindingObject==bind.BindingObject;
++}
++//GuardClause3:IfonlydeveloperNameisspecified
++if(String.isNotBlank(this.developerName)){
++returnthis.developerName.equalsIgnoreCase(bind.DeveloperName)
++||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName);
++}
++//GuardClause4:IfonlybindingObjectisspecified
++if(this.bindingObject!=null){
++returnbind.BindingObject==this.bindingObject;
++}
++//Defaultcase(shouldn'treachhereduetoguardclausesabove)
++returnfalse;
+
+--- backup/main\classes\di_PlatformCache.cls
++++ refactored/main\classes\di_PlatformCache.cls
+@@ -54,6 +54,9 @@
+-Booleanresult=false;
+-if(isStoringBindingInPlatformCache())
+-{
+-Cache.OrgPartitionorgPartition=getPartition();
+-if(orgPartition!=null)
+-{
++//GuardClause1:Checkifweshouldstorebindingsinplatformcache
++if(!isStoringBindingInPlatformCache()){
++returnfalse;
++}
++//GuardClause2:Getthepartition
++Cache.OrgPartitionorgPartition=getPartition();
++if(orgPartition==null){
++returnfalse;
++}
+@@ -77,4 +80 @@
+-result=true;
+-}
+-}
+-returnresult;
++returntrue;

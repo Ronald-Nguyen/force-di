@@ -12,9 +12,9 @@ import time
 import json
 import xml.etree.ElementTree as ET
 '''
-python refactoring.py
-python refactoring.py --all-refactorings
-python refactoring.py --refactoring rename
+python refactoring/refactoring.py
+python refactoring/refactoring.py --all-refactorings
+python refactoring/refactoring.py --refactoring rename
 '''
 
 
@@ -43,7 +43,7 @@ MODEL_MISTRAL = CODESTRAL
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 MISTRAL_API_KEY = os.environ.get('MISTRAL_API_KEY')
-LLM_API_KEY = GEMINI_API_KEY
+LLM_API_KEY = MISTRAL_API_KEY
 client = None
 MODEL = None
 
