@@ -143,7 +143,7 @@ public class Compute {
 }
 ```
 
-Task:
+Your Task:
 1. Refactor the following code to reduce cognitive complexity while preserving behavior.
 2. For EACH modified file, respond exactly in the following format:
 

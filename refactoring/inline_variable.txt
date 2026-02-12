@@ -70,7 +70,7 @@ public class UserUtil {
 ```
 
 Your Task:
-1. Inline the temporary variable `name` in the method projectName in the file Manager.cls.
+1. Inline the temporary variable `name` in the method projectName in the file `Manager.cls`.
 2. Update every relevant occurrence across the entire project.
 3. For EACH modified file, respond exactly in the following format:
 

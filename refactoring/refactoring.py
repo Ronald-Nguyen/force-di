@@ -68,6 +68,34 @@ PROMPT_TEMPLATE = Path(f"{REFACTORING}.txt").read_text(encoding='utf-8')
 RESULTS_DIR = Path(REFACTORING + "_results_" + MODEL)
 RESULTS_DIR.mkdir(exist_ok=True)
 
+
+def format_pmd_metrics_summary(pmd_before: dict, pmd_after: dict) -> str:
+    """
+    Returns a short, single-line summary for the global summary file.
+    Example: "PMD:ok CoCΔ(total=-3, prod=-3, test=0)"
+    """
+    if not pmd_before or not pmd_after:
+        return "PMD:n/a"
+
+    if not pmd_before.get("ok") or not pmd_after.get("ok"):
+        err_b = pmd_before.get("error")
+        err_a = pmd_after.get("error")
+        if err_b or err_a:
+            return "PMD:fail"
+        return "PMD:fail"
+
+    b = pmd_before.get("summary", {})
+    a = pmd_after.get("summary", {})
+
+    def _get(cat: str, key: str, src: dict) -> int:
+        return int((src.get(cat, {}).get(key, 0) or 0))
+
+    d_total = _get("total", "complexity", a) - _get("total", "complexity", b)
+    d_prod = _get("prod", "complexity", a) - _get("prod", "complexity", b)
+    d_test = _get("test", "complexity", a) - _get("test", "complexity", b)
+
+    return f"PMD:ok CoCΔ(total={d_total}, prod={d_prod}, test={d_test})"
+
 def _read_text_best_effort(path: Path) -> str:
     try:
         return path.read_text(encoding="utf-8")
@@ -635,7 +663,9 @@ def main():
             if iteration_status == "passed":
                 successful_iterations += 1
 
-            write_summary(f"iteration {i} {iteration_status} test {test_status} diff {diff_status} {token_info}\n")
+            pmd_summary = format_pmd_metrics_summary(metrics_before, metrics_after)
+            write_summary(f"iteration {i} {iteration_status} test {test_status} diff {diff_status} {token_info} {pmd_summary}\n")
+
 
             if test_result['success']:
                 print(" Tests bestanden.")

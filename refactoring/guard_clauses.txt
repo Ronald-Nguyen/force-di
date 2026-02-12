@@ -45,7 +45,7 @@ public class OrderProcessor {
 }
 ```
 
-Task Description:
+Task:
 1. Analyze the provided codebase to identify methods containing deeply nested conditional logic, specifically if else blocks with a nesting depth greater than 2.
 2. Evaluate the complexity of these methods and select the two candidates with the highest cognitive complexity or deepest nesting.
 3. Refactor these two selected methods by applying the "Replace Nested Conditional with Guard Clauses" pattern. Invert conditional checks to handle edge cases, errors, or early exits immediately using return, continue, break, or throw. Flatten the remaining happy path logic to reduce indentation levels.
@@ -103,7 +103,7 @@ public class UserProcessor {
 }
 ```
 
-Task Description:
+Task:
 1. Analyze the provided codebase to identify methods containing deeply nested conditional logic, specifically if else blocks with a nesting depth greater than 2.
 2. Evaluate the complexity of these methods and select the two candidates with the highest cognitive complexity or deepest nesting.
 3. Refactor these two selected methods by applying the "Replace Nested Conditional with Guard Clauses" pattern. Invert conditional checks to handle edge cases, errors, or early exits immediately using return, continue, break, or throw. Flatten the remaining happy path logic to reduce indentation levels.
@@ -145,7 +145,7 @@ public class UserProcessor {
 }
 ```
 
-Task Description:
+Your Task:
 1. Analyze the provided codebase to identify methods containing deeply nested conditional logic, specifically if else blocks with a nesting depth greater than 2.
 2. Evaluate the complexity of these methods and select the two candidates with the highest cognitive complexity or deepest nesting.
 3. Refactor these two selected methods by applying the "Replace Nested Conditional with Guard Clauses" pattern. Invert conditional checks to handle edge cases, errors, or early exits immediately using return, continue, break, or throw. Flatten the remaining happy path logic to reduce indentation levels.

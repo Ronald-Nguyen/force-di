@@ -115,7 +115,7 @@ BankAccount account = new BankAccount(1000);
 account.setBalance(500);
 ```
 
-Task:
+Your Task:
 1. Encapsulate the attribute `projectName` within the class `PluginManager` in the file `Manager.cls`.
 2. Replace all direct attribute accesses with getter and setter methods.
 3. Update all references both inside the class and from external calls.
