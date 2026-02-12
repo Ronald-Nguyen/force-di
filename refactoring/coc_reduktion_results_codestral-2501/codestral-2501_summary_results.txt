@@ -1,6 +1,0 @@
-
-Iteration 1 fehlgeschlagen. Tokens: prompt=11900, completion=10060, total=21960
-Iteration 2 erfolgreich. Tokens: prompt=11900, completion=11118, total=23018
-Iteration 3 fehlgeschlagen. Tokens: prompt=11900, completion=11115, total=23015
-Iteration 4 fehlgeschlagen. Tokens: prompt=11900, completion=9001, total=20901
-Fertig. Erfolgsrate: 10.0%
