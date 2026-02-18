@@ -253,6 +253,9 @@ public with sharing class di_PlatformCache
     @TestVisible
     private void addBindingToKeyIndex(di_Binding binding)
     {
+        if (binding == null) {
+            return;
+        }
         String workingDeveloperName = binding.developerName.toLowerCase().trim();
 
         if ( !getCacheKeyIndexMap().containsKey( workingDeveloperName ) )
@@ -273,6 +276,9 @@ public with sharing class di_PlatformCache
     @TestVisible
     private String constructKeyName( Schema.SObjectType bindingSObjectType, String developerName )
     {
+        if (String.isBlank(developerName)) {
+            return null;
+        }
         String key = ( ( bindingSObjectType != null ) ? bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__','') : '' )
                      + ( String.isBlank(developerName) ? '' : developerName.toLowerCase().trim() );
 

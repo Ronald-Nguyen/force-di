@@ -22,7 +22,7 @@ global with sharing class di_BindingConfigWrapper {
    
     global di_BindingConfigWrapper(di_Binding__mdt bindingConfig){
         this.QualifiedAPIName = bindingConfig.QualifiedApiName;
-        this.DeveloperName = bindingConfig.BindingName__c == null ? bindingConfig.DeveloperName : bindingConfig.BindingName__c;
+        this.DeveloperName = String.isBlank(bindingConfig.BindingName__c) ? bindingConfig.DeveloperName : bindingConfig.BindingName__c;
         this.NamespacePrefix = bindingConfig.NamespacePrefix;
         this.Type = bindingConfig.Type__c;
         this.To = bindingConfig.To__c;
