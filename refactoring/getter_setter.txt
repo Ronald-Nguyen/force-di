@@ -110,7 +110,7 @@ public class CalculationBalance {
 ```
 
 Your Task:
-1. Encapsulate the attributes `BindingNameValue` within the class `di_InjectorComponentController` in the file `di_InjectorComponentController.cls`.
+1. Encapsulate only the attribute `BindingNameValue` within the class `di_InjectorComponentController` in the file `di_InjectorComponentController.cls`.
 2. Replace all direct attribute accesses with getter and setter methods.
 3. Update all references both inside the class and from external calls.
 4. For EACH modified file, respond exactly in the following format:

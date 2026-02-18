@@ -20,10 +20,10 @@ python refactoring/refactoring.py --refactoring rename
 
 REFACTORINGS = [
     "coc_reduktion",
-   # "getter_setter",
+    "getter_setter",
     "guard_clauses",
     "inline_variable",
-   # "rename",
+    "rename",
     "strategy_pattern",
 ]
 REFACTORING_BASE_DIR = "refactoring"
@@ -31,7 +31,7 @@ DEFAULT_REFACTORING = "getter_setter" \
 ""
 
 PATH = 'force-di/main'
-ITERATIONS = 1
+ITERATIONS = 10
 GEMMA = 'gemma-3-27b-it'
 GEMINI3 = 'gemini-3-pro-preview'
 GEMINI2 = 'gemini-2.5-flash'
