@@ -182,7 +182,7 @@ private class di_ModuleTest {
         // Given
         di_Module module = new di_Module();
         // When
-        di_Module result = module.to('TestBindingTo');
+        di_Module result = module.bind('TestBinding').to('TestBindingTo');
         // Then
         system.assertEquals(module, result);
     }
