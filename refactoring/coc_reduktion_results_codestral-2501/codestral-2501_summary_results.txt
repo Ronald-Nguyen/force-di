@@ -1,2 +1,0 @@
-iteration 1 failed test failed diff passed Tokens: prompt=12068, completion=9244, total=21312 PMD:ok CoCΔ(total=-134, prod=-134, test=0) REF:ok
-Fertig. Erfolgsrate: 0.0% (0/1)

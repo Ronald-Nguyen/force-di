@@ -20,17 +20,19 @@ python refactoring/refactoring.py --refactoring rename
 
 REFACTORINGS = [
     "coc_reduktion",
-    "getter_setter",
+   # "getter_setter",
     "guard_clauses",
     "inline_variable",
-    "rename",
+   # "rename",
     "strategy_pattern",
 ]
 REFACTORING_BASE_DIR = "refactoring"
-DEFAULT_REFACTORING = "guard_clauses"
+DEFAULT_REFACTORING = "getter_setter" \
+""
 
-PATH = 'force-di'
+PATH = 'force-di/main'
 ITERATIONS = 1
+GEMMA = 'gemma-3-27b-it'
 GEMINI3 = 'gemini-3-pro-preview'
 GEMINI2 = 'gemini-2.5-flash'
 LLAMA = 'llama-3.3-70b-versatile'
@@ -43,7 +45,7 @@ MODEL_MISTRAL = CODESTRAL
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 MISTRAL_API_KEY = os.environ.get('MISTRAL_API_KEY')
-LLM_API_KEY = MISTRAL_API_KEY
+LLM_API_KEY = MISTRAL_API_KEY    
 client = None
 MODEL = None
 
@@ -83,6 +85,39 @@ parser.add_argument("--refactoring", type=str, default=DEFAULT_REFACTORING,
                     choices=REFACTORINGS,
                     help="Welches Refactoring ausgeführt werden soll (wenn --all-refactorings nicht gesetzt ist).")
 args = parser.parse_args()
+
+
+def _resolve_file_hint(project_root: Path, file_hint: str, changed_rel_paths: list[str]) -> str | None:
+    """
+    Resolves file_hint from prompt to a project-relative path.
+    Priority:
+    1) exact match in changed_rel_paths
+    2) basename match in changed_rel_paths
+    3) global scan for basename in project (first hit)
+    Returns normalized rel path with forward slashes, or None.
+    """
+    if not file_hint:
+        return None
+
+    hint = str(Path(file_hint)).replace("\\", "/")
+
+    # 1) exact match
+    for rel in changed_rel_paths:
+        if rel.replace("\\", "/") == hint:
+            return rel.replace("\\", "/")
+
+    # 2) basename match among changed files
+    hint_base = Path(hint).name.lower()
+    for rel in changed_rel_paths:
+        if Path(rel).name.lower() == hint_base:
+            return rel.replace("\\", "/")
+
+    # 3) global scan
+    for fp in _iter_apex_files(project_root):
+        if fp.name.lower() == hint_base:
+            return str(fp.relative_to(project_root)).replace("\\", "/")
+
+    return None
 
 
 def format_pmd_metrics_summary(pmd_before: dict, pmd_after: dict) -> str:
@@ -433,14 +468,16 @@ def mistral_generate(prompt: str) -> tuple[str, dict | None]:
     return res.choices[0].message.content, usage
 
 def _is_rate_limit_error(e: Exception) -> bool:
-    msg = str(e)
-    if "Status 429" in msg:
+    msg = str(e).lower()
+    if "status 429" in msg:
         return True
-    if "rate limit" in msg.lower():
+    if "rate limit" in msg:
         return True
     if '"type":"rate_limited"' in msg:
         return True
     if '"code":"1300"' in msg:
+        return True
+    if 'error' in msg:
         return True
     return False
 
@@ -722,6 +759,40 @@ def _max_if_nesting_apex(code: str) -> int:
             max_score = max(max_score, len(if_stack))
     return max_score
 
+
+def _count_guard_clauses_apex(code: str) -> int:
+    """
+    Heuristic count of 'guard clauses' in Apex: conditionals that lead to an early exit
+    (return/continue/break/throw) very shortly after the condition.
+
+    Counts patterns like:
+      - if (cond) return ...;
+      - if (cond) { return ...; }
+      - if (cond) continue;
+      - if (cond) throw ...;
+
+    Best-effort only (comments removed before scanning).
+    """
+    code_nc = _strip_apex_comments(code)
+    if not code_nc:
+        return 0
+
+    # Normalize whitespace to make the regex more stable.
+    s = re.sub(r"\s+", " ", code_nc)
+
+    # 1) Single-line guard: if (...) return|continue|break|throw
+    rx_inline = re.compile(r"\bif\s*\([^\)]*\)\s*(?:\{|)\s*(return|continue|break|throw)\b")
+    count = len(rx_inline.findall(s))
+
+    # 2) Braced blocks where early-exit occurs shortly after the if-condition.
+    #    We allow a small window of non-brace tokens before the exit keyword.
+    rx_block = re.compile(
+        r"\bif\s*\([^\)]*\)\s*\{[^\}]{0,200}?\b(return|continue|break|throw)\b"
+    )
+    count = max(count, 0) + len(rx_block.findall(s))
+
+    return count
+
 def _parse_prompt_targets(prompt_text: str, ref_type: str) -> dict:
     """
     Extracts task-specific targets from the prompt text using regex.
@@ -741,16 +812,17 @@ def _parse_prompt_targets(prompt_text: str, ref_type: str) -> dict:
 
     if ref_type == "inline_variable":
         m = re.search(
-            r"Inline the temporary variable\s+`([^`]+)`\s+in the method\s+([A-Za-z_]\w*)\s+in the file\s+`([^`]+)`",
+            r"Inline the temporary variable\s+`([^`]+)`\s+in the method\s+`?([A-Za-z_]\w*)`?\s+in the file\s+`?([^`\s]+)`?\s*\.?",
             t,
             flags=re.IGNORECASE
         )
         if m:
             return {"var": m.group(1), "method": m.group(2), "file": m.group(3)}
 
+
     if ref_type == "getter_setter":
         m = re.search(
-            r"Encapsulate the attribute\s+`([^`]+)`\s+within the class\s+`([^`]+)`\s+in the file\s+`([^`]+)`",
+            r"Encapsulate only the attribute\s+`([^`]+)`\s+within the class\s+`([^`]+)`\s+in the file\s+`([^`]+)`",
             t,
             flags=re.IGNORECASE
         )
@@ -801,14 +873,73 @@ def build_refactoring_check(
         old_m = targets.get("old_method")
         new_m = targets.get("new_method")
         file_hint = targets.get("file")
+
         if not old_m or not new_m:
             _record("rename", False, {"reason": "targets_not_parsed", "targets": targets})
         else:
-            # Stronger: scan whole project (comments stripped)
+            # 1) Resolve file hint to an actual relative path in the repo
+            resolved_file = None
+            if file_hint:
+                resolved_file = _resolve_file_hint(project_dir, file_hint, changed_rel_paths)
+
+            # 2) Scan project usage (calls)
             old_hits = _scan_project_for_regex(project_dir, r"\b" + re.escape(old_m) + r"\s*\(")
             new_hits = _scan_project_for_regex(project_dir, r"\b" + re.escape(new_m) + r"\s*\(")
 
-            passed = (len(old_hits) == 0) and (len(new_hits) > 0)
+            # 3) Verify declaration in resolved file (stronger than "somewhere in repo")
+            decl_old = None
+            decl_new = None
+            decl_file_used = None
+
+            if resolved_file:
+                decl_file_used = resolved_file
+                hinted_text = _strip_apex_comments(_read_project_file_text(project_dir, resolved_file))
+                if hinted_text:
+                    # Allow common Apex modifiers
+                    sig_old = re.compile(
+                        r"\b(?:public|private|protected|global)\s+"
+                        r"(?:static\s+)?"
+                        r"[\w<>\[\]]+\s+"
+                        + re.escape(old_m) + r"\s*\(",
+                        flags=re.IGNORECASE
+                    )
+                    sig_new = re.compile(
+                        r"\b(?:public|private|protected|global)\s+"
+                        r"(?:static\s+)?"
+                        r"[\w<>\[\]]+\s+"
+                        + re.escape(new_m) + r"\s*\(",
+                        flags=re.IGNORECASE
+                    )
+                    decl_old = sig_old.search(hinted_text) is not None
+                    decl_new = sig_new.search(hinted_text) is not None
+
+            # 4) Decide pass/fail
+            reasons: list[str] = []
+            passed = True
+
+            # Basic expectations
+            if len(old_hits) != 0:
+                passed = False
+                reasons.append("old_method_still_referenced")
+
+            # Strong requirement: declaration in the target file must be renamed
+            if resolved_file:
+                if decl_old is True:
+                    passed = False
+                    reasons.append("old_method_declaration_still_present_in_file")
+                if decl_new is not True:
+                    passed = False
+                    reasons.append("new_method_declaration_not_found_in_file")
+            else:
+                # If we cannot locate the file, don't guess -> fail
+                passed = False
+                reasons.append("file_hint_not_resolved")
+
+            # Optional sanity: new method appears at least once somewhere
+            if len(new_hits) == 0:
+                passed = False
+                reasons.append("new_method_never_referenced")
+
             _record(
                 "rename",
                 passed,
@@ -816,166 +947,339 @@ def build_refactoring_check(
                     "old_method": old_m,
                     "new_method": new_m,
                     "file_hint": file_hint,
+                    "resolved_file": decl_file_used,
+                    "decl_old_in_file": decl_old,
+                    "decl_new_in_file": decl_new,
                     "old_method_hits": old_hits[:25],
                     "new_method_hits": new_hits[:25],
+                    "reasons": reasons,
                 },
             )
+
 
     # ---- inline_variable ----
     if ref_type == "inline_variable":
         var_name = targets.get("var")
         method_name = targets.get("method")
-        file_path = targets.get("file")
-        if not var_name or not method_name or not file_path:
+        file_hint = targets.get("file")
+
+        if not var_name or not method_name or not file_hint:
             _record("inline_variable", False, {"reason": "targets_not_parsed", "targets": targets})
         else:
-            after_text = _read_project_file_text(project_dir, file_path)
-            before_text = _read_text_best_effort(backup_dir / Path(file_path))
+            resolved = _resolve_file_hint(project_dir, file_hint, changed_rel_paths)
+            if not resolved:
+                _record("inline_variable", False, {"reason": "file_not_found_in_project", "file_hint": file_hint})
+            else:
+                after_text = _read_project_file_text(project_dir, resolved)
+                before_text = _read_text_best_effort(backup_dir / Path(resolved))
 
-            after_nc = _strip_apex_comments(after_text)
-            before_nc = _strip_apex_comments(before_text)
+                after_nc = _strip_apex_comments(after_text)
+                before_nc = _strip_apex_comments(before_text)
 
-            # method exists
-            after_body = _extract_method_body_apex(after_nc, method_name)
-            before_body = _extract_method_body_apex(before_nc, method_name)
+                after_body = _extract_method_body_apex(after_nc, method_name)
+                before_body = _extract_method_body_apex(before_nc, method_name)
 
-            decl_rx = re.compile(r"\b\w+\s+" + re.escape(var_name) + r"\s*=")
-            return_rx = re.compile(r"\breturn\s+" + re.escape(var_name) + r"\s*;")
+                decl_rx = re.compile(r"\b\w+\s+" + re.escape(var_name) + r"\s*=")
+                return_rx = re.compile(r"\breturn\s+" + re.escape(var_name) + r"\s*;")
 
-            passed = True
-            reasons: list[str] = []
+                passed = True
+                reasons: list[str] = []
 
-            if before_body is None or after_body is None:
-                passed = False
-                reasons.append("method_not_found")
-
-            # After: declaration gone (or at least fewer)
-            if after_body is not None:
-                if decl_rx.search(after_body):
+                if before_body is None or after_body is None:
                     passed = False
-                    reasons.append("var_declaration_still_present")
-                if return_rx.search(after_body):
-                    passed = False
-                    reasons.append("return_var_still_present")
+                    reasons.append("method_not_found")
 
-            # Before should have had declaration (best-effort)
-            had_decl_before = bool(before_body and decl_rx.search(before_body))
-            _record(
-                "inline_variable",
-                passed,
-                {
-                    "file": file_path,
-                    "method": method_name,
-                    "var": var_name,
-                    "had_declaration_before": had_decl_before,
-                    "reasons": reasons,
-                },
-            )
+                if after_body is not None:
+                    if decl_rx.search(after_body):
+                        passed = False
+                        reasons.append("var_declaration_still_present")
+                    if return_rx.search(after_body):
+                        passed = False
+                        reasons.append("return_var_still_present")
+
+                had_decl_before = bool(before_body and decl_rx.search(before_body))
+                use_rx = re.compile(r"\b" + re.escape(var_name) + r"\b")
+                if after_body is not None and use_rx.search(after_body):
+                    passed = False
+                    reasons.append("var_usage_still_present")
+
+
+                _record(
+                    "inline_variable",
+                    passed,
+                    {
+                        "file": resolved,  # <-- wichtig
+                        "file_hint": file_hint,
+                        "method": method_name,
+                        "var": var_name,
+                        "had_declaration_before": had_decl_before,
+                        "reasons": reasons,
+                    },
+                )
+
 
     # ---- getter_setter ----
     if ref_type == "getter_setter":
         attr = targets.get("attr")
         cls = targets.get("class")
-        file_path = targets.get("file")
-        if not attr or not cls or not file_path:
+        file_hint = targets.get("file")
+
+        if not attr or not cls or not file_hint:
             _record("getter_setter", False, {"reason": "targets_not_parsed", "targets": targets})
         else:
-            after_text = _strip_apex_comments(_read_project_file_text(project_dir, file_path))
+            resolved = _resolve_file_hint(project_dir, file_hint, changed_rel_paths)
+            if not resolved:
+                _record("getter_setter", False, {"reason": "file_not_found_in_project", "file_hint": file_hint})
+            else:
+                after_text = _strip_apex_comments(_read_project_file_text(project_dir, resolved))
 
-            # Expect getters/setters like getProjectName/setProjectName based on attr
-            cap = attr[:1].upper() + attr[1:]
-            get_name = f"get{cap}"
-            set_name = f"set{cap}"
+                cap = attr[:1].upper() + attr[1:]
+                get_name = f"get{cap}"
+                set_name = f"set{cap}"
 
-            has_get = re.search(r"\b" + re.escape(get_name) + r"\s*\(", after_text) is not None
-            has_set = re.search(r"\b" + re.escape(set_name) + r"\s*\(", after_text) is not None
+                # getter signature examples:
+                # public String getName() { ... }
+                # global static Integer getFoo() { ... }
+                getter_rx = re.compile(
+                    r"\b(?:public|private|protected|global)\s+"
+                    r"(?:static\s+)?"
+                    r"[\w<>\[\]]+\s+"
+                    + re.escape(get_name) +
+                    r"\s*\(\s*\)",
+                    flags=re.IGNORECASE
+                )
+                # setter signature examples:
+                # public void setName(String v) { ... }
+                setter_rx = re.compile(
+                    r"\b(?:public|private|protected|global)\s+"
+                    r"(?:static\s+)?"
+                    r"void\s+"
+                    + re.escape(set_name) +
+                    r"\s*\(\s*[\w<>\[\]]+\s+\w+\s*\)",
+                    flags=re.IGNORECASE
+                )
 
-            # No public field 'public <type> projectName;'
-            public_field = re.search(r"\bpublic\s+\w+\s+" + re.escape(attr) + r"\s*;", after_text) is not None
+                has_get = getter_rx.search(after_text) is not None
+                has_set = setter_rx.search(after_text) is not None
 
-            # Heuristic: no remaining direct dot-access `.projectName` anywhere in project
-            direct_access_hits = _scan_project_for_regex(project_dir, r"\." + re.escape(attr) + r"\b")
+                # Public field patterns to avoid:
+                # public String name;
+                # public static final Integer name = 1;
+                public_field_rx = re.compile(
+                    r"\bpublic\s+(?:static\s+)?(?:final\s+)?[\w<>\[\]]+\s+"
+                    + re.escape(attr) +
+                    r"\b",
+                    flags=re.IGNORECASE
+                )
+                public_field = public_field_rx.search(after_text) is not None
 
-            passed = has_get and has_set and (not public_field) and (len(direct_access_hits) == 0)
-            _record(
-                "getter_setter",
-                passed,
-                {
-                    "file": file_path,
-                    "class": cls,
-                    "attr": attr,
-                    "expected_getter": get_name,
-                    "expected_setter": set_name,
-                    "has_getter": has_get,
-                    "has_setter": has_set,
-                    "public_field_still_present": public_field,
-                    "direct_access_hits": direct_access_hits[:25],
-                },
-            )
+                # Optional: encourage private field presence (common encapsulation)
+                private_field_rx = re.compile(
+                    r"\bprivate\s+(?:static\s+)?(?:final\s+)?[\w<>\[\]]+\s+"
+                    + re.escape(attr) +
+                    r"\b",
+                    flags=re.IGNORECASE
+                )
+                private_field_present = private_field_rx.search(after_text) is not None
+
+                # Soft-signal only (do NOT hard fail):
+                # `.name` can appear legitimately; we just record hits for analysis.
+                direct_access_hits = _scan_project_for_regex(project_dir, r"\." + re.escape(attr) + r"\b")
+
+                # Pass criteria: getter+setter exist AND no public field remains.
+                passed = has_get and has_set and (not public_field)
+
+                reasons = []
+                if not has_get:
+                    reasons.append("getter_not_found")
+                if not has_set:
+                    reasons.append("setter_not_found")
+                if public_field:
+                    reasons.append("public_field_still_present")
+
+                _record(
+                    "getter_setter",
+                    passed,
+                    {
+                        "file": resolved,
+                        "file_hint": file_hint,
+                        "class": cls,
+                        "attr": attr,
+                        "expected_getter": get_name,
+                        "expected_setter": set_name,
+                        "has_getter": has_get,
+                        "has_setter": has_set,
+                        "public_field_still_present": public_field,
+                        "private_field_present": private_field_present,
+                        "direct_access_hits_count": len(direct_access_hits),
+                        "direct_access_hits_sample": direct_access_hits[:25],
+                        "reasons": reasons,
+                        "note": "getter_setter_requires_methods_and_no_public_field; dot-access_is_soft_signal",
+                    },
+                )
+
+
 
     # ---- guard_clauses ----
     if ref_type == "guard_clauses":
-        # Evaluate nesting reduction on changed files, best-effort.
+        # Guard clauses are about EARLY EXITS (return/continue/break/throw) to reduce nesting.
+        # Nesting reduction is helpful but not required in all valid refactors (e.g., single-level `if` -> `if(!cond) return;`).
         improved_files: list[str] = []
         compared: list[dict] = []
+
+        total_guard_delta = 0
+        total_nesting_delta = 0
+
         for rel in changed_rel_paths:
             if not rel.lower().endswith(".cls"):
                 continue
-            before = _strip_apex_comments(_read_text_best_effort(backup_dir / Path(rel)))
-            after = _strip_apex_comments(_read_project_file_text(project_dir, rel))
-            b = _max_if_nesting_apex(before)
-            a = _max_if_nesting_apex(after)
-            compared.append({"file": rel, "before_max_if_nesting": b, "after_max_if_nesting": a})
-            if a < b:
+
+            before_src = _strip_apex_comments(_read_text_best_effort(backup_dir / Path(rel)))
+            after_src = _strip_apex_comments(_read_project_file_text(project_dir, rel))
+
+            b_nest = _max_if_nesting_apex(before_src)
+            a_nest = _max_if_nesting_apex(after_src)
+
+            b_guard = _count_guard_clauses_apex(before_src)
+            a_guard = _count_guard_clauses_apex(after_src)
+
+            nest_delta = a_nest - b_nest
+            guard_delta = a_guard - b_guard
+
+            total_guard_delta += guard_delta
+            total_nesting_delta += nest_delta
+
+            compared.append(
+                {
+                    "file": rel,
+                    "before_max_if_nesting": b_nest,
+                    "after_max_if_nesting": a_nest,
+                    "before_guard_clauses": b_guard,
+                    "after_guard_clauses": a_guard,
+                    "delta_max_if_nesting": nest_delta,
+                    "delta_guard_clauses": guard_delta,
+                }
+            )
+
+            # Consider a file "improved" if:
+            # - nesting decreases, OR
+            # - guard clauses (early exits) increase without increasing nesting a lot.
+            if (a_nest < b_nest) or (guard_delta > 0 and a_nest <= b_nest + 1):
                 improved_files.append(rel)
 
+        # Pass condition:
+        # - at least one changed file shows improvement per above heuristic.
+        # This avoids false negatives when guard clauses increase but nesting stays equal.
         passed = len(improved_files) > 0
+
         _record(
             "guard_clauses",
             passed,
             {
                 "improved_files": improved_files[:25],
                 "comparisons": compared[:25],
-                "note": "heuristic_if_nesting_reduction",
+                "totals": {
+                    "delta_guard_clauses": total_guard_delta,
+                    "delta_max_if_nesting": total_nesting_delta,
+                },
+                "note": "heuristic_early_exit_and_nesting",
             },
         )
 
     # ---- strategy_pattern ----
     if ref_type == "strategy_pattern":
         method_name = targets.get("method")
-        file_path = targets.get("file")
-        if not method_name or not file_path:
+        file_hint = targets.get("file")
+
+        if not method_name or not file_hint:
             _record("strategy_pattern", False, {"reason": "targets_not_parsed", "targets": targets})
         else:
-            before_text = _strip_apex_comments(_read_text_best_effort(backup_dir / Path(file_path)))
-            after_text = _strip_apex_comments(_read_project_file_text(project_dir, file_path))
+            resolved = _resolve_file_hint(project_dir, file_hint, changed_rel_paths)
+            if not resolved:
+                _record("strategy_pattern", False, {"reason": "file_not_found_in_project", "file_hint": file_hint})
+            else:
+                before_text = _strip_apex_comments(_read_text_best_effort(backup_dir / Path(resolved)))
+                after_text = _strip_apex_comments(_read_project_file_text(project_dir, resolved))
 
-            before_body = _extract_method_body_apex(before_text, method_name) or ""
-            after_body = _extract_method_body_apex(after_text, method_name) or ""
+                before_body = _extract_method_body_apex(before_text, method_name) or ""
+                after_body = _extract_method_body_apex(after_text, method_name) or ""
 
-            # Heuristics: fewer else-if in method body + presence of Map/containsKey and interface/class strategy declaration in file
-            before_else_if = len(re.findall(r"\belse\s+if\b", before_body))
-            after_else_if = len(re.findall(r"\belse\s+if\b", after_body))
+                before_else_if = len(re.findall(r"\belse\s+if\b", before_body))
+                after_else_if = len(re.findall(r"\belse\s+if\b", after_body))
 
-            has_map = re.search(r"\bMap<", after_text) is not None
-            has_contains = re.search(r"\bcontainsKey\s*\(", after_text) is not None
-            has_strategy_interface = re.search(r"\binterface\b", after_text) is not None or re.search(r"\bStrategy\b", after_text) is not None
+                # --- Strategy signals in FILE (interface + implementations) ---
+                # Prefer explicit interface name if present (IdFieldStrategy etc.)
+                iface_names = set(re.findall(r"\binterface\s+([A-Za-z_]\w*)\b", after_text))
+                # Fall back: any interface containing 'Strategy' in the name
+                iface_names |= {n for n in iface_names if "strategy" in n.lower()}
 
-            passed = (after_else_if < before_else_if) and has_map and has_contains and has_strategy_interface
-            _record(
-                "strategy_pattern",
-                passed,
-                {
-                    "file": file_path,
-                    "method": method_name,
-                    "else_if_before": before_else_if,
-                    "else_if_after": after_else_if,
-                    "has_map": has_map,
-                    "has_containsKey": has_contains,
-                    "has_interface_or_strategy": has_strategy_interface,
-                    "note": "heuristic_dispatch_rewrite",
-                },
-            )
+                has_any_interface = len(iface_names) > 0
+                has_strategy_named_interface = any("strategy" in n.lower() for n in iface_names)
+
+                implements_hits = []
+                for iface in iface_names:
+                    if re.search(r"\bclass\s+[A-Za-z_]\w*\s+implements\s+" + re.escape(iface) + r"\b", after_text):
+                        implements_hits.append(iface)
+                has_implementation = len(implements_hits) > 0
+
+                # --- Strategy usage in METHOD (delegation) ---
+                # Look for var.methodName(...) call
+                # (we don't know the strategy var name, so generic: "<ident>.<ident>(")
+                has_delegation_call = re.search(r"\b[A-Za-z_]\w*\s*\.\s*[A-Za-z_]\w*\s*\(", after_body) is not None
+
+                # --- Selection mechanism (either conditional new, or map dispatch) ---
+                has_map = re.search(r"\bMap\s*<", after_text) is not None
+                has_contains = re.search(r"\bcontainsKey\s*\(", after_text) is not None
+                uses_map_dispatch = has_map and has_contains
+
+                # conditional selection: assigns "new Something()" into some variable inside the method
+                # (common in valid strategy refactors)
+                has_new_assignment = re.search(r"=\s*new\s+[A-Za-z_]\w*\s*\(", after_body) is not None
+
+                # Strategy variant label (helps later analysis)
+                if uses_map_dispatch:
+                    variant = "map_dispatch"
+                elif has_new_assignment:
+                    variant = "conditional_selection"
+                else:
+                    variant = "unknown_selection"
+
+                # --- Pass criteria ---
+                # Minimum: interface + implementation + delegation
+                passed = has_any_interface and has_implementation and has_delegation_call
+
+                reasons = []
+                if not has_any_interface:
+                    reasons.append("no_interface_found")
+                if not has_implementation:
+                    reasons.append("no_implements_found")
+                if not has_delegation_call:
+                    reasons.append("no_delegation_call_in_method")
+                if variant == "unknown_selection":
+                    # don't hard-fail for this; just record it (some strategies are injected)
+                    reasons.append("no_obvious_selection_mechanism")
+
+                _record(
+                    "strategy_pattern",
+                    passed,
+                    {
+                        "file": resolved,
+                        "file_hint": file_hint,
+                        "method": method_name,
+                        "else_if_before": before_else_if,
+                        "else_if_after": after_else_if,
+                        "has_map": has_map,
+                        "has_containsKey": has_contains,
+                        "variant": variant,
+                        "interfaces_found": sorted(list(iface_names))[:10],
+                        "implements_interfaces": implements_hits[:10],
+                        "has_delegation_call": has_delegation_call,
+                        "has_new_assignment_in_method": has_new_assignment,
+                        "reasons": reasons,
+                        "note": "heuristic_strategy_interface_impl_delegation",
+                    },
+                )
+
 
     # ---- coc_reduktion ----
     if ref_type == "coc_reduktion":

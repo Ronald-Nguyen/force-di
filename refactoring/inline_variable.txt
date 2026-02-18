@@ -30,7 +30,7 @@ public class CalculateTotal {
 ```
 
 Task:
-1. Inline the temporary variable `subtotal` in the method calculateTotal in the file CalculateTotal.cls.
+1. Inline the temporary variable subtotal in the method calculateTotal in the file CalculateTotal.cls.
 2. Update every relevant occurrence across the entire project.
 3. Output format (for EACH modified file):
 
@@ -56,7 +56,7 @@ public class UserUtil {
 ```
 
 Task:
-1. Inline the temporary variable `name` in the method getUserName in the file UserUtil.cls.
+1. Inline the temporary variable name in the method getUserName in the file UserUtil.cls.
 2. Update every relevant occurrence across the entire project.
 3. Output format (for EACH modified file):
 
