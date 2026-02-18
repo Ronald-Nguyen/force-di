@@ -106,4 +106,79 @@ private with sharing class di_BindingConfigWrapperTest {
         system.assertEquals('BindingObjectAlternate', wrapper.BindingObjectAlternate, 'Expecting specific value of wrapper BindingObjectAlternate');
         system.assertEquals(10.10, wrapper.BindingSequence, 'Expecting specific value of wrapper BindingSequence');
     }
+
+    @isTest
+    static void givenBindingWrapperWithNullValuesThenExtractAndValidate(){
+        // Given
+        di_BindingConfigWrapper wrapper = new di_BindingConfigWrapper(
+            null, null, null, null, null, null, null, null, null);
+        // Then
+        system.assertEquals(null, wrapper.QualifiedAPIName);
+        system.assertEquals(null, wrapper.DeveloperName);
+        system.assertEquals(null, wrapper.NamespacePrefix);
+        system.assertEquals(null, wrapper.Type);
+        system.assertEquals(null, wrapper.To);
+        system.assertEquals(null, wrapper.BindingObject);
+        system.assertEquals(null, wrapper.BindingObjectQualifiedApiName);
+        system.assertEquals(null, wrapper.BindingObjectAlternate);
+        system.assertEquals(null, wrapper.BindingSequence);
+    }
+
+    @isTest
+    static void givenBindingWrapperWithZeroSequenceThenExtractAndValidate(){
+        // Given
+        di_BindingConfigWrapper wrapper = new di_BindingConfigWrapper(
+            'QualifiedAPIName', 'DeveloperName', 'NamespacePrefix', 
+            'Type', 'To', 'BindingObject', 'BindingObjectQualifiedApiName',
+            'BindingObjectAlternate', 0);
+        // Then
+        system.assertEquals(0, wrapper.BindingSequence);
+    }
+
+    @isTest
+    static void givenBindingWrapperWithMDTAndNullBindingNameThenDeveloperNameUsed(){
+        // Given
+        di_Binding__mdt bindingConfig = new di_Binding__mdt();
+        bindingConfig.QualifiedApiName='QualifiedAPIName';
+        bindingConfig.DeveloperName='DeveloperName';
+        bindingConfig.BindingName__c = null;
+        di_BindingConfigWrapper wrapper = new di_BindingConfigWrapper(bindingConfig);
+        // Then
+        system.assertEquals('DeveloperName', wrapper.DeveloperName);
+    }
+
+    @isTest
+    static void givenBindingWrapperWithMDTAndEmptyBindingNameThenDeveloperNameUsed(){
+        // Given
+        di_Binding__mdt bindingConfig = new di_Binding__mdt();
+        bindingConfig.QualifiedApiName='QualifiedAPIName';
+        bindingConfig.DeveloperName='DeveloperName';
+        bindingConfig.BindingName__c = '';
+        di_BindingConfigWrapper wrapper = new di_BindingConfigWrapper(bindingConfig);
+        // Then
+        system.assertEquals('DeveloperName', wrapper.DeveloperName);
+    }
+
+    @isTest
+    static void givenBindingWrapperWithMDTAndWhitespaceBindingNameThenDeveloperNameUsed(){
+        // Given
+        di_Binding__mdt bindingConfig = new di_Binding__mdt();
+        bindingConfig.QualifiedApiName='QualifiedAPIName';
+        bindingConfig.DeveloperName='DeveloperName';
+        bindingConfig.BindingName__c = '   ';
+        di_BindingConfigWrapper wrapper = new di_BindingConfigWrapper(bindingConfig);
+        // Then
+        system.assertEquals('DeveloperName', wrapper.DeveloperName);
+    }
+
+    @isTest
+    static void givenBindingWrapperWithNegativeSequenceThenExtractAndValidate(){
+        // Given
+        di_BindingConfigWrapper wrapper = new di_BindingConfigWrapper(
+            'QualifiedAPIName', 'DeveloperName', 'NamespacePrefix', 
+            'Type', 'To', 'BindingObject', 'BindingObjectQualifiedApiName',
+            'BindingObjectAlternate', -5.5);
+        // Then
+        system.assertEquals(-5.5, wrapper.BindingSequence);
+    }
 }

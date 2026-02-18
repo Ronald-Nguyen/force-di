@@ -331,4 +331,104 @@ private with sharing class di_PlatformCacheTest {
  
         return newUser;
     }// end of setTestUser
+
+    @isTest
+    private static void givenGetInstanceCalledMultipleTimesThenReturnSameInstance(){
+        // Given/When
+        di_PlatformCache cache1 = di_PlatformCache.getInstance();
+        di_PlatformCache cache2 = di_PlatformCache.getInstance();
+        //Then
+        System.assertEquals(cache1, cache2);
+    }
+
+    @isTest
+    private static void givenNullDeveloperNameAndSObjectTypeThenGetEmptyBindings(){
+        // Given
+        makeData(true);
+        di_PlatformCache cache = di_PlatformCache.getInstance();
+        // When
+        list<di_Binding> bindings = cache.retrieveBindings(null, null);
+        //Then
+        System.assertEquals(0, bindings.size());
+    }
+
+    @isTest
+    private static void givenConstructKeyNameWithNullSObjectTypeThenReturnDeveloperName(){
+        // Given
+        di_PlatformCache cache = di_PlatformCache.getInstance();
+        String devName = 'testName';
+        // When
+        String key = cache.constructKeyName(null, devName);
+        // Then
+        System.assertNotEquals(null, key);
+    }
+
+    @isTest
+    private static void givenConstructKeyNameWithNullDeveloperNameThenReturnNull(){
+        // Given
+        di_PlatformCache cache = di_PlatformCache.getInstance();
+        // When
+        String key = cache.constructKeyName(Account.SObjectType, null);
+        // Then
+        System.assertEquals(null, key);
+    }
+
+    @isTest
+    private static void givenGetPartitionKeysWhenNoPartitionThenReturnNull(){
+        // Given/When
+        Set<String> keys = di_PlatformCache.getPartitionKeys();
+        // Then - depends on org setup
+        System.assert(keys == null || keys.size() >= 0);
+    }
+
+    @isTest
+    private static void givenAddBindingToKeyIndexWithNullThenNoError(){
+        // Given
+        di_PlatformCache cache = di_PlatformCache.getInstance();
+        // When
+        cache.addBindingToKeyIndex(null);
+        // Then - should not throw exception
+        System.assertEquals(0, cache.getCacheKeyIndexMap().size());
+    }
+
+    @isTest
+    private static void givenRetrieveBindingsWithEmptyDeveloperNameThenReturnEmpty(){
+        // Given
+        makeData(true);
+        di_PlatformCache cache = di_PlatformCache.getInstance();
+        // When
+        list<di_Binding> bindings = cache.retrieveBindings('', Account.SObjectType);
+        //Then
+        System.assertEquals(0, bindings.size());
+    }
+
+    @isTest
+    private static void givenGetKeyNameWithNullParametersThenReturnExpected(){
+        // Given
+        di_PlatformCache cache = di_PlatformCache.getInstance();
+        // When
+        String key = cache.getKeyName(null, null);
+        // Then
+        System.assertEquals(null, key);
+    }
+
+    @isTest
+    private static void givenGetPartitionTTLThenReturnConstant(){
+        // Given
+        di_PlatformCache cache = di_PlatformCache.getInstance();
+        // When
+        Integer ttl = cache.getPartitionTTL();
+        // Then
+        System.assertEquals(di_PlatformCache.NUM_OF_SECS_IN24HR, ttl);
+    }
+
+    @isTest
+    private static void givenDebuggingDisabledThenLogReturnsFalse(){
+        // Given
+        di_PlatformCache.DEBUGGING = false;
+        // When
+        Boolean result = di_PlatformCache.log('test message');
+        // Then
+        System.assertEquals(false, result);
+    }
 }

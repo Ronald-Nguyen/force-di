@@ -479,4 +479,62 @@ private class di_BindingParamTest {
 
     }
 
+    @IsTest
+    private static void givenEmptyMapWhenGetParameterThenGetNullValue() {
+
+        Map<String, Object> inputs = new Map<String, Object>();
+
+        di_BindingParam.Request request;
+        di_BindingParam.Response response;
+
+        Test.startTest();
+
+        di_BindingParam.parameters = inputs;
+
+        request = new di_BindingParam.Request();
+        request.paramName = 'missingKey';
+
+        response = di_BindingParam.invoke( new di_BindingParam.Request[] { request } )[0];
+
+        System.assertEquals( null, response.longValue );
+        System.assertEquals( null, response.decimalValue );
+        System.assertEquals( null, response.stringValue );
+        System.assertEquals( null, response.booleanValue );
+
+        Test.stopTest();
+
+    }
+
+    @IsTest
+    private static void givenMultipleRequestsThenProcessAllRequests() {
+
+        Map<String, Object> inputs = new Map<String, Object>{
+            'number' => 42,
+            'text' => 'hello'
+        };
+
+        di_BindingParam.Request request1;
+        di_BindingParam.Request request2;
+        List<di_BindingParam.Response> responses;
+
+        Test.startTest();
+
+        di_BindingParam.parameters = inputs;
+
+        request1 = new di_BindingParam.Request();
+        request1.paramName = 'number';
+
+        request2 = new di_BindingParam.Request();
+        request2.paramName = 'text';
+
+        responses = di_BindingParam.invoke( new di_BindingParam.Request[] { request1, request2 } );
+
+        System.assertEquals( 2, responses.size() );
+        System.assertEquals( 42, responses[0].longValue );
+        System.assertEquals( 'hello', responses[1].stringValue );
+
+        Test.stopTest();
+
+    }
+
 }

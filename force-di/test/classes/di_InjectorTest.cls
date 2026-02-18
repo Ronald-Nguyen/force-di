@@ -242,4 +242,159 @@ private class di_InjectorTest {
         public void implementMe(){}
     }
 
+    @isTest
+    static void givenInjectorWithModuleThenBindingsAreAvailable(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Injector injector = new di_Injector(module);
+        // Then
+        system.assertNotEquals(null, injector.Bindings);
+    }
+
+    @isTest
+    static void givenInstanceByTypeWithParamsThenGetInstance(){
+        // Given
+        di_module module = new di_module();
+        di_Binding bobBinding = di_Binding.newInstance(
+            di_Binding.BindingType.Apex,
+            di_BindingTest.Bob.class.getName(), null, null,
+            di_BindingTest.ProviderImpl.class.getName(), null);
+        module.getBindings().add(bobBinding);
+        di_Injector injector = new di_Injector(module);
+        // When
+        Object result = injector.getInstance(di_BindingTest.Bob.class, 'TestParam');
+        // Then
+        system.assertEquals(true, result instanceof di_BindingTest.Bob);
+        system.assertEquals('TestParam', ((di_BindingTest.Bob) result).Name);
+    }
+
+    @isTest
+    static void givenInstanceByTypeAndSObjectThenGetInstance(){
+        // Given
+        di_Injector injector = di_Injector.Org;
+        di_Injector.mock_BindingConfigurationWrappersOuter = new List<di_BindingConfigWrapper> { 
+            new di_BindingConfigWrapper(
+                'testQualifiedApiName',
+                di_InjectorTest.InterfaceForTest.class.getName(), 
+                'testNamespacePrefix', 
+                'Apex',
+                di_InjectorTest.ClassForTest.class.getName(),
+                'Account',
+                'Account',
+                null,
+                1
+            )
+        };
+        // When
+        Object result = injector.getInstance(di_InjectorTest.InterfaceForTest.class, Account.SObjectType);
+        // Then
+        system.assert(result instanceof di_InjectorTest.ClassForTest);
+    }
+
+    @isTest
+    static void givenBindingWithNullObjectThenThrowException(){
+        // Given
+        di_Module module = new di_Module();
+        di_Injector injector = new di_Injector(module);
+        Boolean hasException = false;
+        // When
+        try {
+            injector.getInstance((String)null, Account.SObjectType, null);
+        } catch (di_Injector.InjectorException excp) {
+            hasException = true;
+        }
+        // Then
+        system.assertEquals(true, hasException);
+    }
+
+    @isTest
+    static void givenNoBindingsForSObjectTypeThenThrowException(){
+        // Given
+        di_Module module = new di_Module();
+        di_Injector injector = new di_Injector(module);
+        Boolean hasException = false;
+        // When
+        try {
+            injector.getInstance('TestBinding', Account.SObjectType, null);
+        } catch (di_Injector.InjectorException excp) {
+            hasException = true;
+        }
+        // Then
+        system.assertEquals(true, hasException);
+    }
+
+    @isTest
+    static void givenOrgInjectorThenGetStaticInstance(){
+        // Given & When
+        di_Injector injector = di_Injector.Org;
+        // Then
+        system.assertNotEquals(null, injector);
+        system.assertNotEquals(null, injector.Bindings);
+    }
+
+    @isTest
+    static void givenMultipleModulesThenCreateInjector(){
+        // Given
+        List<di_Module> modules = new List<di_Module> {
+            new di_Module(),
+            new di_Module()
+        };
+        // When
+        di_Injector injector = new di_Injector(modules);
+        // Then
+        system.assertNotEquals(null, injector);
+        system.assertNotEquals(null, injector.Bindings);
+    }
+
+    @isTest
+    static void givenTypeWithNullNameThenThrowException(){
+        // Given
+        di_Module module = new di_Module();
+        di_Injector injector = new di_Injector(module);
+        Type nullType = null;
+        Boolean hasException = false;
+        // When
+        try {
+            injector.getInstance(nullType);
+        } catch (Exception excp) {
+            hasException = true;
+        }
+        // Then
+        system.assertEquals(true, hasException);
+    }
+
+    @isTest
+    static void givenTypeWithNullNameAndParamsThenThrowException(){
+        // Given
+        di_Module module = new di_Module();
+        di_Injector injector = new di_Injector(module);
+        Type nullType = null;
+        Boolean hasException = false;
+        // When
+        try {
+            injector.getInstance(nullType, 'params');
+        } catch (Exception excp) {
+            hasException = true;
+        }
+        // Then
+        system.assertEquals(true, hasException);
+    }
+
+    @isTest
+    static void givenEmptyStringBindingNameThenThrowException(){
+        // Given
+        di_Module module = new di_Module();
+        di_Injector injector = new di_Injector(module);
+        Boolean hasException = false;
+        // When
+        try {
+            injector.getInstance('', null);
+        } catch (di_Injector.InjectorException excp) {
+            hasException = true;
+        }
+        // Then
+        system.assertEquals(true, hasException);
+    }
+
 }

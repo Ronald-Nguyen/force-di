@@ -86,4 +86,104 @@ private class di_ModuleTest {
         system.assertEquals('apex',(String)bindings[0].BindingTypeAsString.toLowerCase());
         system.assertEquals(1,bindings[0].bindingSequence);
     }
+
+    @isTest
+    static void givenModuleWhenApexTypeThenSetType(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.apex();
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenLightningComponentTypeThenSetType(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.lightningComponent();
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenVisualforceComponentTypeThenSetType(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.visualforceComponent();
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenFlowTypeThenSetType(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.flow();
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenModuleTypeThenSetType(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.module();
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenBindSObjectTypeThenReturnModule(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.bind(Account.SObjectType);
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenBindStringThenReturnModule(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.bind('TestBinding');
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenDataSetThenReturnModule(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.data('testData');
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenSequenceSetThenReturnModule(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.sequence(5);
+        // Then
+        system.assertEquals(module, result);
+    }
+
+    @isTest
+    static void givenModuleWhenToStringThenReturnModule(){
+        // Given
+        di_Module module = new di_Module();
+        // When
+        di_Module result = module.bind('TestBinding').to('TestBindingTo');
+        // Then
+        system.assertEquals(module, result);
+    }
 }
