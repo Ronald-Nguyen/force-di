@@ -1,0 +1,131 @@
+{
+  "iteration": 1,
+  "timestamp": "2026-02-24T18:56:32.742331",
+  "refactoring": "refactoring/coc_reduktion",
+  "changed_files_scope": [
+    "classes\\di_Binding.cls",
+    "classes\\di_BindingParam.cls",
+    "classes\\di_Injector.cls",
+    "classes\\di_InjectorComponentController.cls",
+    "classes\\di_InjectorComponentFlowProxyController.cls",
+    "classes\\di_Module.cls",
+    "classes\\di_PlatformCache.cls"
+  ],
+  "test": {
+    "status": "failed",
+    "success": false,
+    "level": 0
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=12075, completion=10389, total=22464",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T18:56:24.437055",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_01\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_Binding.cls",
+        "classes/di_BindingParam.cls",
+        "classes/di_Injector.cls",
+        "classes/di_InjectorComponentController.cls",
+        "classes/di_InjectorComponentFlowProxyController.cls",
+        "classes/di_Module.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_01\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_01\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 833,
+        "loc": 1504,
+        "count": 7
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 833,
+        "loc": 1504,
+        "count": 7
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T18:56:26.857765",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_01\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_Binding.cls",
+        "classes/di_BindingParam.cls",
+        "classes/di_Injector.cls",
+        "classes/di_InjectorComponentController.cls",
+        "classes/di_InjectorComponentFlowProxyController.cls",
+        "classes/di_Module.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_01\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_01\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 648,
+        "loc": 1456,
+        "count": 7
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 648,
+        "loc": 1456,
+        "count": 7
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": -185,
+      "loc": -48,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": -185,
+      "loc": -48,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "coc_reduktion",
+    "targets": {},
+    "ok": true,
+    "checks": {
+      "coc_reduktion": {
+        "passed": true,
+        "pmd_delta_total_complexity": -185,
+        "rule": "delta<=0"
+      }
+    }
+  }
+}

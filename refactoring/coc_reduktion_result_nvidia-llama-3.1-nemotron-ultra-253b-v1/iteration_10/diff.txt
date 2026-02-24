@@ -1,0 +1,1027 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -3,14 +3,7 @@
+-@AuraEnabled
+-publicStringBindingTypeAsString{get{returnBindingType.name();}}
+-@AuraEnabled
+-publicStringNamespacePrefix{get;privateset;}
+-@AuraEnabled
+-publicStringDeveloperName{get;privateset;}
+-@AuraEnabled
+-publicSObjectTypeBindingObject{get;privateset;}
+-@AuraEnabled
+-publicIntegerBindingSequence{get;privateset;}
+-@AuraEnabled
+-publicObjectTo{get;privateset;}
+-@AuraEnabled
+-publicObjectData{get;privateset;}
++@AuraEnabledpublicStringBindingTypeAsString{get{returnBindingType.name();}}
++@AuraEnabledpublicStringNamespacePrefix{get;privateset;}
++@AuraEnabledpublicStringDeveloperName{get;privateset;}
++@AuraEnabledpublicSObjectTypeBindingObject{get;privateset;}
++@AuraEnabledpublicIntegerBindingSequence{get;privateset;}
++@AuraEnabledpublicObjectTo{get;privateset;}
++@AuraEnabledpublicObjectData{get;privateset;}
+@@ -28 +21 @@
+-}elseif(newInstance==true){
++}elseif(newInstance){
+@@ -41,2 +34 @@
+-StringhashValue=
+-(BindingObject!=null)?
++StringhashValue=(BindingObject!=null)?
+@@ -85,2 +77 @@
+-publicResolverreplaceBindingWith(ObjectmockType)
+-{
++publicResolverreplaceBindingWith(ObjectmockType){
+@@ -88,5 +79,10 @@
+-for(IntegercurrentBindingsIndex=0;currentBindingsIndex<this.bindings.size();currentBindingsIndex++)
+-{
+-if(isBindingMatchByFilteringCriteria(this.bindings[currentBindingsIndex]))
+-{
+-this.bindings[currentBindingsIndex]=di_Binding.newInstance(di_Binding.BindingType.Apex,this.developerName,this.bindingObject,null,mockType,null);
++for(IntegercurrentBindingsIndex=0;currentBindingsIndex<this.bindings.size();currentBindingsIndex++){
++if(isBindingMatchByFilteringCriteria(this.bindings[currentBindingsIndex])){
++this.bindings[currentBindingsIndex]=di_Binding.newInstance(
++di_Binding.BindingType.Apex,
++this.developerName,
++this.bindingObject,
++null,
++mockType,
++null
++);
+@@ -100,2 +96 @@
+-privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind)
+-{
++privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind){
+@@ -103,7 +98,4 @@
+-if(String.isNotBlank(this.developerName)&&this.bindingObject!=null)
+-{
+-if((this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-&&this.bindingObject==bind.BindingObject)
+-{
++if(String.isNotBlank(this.developerName)&&this.bindingObject!=null){
++if((this.developerName.equalsIgnoreCase(bind.DeveloperName)||
++this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))&&
++this.bindingObject==bind.BindingObject){
+@@ -112,8 +104,4 @@
+-}
+-else{
+-if(String.isNotBlank(this.developerName)
+-&&(this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-)
+-{
++}else{
++if(String.isNotBlank(this.developerName)&&
++(this.developerName.equalsIgnoreCase(bind.DeveloperName)||
++this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))){
+@@ -121,3 +109 @@
+-}
+-elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject)
+-{
++}elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject){
+@@ -129,4 +115,2 @@
+-privatevoidloadBindings()
+-{
+-if(this.bindings==null)
+-{
++privatevoidloadBindings(){
++if(this.bindings==null){
+@@ -134,2 +118 @@
+-for(di_Modulemodule:modules)
+-{
++for(di_Modulemodule:modules){
+@@ -149,7 +132,4 @@
+-publicList<di_Binding>get()
+-{
+-list<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
+-if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())
+-||!di_PlatformCache.isStoringBindingInPlatformCache()
+-)
+-{
++publicList<di_Binding>get(){
++List<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
++if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())||
++!di_PlatformCache.isStoringBindingInPlatformCache()){
+@@ -157,4 +137,2 @@
+-for(di_Bindingbind:bindings)
+-{
+-if(isBindingMatchByFilteringCriteria(bind))
+-{
++for(di_Bindingbind:bindings){
++if(isBindingMatchByFilteringCriteria(bind)){
+@@ -180,2 +158,2 @@
+-ObjectbindingData)
+-{
++ObjectbindingData
++){
+@@ -195,2 +173 @@
+-privatestaticfinalMap<BindingType,Type>BINDING_IMPLS_BY_TYPE=
+-newMap<BindingType,Type>{
++privatestaticfinalMap<BindingType,Type>BINDING_IMPLS_BY_TYPE=newMap<BindingType,Type>{
+@@ -203,6 +180,3 @@
+-privateclassApexBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassApexBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -210,3 +184,2 @@
+-TypetoType=NameSpacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
+-if(toType==null)
+-{
++TypetoType=NamespacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
++if(toType==null){
+@@ -217,2 +190 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -220,3 +192 @@
+-}
+-elseif(params!=null)
+-{
++}elseif(params!=null){
+@@ -230,6 +200,3 @@
+-privateclassVisualForceComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassVisualForceComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -238,2 +205 @@
+-if(toType==null)
+-{
++if(toType==null){
+@@ -244,2 +210 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -253,13 +218,8 @@
+-privateclassLightningComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-returnTo;
+-}
+-}
+-privateclassFlowBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassLightningComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++returnTo;
++}
++}
++privateclassFlowBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -267,2 +227 @@
+-if(paramsinstanceofMap<String,Object>)
+-{
++if(paramsinstanceofMap<String,Object>){
+
+--- backup/classes\di_BindingConfigWrapper.cls
++++ refactored/classes\di_BindingConfigWrapper.cls
+@@ -2,9 +2,11 @@
+-globaldi_BindingConfigWrapper(StringqualifiedAPIName
+-,StringdeveloperName
+-,StringnamespacePrefix
+-,Stringtype
+-,Stringto
+-,StringbindingObject
+-,StringbindingObjectQualifiedApiName
+-,StringbindingObjectAlternate
+-,DecimalbindingSequence){
++globaldi_BindingConfigWrapper(
++StringqualifiedAPIName,
++StringdeveloperName,
++StringnamespacePrefix,
++Stringtype,
++Stringto,
++StringbindingObject,
++StringbindingObjectQualifiedApiName,
++StringbindingObjectAlternate,
++DecimalbindingSequence
++){
+
+--- backup/classes\di_BindingParam.cls
++++ refactored/classes\di_BindingParam.cls
+@@ -3,3 +3 @@
+-@InvocableMethod(
+-label='GetValue'
+-)
++@InvocableMethod(label='GetValue')
+@@ -13,103 +11 @@
+-if(valueinstanceofDecimal){
+-DecimaldecimalValue=(Decimal)value;
+-res.longValue=toLongValue(decimalValue);
+-res.decimalValue=decimalValue;
+-res.stringValue=toStringValue(decimalValue);
+-res.booleanValue=toBooleanValue(decimalValue);
+-res.dateValue=toDateValue(decimalValue);
+-res.dateTimeValue=toDateTimeValue(decimalValue);
+-}elseif(valueinstanceofDecimal[]){
+-Decimal[]decimalValues=(Decimal[])value;
+-res.decimalValues=decimalValues;
+-for(DecimaldecimalValue:decimalValues){
+-res.longValues.add(toLongValue(decimalValue));
+-res.stringValues.add(toStringValue(decimalValue));
+-res.booleanValues.add(toBooleanValue(decimalValue));
+-res.dateValues.add(toDateValue(decimalValue));
+-res.dateTimeValues.add(toDateTimeValue(decimalValue));
+-}
+-}elseif(valueinstanceofString){
+-StringstringValue=(String)value;
+-res.longValue=toLongValue(stringValue);
+-res.decimalValue=toDecimalValue(stringValue);
+-res.stringValue=stringValue;
+-res.booleanValue=toBooleanValue(stringValue);
+-res.dateValue=toDateValue(stringValue);
+-res.dateTimeValue=toDateTimeValue(stringValue);
+-}elseif(valueinstanceofString[]){
+-String[]stringValues=(String[])value;
+-res.stringValues=stringValues;
+-for(StringstringValue:stringValues){
+-res.longValues.add(toLongValue(stringValue));
+-res.decimalValues.add(toDecimalValue(stringValue));
+-res.booleanValues.add(toBooleanValue(stringValue));
+-res.dateValues.add(toDateValue(stringValue));
+-res.dateTimeValues.add(toDateTimeValue(stringValue));
+-}
+-}elseif(valueinstanceofBoolean){
+-BooleanbooleanValue=(Boolean)value;
+-res.longValue=toLongValue(booleanValue);
+-res.decimalValue=toDecimalValue(booleanValue);
+-res.stringValue=toStringValue(booleanValue);
+-res.booleanValue=booleanValue;
+-res.dateValue=toDateValue(booleanValue);
+-res.dateTimeValue=toDateTimeValue(booleanValue);
+-}elseif(valueinstanceofBoolean[]){
+-Boolean[]booleanValues=(Boolean[])value;
+-res.booleanValues=booleanValues;
+-for(BooleanbooleanValue:booleanValues){
+-res.longValues.add(toLongValue(booleanValue));
+-res.decimalValues.add(toDecimalValue(booleanValue));
+-res.stringValues.add(toStringValue(booleanValue));
+-res.dateValues.add(toDateValue(booleanValue));
+-res.dateTimeValues.add(toDateTimeValue(booleanValue));
+-}
+-}elseif(valueinstanceofDate){
+-DatedateValue=(Date)value;
+-res.longValue=toLongValue(dateValue);
+-res.decimalValue=toDecimalValue(dateValue);
+-res.stringValue=toStringValue(dateValue);
+-res.booleanValue=toBooleanValue(dateValue);
+-res.dateValue=dateValue;
+-res.dateTimeValue=toDateTimeValue(dateValue);
+-}elseif(valueinstanceofDate[]){
+-Date[]dateValues=(Date[])value;
+-res.dateValues=dateValues;
+-for(DatedateValue:dateValues){
+-res.longValues.add(toLongValue(dateValue));
+-res.decimalValues.add(toDecimalValue(dateValue));
+-res.stringValues.add(toStringValue(dateValue));
+-res.booleanValues.add(toBooleanValue(dateValue));
+-res.dateTimeValues.add(toDateTimeValue(dateValue));
+-}
+-}elseif(valueinstanceofDateTime){
+-DateTimedateTimeValue=(DateTime)value;
+-res.longValue=toLongValue(dateTimeValue);
+-res.decimalValue=toDecimalValue(dateTimeValue);
+-res.stringValue=toStringValue(dateTimeValue);
+-res.booleanValue=toBooleanValue(dateTimeValue);
+-res.dateValue=toDateValue(dateTimeValue);
+-res.dateTimeValue=dateTimeValue;
+-}elseif(valueinstanceofDateTime[]){
+-DateTime[]dateTimeValues=(DateTime[])value;
+-res.dateTimeValues=dateTimeValues;
+-for(DateTimedateTimeValue:dateTimeValues){
+-res.longValues.add(toLongValue(dateTimeValue));
+-res.decimalValues.add(toDecimalValue(dateTimeValue));
+-res.stringValues.add(toStringValue(dateTimeValue));
+-res.booleanValues.add(toBooleanValue(dateTimeValue));
+-res.dateValues.add(toDateValue(dateTimeValue));
+-}
+-}
+-if(res.longValue==null&&!res.longValues.isEmpty()){res.longValue=res.longValues[0];}
+-if(res.decimalValue==null&&!res.decimalValues.isEmpty()){res.decimalValue=res.decimalValues[0];}
+-if(res.stringValue==null&&!res.stringValues.isEmpty()){res.stringValue=res.stringValues[0];}
+-if(res.booleanValue==null&&!res.booleanValues.isEmpty()){res.booleanValue=res.booleanValues[0];}
+-if(res.dateValue==null&&!res.dateValues.isEmpty()){res.dateValue=res.dateValues[0];}
+-if(res.dateTimeValue==null&&!res.dateTimeValues.isEmpty()){res.dateTimeValue=res.dateTimeValues[0];}
+-if(res.longValue!=null&&res.longValues.isEmpty()){res.longValues.add(res.longValue);}
+-if(res.decimalValue!=null&&res.decimalValues.isEmpty()){res.decimalValues.add(res.decimalValue);}
+-if(res.stringValue!=null&&res.stringValues.isEmpty()){res.stringValues.add(res.stringValue);}
+-if(res.booleanValue!=null&&res.booleanValues.isEmpty()){res.booleanValues.add(res.booleanValue);}
+-if(res.dateValue!=null&&res.dateValues.isEmpty()){res.dateValues.add(res.dateValue);}
+-if(res.dateTimeValue!=null&&res.dateTimeValues.isEmpty()){res.dateTimeValues.add(res.dateTimeValue);}
++processValue(res,value);
+@@ -122,2 +17,0 @@
+-System.debug('paramName='+req);
+-System.debug(res);
+@@ -128,56 +22,162 @@
+-privatestaticLongtoLongValue(Decimalvalue){
+-return(value==null?null:value.longValue());
+-}
+-privatestaticLongtoLongValue(Stringvalue){
+-return((value==null||!value.isNumeric())?null:Long.valueOf(value));
+-}
+-privatestaticLongtoLongValue(Booleanvalue){
+-return(value==null?null:value?1:0);
+-}
+-privatestaticLongtoLongValue(Datevalue){
+-return(value==null?null:toLongValue(
+-DateTime.newInstance(value.year(),value.month(),value.day(),0,0,0)
+-));
+-}
+-privatestaticLongtoLongValue(DateTimevalue){
+-return(value==null?null:value.getTime());
+-}
+-privatestaticDecimaltoDecimalValue(Stringvalue){
+-return((value==null||!value.isNumeric())?null:Decimal.valueOf(value));
+-}
+-privatestaticDecimaltoDecimalValue(Booleanvalue){
+-return(value==null?null:value?1:0);
+-}
+-privatestaticDecimaltoDecimalValue(Datevalue){
+-return(value==null?null:toDecimalValue(
+-DateTime.newInstance(value.year(),value.month(),value.day(),0,0,0)
+-));
+-}
+-privatestaticDecimaltoDecimalValue(DateTimevalue){
+-return(value==null?null:value.getTime());
+-}
+-privatestaticStringtoStringValue(Datevalue){
+-return(value==null?null:String.valueOf(value));
+-}
+-privatestaticStringtoStringValue(DateTimevalue){
+-return(value==null?null:String.valueOf(value));
+-}
+-privatestaticStringtoStringValue(Objectvalue){
+-return(value==null?null:String.valueOf(value));
+-}
+-privatestaticBooleantoBooleanValue(Decimalvalue){
+-return(value==null?false:(value>0));
+-}
+-privatestaticBooleantoBooleanValue(Stringvalue){
+-return(value==null?false:Boolean.valueOf(value));
+-}
+-privatestaticBooleantoBooleanValue(Datevalue){
+-return(value==null?false:true);
+-}
+-privatestaticBooleantoBooleanValue(DateTimevalue){
+-return(value==null?false:true);
+-}
+-privatestaticDatetoDateValue(Decimalvalue){
+-return(value==null?null:DateTime.newInstance(value.longValue()).date());
+-}
+-privatestaticDatetoDateValue(Stringvalue){
++privatestaticvoidprocessValue(Responseres,Objectvalue){
++if(valueinstanceofDecimal){
++handleDecimal(res,(Decimal)value);
++}elseif(valueinstanceofDecimal[]){
++handleDecimalArray(res,(Decimal[])value);
++}elseif(valueinstanceofString){
++handleString(res,(String)value);
++}elseif(valueinstanceofString[]){
++handleStringArray(res,(String[])value);
++}elseif(valueinstanceofBoolean){
++handleBoolean(res,(Boolean)value);
++}elseif(valueinstanceofBoolean[]){
++handleBooleanArray(res,(Boolean[])value);
++}elseif(valueinstanceofDate){
++handleDate(res,(Date)value);
++}elseif(valueinstanceofDate[]){
++handleDateArray(res,(Date[])value);
++}elseif(valueinstanceofDateTime){
++handleDateTime(res,(DateTime)value);
++}elseif(valueinstanceofDateTime[]){
++handleDateTimeArray(res,(DateTime[])value);
++}
++}
++privatestaticvoidhandleDecimal(Responseres,Decimalvalue){
++res.decimalValue=value;
++res.longValue=value.longValue();
++res.stringValue=value.toString();
++res.booleanValue=value>0;
++res.dateValue=toDate(value);
++res.dateTimeValue=toDateTime(value);
++}
++privatestaticvoidhandleDecimalArray(Responseres,Decimal[]values){
++res.decimalValues=values;
++for(Decimalvalue:values){
++res.longValues.add(value.longValue());
++res.stringValues.add(value.toString());
++res.booleanValues.add(value>0);
++res.dateValues.add(toDate(value));
++res.dateTimeValues.add(toDateTime(value));
++}
++}
++privatestaticvoidhandleString(Responseres,Stringvalue){
++res.stringValue=value;
++res.decimalValue=toDecimal(value);
++res.longValue=toLong(value);
++res.booleanValue=toBoolean(value);
++res.dateValue=toDate(value);
++res.dateTimeValue=toDateTime(value);
++}
++privatestaticvoidhandleStringArray(Responseres,String[]values){
++res.stringValues=values;
++for(Stringvalue:values){
++res.decimalValues.add(toDecimal(value));
++res.longValues.add(toLong(value));
++res.booleanValues.add(toBoolean(value));
++res.dateValues.add(toDate(value));
++res.dateTimeValues.add(toDateTime(value));
++}
++}
++privatestaticvoidhandleBoolean(Responseres,Booleanvalue){
++res.booleanValue=value;
++res.decimalValue=value?1:0;
++res.longValue=value?1:0;
++res.stringValue=value.toString();
++res.dateValue=null;
++res.dateTimeValue=null;
++}
++privatestaticvoidhandleBooleanArray(Responseres,Boolean[]values){
++res.booleanValues=values;
++for(Booleanvalue:values){
++res.decimalValues.add(value?1:0);
++res.longValues.add(value?1:0);
++res.stringValues.add(value.toString());
++res.dateValues.add(null);
++res.dateTimeValues.add(null);
++}
++}
++privatestaticvoidhandleDate(Responseres,Datevalue){
++res.dateValue=value;
++res.dateTimeValue=toDateTime(value);
++res.stringValue=value.toString();
++res.decimalValue=toDecimal(value);
++res.longValue=toLong(value);
++res.booleanValue=true;
++}
++privatestaticvoidhandleDateArray(Responseres,Date[]values){
++res.dateValues=values;
++for(Datevalue:values){
++res.dateTimeValues.add(toDateTime(value));
++res.stringValues.add(value.toString());
++res.decimalValues.add(toDecimal(value));
++res.longValues.add(toLong(value));
++res.booleanValues.add(true);
++}
++}
++privatestaticvoidhandleDateTime(Responseres,DateTimevalue){
++res.dateTimeValue=value;
++res.dateValue=value.date();
++res.stringValue=value.toString();
++res.decimalValue=value.getTime();
++res.longValue=value.getTime();
++res.booleanValue=true;
++}
++privatestaticvoidhandleDateTimeArray(Responseres,DateTime[]values){
++res.dateTimeValues=values;
++for(DateTimevalue:values){
++res.dateValues.add(value.date());
++res.stringValues.add(value.toString());
++res.decimalValues.add(value.getTime());
++res.longValues.add(value.getTime());
++res.booleanValues.add(true);
++}
++}
++privatestaticLongtoLong(Decimalvalue){
++returnvalue==null?null:value.longValue();
++}
++privatestaticLongtoLong(Stringvalue){
++returnvalue==null||!value.isNumeric()?null:Long.valueOf(value);
++}
++privatestaticLongtoLong(Booleanvalue){
++returnvalue==null?null:value?1:0;
++}
++privatestaticLongtoLong(Datevalue){
++returnvalue==null?null:toLong(toDateTime(value));
++}
++privatestaticLongtoLong(DateTimevalue){
++returnvalue==null?null:value.getTime();
++}
++privatestaticDecimaltoDecimal(Stringvalue){
++returnvalue==null||!value.isNumeric()?null:Decimal.valueOf(value);
++}
++privatestaticDecimaltoDecimal(Booleanvalue){
++returnvalue==null?null:value?1:0;
++}
++privatestaticDecimaltoDecimal(Datevalue){
++returnvalue==null?null:toDecimal(toDateTime(value));
++}
++privatestaticDecimaltoDecimal(DateTimevalue){
++returnvalue==null?null:value.getTime();
++}
++privatestaticStringtoString(Datevalue){
++returnvalue==null?null:String.valueOf(value);
++}
++privatestaticStringtoString(DateTimevalue){
++returnvalue==null?null:String.valueOf(value);
++}
++privatestaticBooleantoBoolean(Decimalvalue){
++returnvalue==null?false:value>0;
++}
++privatestaticBooleantoBoolean(Stringvalue){
++returnvalue==null?false:Boolean.valueOf(value);
++}
++privatestaticBooleantoBoolean(Datevalue){
++returnvalue!=null;
++}
++privatestaticBooleantoBoolean(DateTimevalue){
++returnvalue!=null;
++}
++privatestaticDatetoDate(Decimalvalue){
++returnvalue==null?null:DateTime.newInstance(value.longValue()).date();
++}
++privatestaticDatetoDate(Stringvalue){
+@@ -185 +185 @@
+-return(value==null?null:Date.valueOf(value));
++returnvalue==null?null:Date.valueOf(value);
+@@ -190,10 +190,10 @@
+-privatestaticDatetoDateValue(Booleanvalue){
+-returnnull;
+-}
+-privatestaticDatetoDateValue(DateTimevalue){
+-return(value==null?null:value.date());
+-}
+-privatestaticDateTimetoDateTimeValue(Decimalvalue){
+-return(value==null?null:DateTime.newInstance(value.longValue()));
+-}
+-privatestaticDateTimetoDateTimeValue(Stringvalue){
++privatestaticDatetoDate(Booleanvalue){
++returnnull;
++}
++privatestaticDatetoDate(DateTimevalue){
++returnvalue==null?null:value.date();
++}
++privatestaticDateTimetoDateTime(Decimalvalue){
++returnvalue==null?null:DateTime.newInstance(value.longValue());
++}
++privatestaticDateTimetoDateTime(Stringvalue){
+@@ -201 +201 @@
+-return(value==null?null:DateTime.valueOf(value));
++returnvalue==null?null:DateTime.valueOf(value);
+@@ -203,8 +203,12 @@
+-returntoDateValue(value);
+-}
+-}
+-privatestaticDateTimetoDateTimeValue(Booleanvalue){
+-returnnull;
+-}
+-privatestaticDateTimetoDateTimeValue(Datevalue){
+-return(value==null?null:DateTime.newInstance(value.year(),value.month(),value.day(),0,0,0));
++try{
++returntoDate(value);
++}catch(Exceptionex){
++returnnull;
++}
++}
++}
++privatestaticDateTimetoDateTime(Booleanvalue){
++returnnull;
++}
++privatestaticDateTimetoDateTime(Datevalue){
++returnvalue==null?null:DateTime.newInstance(value.year(),value.month(),value.day(),0,0,0);
+@@ -213,4 +217 @@
+-@InvocableVariable(
+-label='ParameterName'
+-required=true
+-)
++@InvocableVariable(label='ParameterName',required=true)
+@@ -220,4 +221 @@
+-@InvocableVariable(
+-label='Number'
+-description='Wholenumber(nodecimals)'
+-)
++@InvocableVariable(label='Number',description='Wholenumber(nodecimals)')
+@@ -225,4 +223 @@
+-@InvocableVariable(
+-label='Decimal'
+-description='Numberthatmayincludedecimalplaces'
+-)
++@InvocableVariable(label='Decimal',description='Numberthatmayincludedecimalplaces')
+@@ -230,4 +225 @@
+-@InvocableVariable(
+-label='Text'
+-description='Textvalue'
+-)
++@InvocableVariable(label='Text',description='Textvalue')
+@@ -235,4 +227 @@
+-@InvocableVariable(
+-label='Boolean'
+-description='true/false'
+-)
++@InvocableVariable(label='Boolean',description='true/false')
+@@ -240,3 +229 @@
+-@InvocableVariable(
+-label='Date'
+-)
++@InvocableVariable(label='Date')
+@@ -244,3 +231 @@
+-@InvocableVariable(
+-label='Date/Time'
+-)
++@InvocableVariable(label='Date/Time')
+@@ -248,32 +233,14 @@
+-@InvocableVariable(
+-label='NumberCollection'
+-description='Collectionofwholenumbers'
+-)
+-publicLong[]longValues=newLong[]{};
+-@InvocableVariable(
+-label='DecimalCollection'
+-description='Collectionofnumbersthatmayincludedecimalplaces'
+-)
+-publicDecimal[]decimalValues=newDecimal[]{};
+-@InvocableVariable(
+-label='TextCollection'
+-description='Collectionoftextvalues'
+-)
+-publicString[]stringValues=newString[]{};
+-@InvocableVariable(
+-label='BooleanCollection'
+-description='Collectionoftrue/falsevalues'
+-)
+-publicBoolean[]booleanValues=newBoolean[]{};
+-@InvocableVariable(
+-label='DateCollection'
+-description='Collectionofdatevalues'
+-)
+-publicDate[]dateValues=newDate[]{};
+-@InvocableVariable(
+-label='Date/TimeCollection'
+-description='Collectionofdate/timevalues'
+-)
+-publicDateTime[]dateTimeValues=newDateTime[]{};
+-}
+-}
++@InvocableVariable(label='NumberCollection',description='Collectionofwholenumbers')
++publicLong[]longValues=newList<Long>();
++@InvocableVariable(label='DecimalCollection',description='Collectionofnumbersthatmayincludedecimalplaces')
++publicDecimal[]decimalValues=newList<Decimal>();
++@InvocableVariable(label='TextCollection',description='Collectionoftextvalues')
++publicString[]stringValues=newList<String>();
++@InvocableVariable(label='BooleanCollection',description='Collectionoftrue/falsevalues')
++publicBoolean[]booleanValues=newList<Boolean>();
++@InvocableVariable(label='DateCollection',description='Collectionofdatevalues')
++publicDate[]dateValues=newList<Date>();
++@InvocableVariable(label='Date/TimeCollection',description='Collectionofdate/timevalues')
++publicDateTime[]dateTimeValues=newList<DateTime>();
++}
++}
+
+--- backup/classes\di_Flow.cls
++++ refactored/classes\di_Flow.cls
+@@ -3,4 +3,2 @@
+-@testVisible
+-privateSet<String>outputVarsNames;
+-@testVisible
+-privateSet<String>outputVarsNamesRequired;
++@testVisibleprivateSet<String>outputVarsNames;
++@testVisibleprivateSet<String>outputVarsNamesRequired;
+@@ -33,2 +31 @@
+-}
+-finally{
++}finally{
+
+--- backup/classes\di_Injector.cls
++++ refactored/classes\di_Injector.cls
+@@ -2,9 +2,3 @@
+-@testVisible
+-privatestaticList<di_BindingConfigWrapper>mock_BindingConfigurationWrappersOuter=null;
+-publicstaticfinaldi_InjectorOrg=
+-newdi_Injector(
+-newList<di_Module>{
+-newCustomMetadataModule()
+-});
+-@TestVisible
+-publicdi_Binding.ResolverBindings{get;privateset;}
++@testVisibleprivatestaticList<di_BindingConfigWrapper>mock_BindingConfigurationWrappersOuter=null;
++publicstaticfinaldi_InjectorOrg=newdi_Injector(newList<di_Module>{newCustomMetadataModule()});
++@TestVisiblepublicdi_Binding.ResolverBindings{get;privateset;}
+@@ -49,3 +43 @@
+-List<di_Binding>bindingsFound=this.Bindings.bySObject(bindingSObjectType)
+-.byName(developerName.toLowerCase().trim())
+-.get();
++List<di_Binding>bindingsFound=this.Bindings.bySObject(bindingSObjectType).byName(developerName.toLowerCase().trim()).get();
+@@ -57,5 +49,2 @@
+-@testVisible
+-privateclassCustomMetadataModuleextendsdi_Module{
+-privatestringbindingObjectApiName=null;
+-@testVisible
+-privateList<di_BindingConfigWrapper>getDIBinding(){
++@testVisibleprivateclassCustomMetadataModuleextendsdi_Module{
++@testVisibleprivateList<di_BindingConfigWrapper>getDIBinding(){
+@@ -66,11 +55 @@
+-List<di_Binding__mdt>bindingMDTRec=[SELECTQualifiedAPIName
+-,DeveloperName
+-,BindingName__c
+-,NamespacePrefix
+-,Type__c
+-,To__c
+-,BindingObject__c
+-,BindingObject__r.QualifiedApiName
+-,BindingObjectAlternate__c
+-,BindingSequence__c
+-FROMdi_Binding__mdt];
++List<di_Binding__mdt>bindingMDTRec=[SELECTQualifiedAPIName,DeveloperName,BindingName__c,NamespacePrefix,Type__c,To__c,BindingObject__c,BindingObject__r.QualifiedApiName,BindingObjectAlternate__c,BindingSequence__cFROMdi_Binding__mdt];
+@@ -87,5 +66,2 @@
+-if(String.isNotBlank(bindingConfig.BindingObject)
+-||String.isNotBlank(bindingConfig.BindingObjectAlternate)){
+-bindingObjectApiName=String.isNotBlank(bindingConfig.BindingObject)
+-?bindingConfig.bindingObjectQualifiedApiName.toLowerCase().trim()
+-:bindingConfig.BindingObjectAlternate.toLowerCase().trim();
++if(String.isNotBlank(bindingConfig.BindingObject)||String.isNotBlank(bindingConfig.BindingObjectAlternate)){
++StringbindingObjectApiName=String.isNotBlank(bindingConfig.BindingObject)?bindingConfig.BindingObjectQualifiedApiName.toLowerCase().trim():bindingConfig.BindingObjectAlternate.toLowerCase().trim();
+
+--- backup/classes\di_InjectorComponentController.cls
++++ refactored/classes\di_InjectorComponentController.cls
+@@ -21,6 +21,2 @@
+-@testVisible
+-privateObjectgetInjectorFlowProxyInstance(StringflowName,Objectparams){
+-returnnewComponent.di_injectorFlowProxy(
+-flowName=flowName,
+-inputVariables=params
+-);
++@testVisibleprivateObjectgetInjectorFlowProxyInstance(StringflowName,Objectparams){
++returnnewComponent.di_injectorFlowProxy(flowName=flowName,inputVariables=params);
+
+--- backup/classes\di_InjectorController.cls
++++ refactored/classes\di_InjectorController.cls
+@@ -9,2 +9 @@
+-@AuraEnabled
+-publicstaticdi_BindinggetBinding(StringbindingName){
++@AuraEnabledpublicstaticdi_BindinggetBinding(StringbindingName){
+
+--- backup/classes\di_Module.cls
++++ refactored/classes\di_Module.cls
+@@ -90 +90,2 @@
+-bindingData);
++bindingData
++);
+
+--- backup/classes\di_NamespaceClass.cls
++++ refactored/classes\di_NamespaceClass.cls
+@@ -1,2 +1 @@
+-publicwithoutsharingclassdi_NamespaceClass
+-{
++publicwithoutsharingclassdi_NamespaceClass{
+
+--- backup/classes\di_PlatformCache.cls
++++ refactored/classes\di_PlatformCache.cls
+@@ -1,2 +1 @@
+-publicwithsharingclassdi_PlatformCache
+-{
++publicwithsharingclassdi_PlatformCache{
+@@ -4,17 +3,8 @@
+-@TestVisible
+-privatestaticfinalStringBINDING_KEY='bindingKeyIndex';
+-@TestVisible
+-privatestaticdi_PlatformCacheinstance;
+-@TestVisible
+-privateMap<String,Map<Schema.SObjectType,Set<String>>>cacheKeyIndexMap=newMap<String,Map<Schema.SObjectType,Set<String>>>();
+-@TestVisible
+-privatestaticMap<String,String>generatedKeyNames=newMap<String,String>();
+-@TestVisible
+-privatestaticBooleanDEBUGGING=false;
+-privatedi_PlatformCache()
+-{
+-}
+-publicstaticdi_PlatformCachegetInstance()
+-{
+-if(instance==null)
+-{
++@TestVisibleprivatestaticfinalStringBINDING_KEY='bindingKeyIndex';
++@TestVisibleprivatestaticdi_PlatformCacheinstance;
++@TestVisibleprivateMap<String,Map<Schema.SObjectType,Set<String>>>cacheKeyIndexMap=newMap<String,Map<Schema.SObjectType,Set<String>>>();
++@TestVisibleprivatestaticMap<String,String>generatedKeyNames=newMap<String,String>();
++@TestVisibleprivatestaticBooleanDEBUGGING=false;
++privatedi_PlatformCache(){}
++publicstaticdi_PlatformCachegetInstance(){
++if(instance==null){
+@@ -25,2 +15 @@
+-publicstaticBooleanisStoringBindingInPlatformCache()
+-{
++publicstaticBooleanisStoringBindingInPlatformCache(){
+@@ -29,6 +18,3 @@
+-publicMap<String,Map<Schema.SObjectType,Set<String>>>getCacheKeyIndexMap()
+-{
+-if(cacheKeyIndexMap.isEmpty())
+-{
+-try
+-{
++publicMap<String,Map<Schema.SObjectType,Set<String>>>getCacheKeyIndexMap(){
++if(cacheKeyIndexMap.isEmpty()){
++try{
+@@ -36,2 +22 @@
+-if(orgPartition!=null)
+-{
++if(orgPartition!=null){
+@@ -40,3 +25 @@
+-}
+-catch(Cache.Org.OrgCacheExceptionex)
+-{
++}catch(Cache.Org.OrgCacheExceptionex){
+@@ -45,2 +28 @@
+-if(cacheKeyIndexMap==null)
+-{
++if(cacheKeyIndexMap==null){
+@@ -52,2 +34 @@
+-publicBooleanaddBindingToPlatformCache(di_Bindingbinding)
+-{
++publicBooleanaddBindingToPlatformCache(di_Bindingbinding){
+@@ -55,2 +36 @@
+-if(isStoringBindingInPlatformCache())
+-{
++if(isStoringBindingInPlatformCache()){
+@@ -58,2 +38 @@
+-if(orgPartition!=null)
+-{
++if(orgPartition!=null){
+@@ -62,2 +41 @@
+-if(orgPartition.contains(theKeyName))
+-{
++if(orgPartition.contains(theKeyName)){
+@@ -68,2 +46 @@
+-try
+-{
++try{
+@@ -71,3 +48 @@
+-}
+-catch(cache.Org.OrgCacheExceptionoce)
+-{
++}catch(Cache.Org.OrgCacheExceptionoce){
+@@ -82,7 +57,3 @@
+-publiclist<di_Binding>retrieveBindings(StringdeveloperName,Schema.SObjectTypebindingSObjectType)
+-{
+-list<di_Binding>bindings=newlist<di_Binding>();
+-if(isStoringBindingInPlatformCache()
+-&&string.isNotBlank(developerName)
+-&&bindingSObjectType!=null)
+-{
++publicList<di_Binding>retrieveBindings(StringdeveloperName,Schema.SObjectTypebindingSObjectType){
++List<di_Binding>bindings=newList<di_Binding>();
++if(isStoringBindingInPlatformCache()&&String.isNotBlank(developerName)&&bindingSObjectType!=null){
+@@ -92,2 +63 @@
+-if(keyIndexBySObjectTypeMap!=null&&orgPartition!=null)
+-{
++if(keyIndexBySObjectTypeMap!=null&&orgPartition!=null){
+@@ -95,8 +65,4 @@
+-if(cacheKeys!=null)
+-{
+-ObjectcachedObject=null;
+-for(StringcacheKey:cacheKeys)
+-{
+-cachedObject=orgPartition.get(cacheKey);
+-if(cachedObject!=null)
+-{
++if(cacheKeys!=null){
++for(StringcacheKey:cacheKeys){
++ObjectcachedObject=orgPartition.get(cacheKey);
++if(cachedObject!=null){
+@@ -113,2 +79 @@
+-if(keys!=null)
+-{
++if(keys!=null){
+@@ -117,4 +82,2 @@
+-for(Stringkey:partition.getKeys())
+-{
+-try
+-{
++for(Stringkey:partition.getKeys()){
++try{
+@@ -122,3 +85 @@
+-}
+-catch(Exceptionex)
+-{
++}catch(Exceptionex){
+@@ -130,2 +91 @@
+-publicstaticSet<String>getPartitionKeys()
+-{
++publicstaticSet<String>getPartitionKeys(){
+@@ -134,2 +94 @@
+-if(partition!=null)
+-{
++if(partition!=null){
+@@ -140,3 +99 @@
+-@TestVisible
+-privatestaticdi_Configurations__cgetConfig()
+-{
++@TestVisibleprivatestaticdi_Configurations__cgetConfig(){
+@@ -144,2 +101 @@
+-if(config==null)
+-{
++if(config==null){
+@@ -148,2 +104 @@
+-if(di_Configurations__c.SObjectType.getDescribe().isCreateable())
+-{
++if(di_Configurations__c.SObjectType.getDescribe().isCreateable()){
+@@ -155,3 +110 @@
+-@TestVisible
+-privatestaticStringgetPartitionName()
+-{
++@TestVisibleprivatestaticStringgetPartitionName(){
+@@ -160,3 +113 @@
+-@TestVisible
+-privateIntegergetPartitionTTL()
+-{
++@TestVisibleprivateIntegergetPartitionTTL(){
+@@ -165,3 +116 @@
+-@TestVisible
+-privatestaticCache.OrgPartitiongetPartition()
+-{
++@TestVisibleprivatestaticCache.OrgPartitiongetPartition(){
+@@ -169,2 +118 @@
+-try
+-{
++try{
+@@ -172,3 +120 @@
+-}
+-catch(Exceptionexcp)
+-{
++}catch(Exceptionexcp){
+@@ -179,3 +125 @@
+-@TestVisible
+-privatebooleanpushCacheKeyIndexMapToCache()
+-{
++@TestVisibleprivatebooleanpushCacheKeyIndexMapToCache(){
+@@ -183,2 +127 @@
+-if(orgPartition!=null)
+-{
++if(orgPartition!=null){
+@@ -189,3 +132 @@
+-@TestVisible
+-privatevoidaddBindingToKeyIndex(di_Bindingbinding)
+-{
++@TestVisibleprivatevoidaddBindingToKeyIndex(di_Bindingbinding){
+@@ -196,2 +137 @@
+-if(!getCacheKeyIndexMap().containsKey(workingDeveloperName))
+-{
++if(!getCacheKeyIndexMap().containsKey(workingDeveloperName)){
+@@ -200,2 +140 @@
+-if(!getCacheKeyIndexMap().get(workingDeveloperName).containsKey(binding.bindingObject))
+-{
++if(!getCacheKeyIndexMap().get(workingDeveloperName).containsKey(binding.bindingObject)){
+@@ -207,3 +146 @@
+-@TestVisible
+-privateStringconstructKeyName(Schema.SObjectTypebindingSObjectType,StringdeveloperName)
+-{
++@TestVisibleprivateStringconstructKeyName(Schema.SObjectTypebindingSObjectType,StringdeveloperName){
+@@ -213,4 +150,2 @@
+-Stringkey=((bindingSObjectType!=null)?bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__',''):'')
+-+(String.isBlank(developerName)?'':developerName.toLowerCase().trim());
+-if(generatedKeyNames.containsKey(key))
+-{
++Stringkey=(bindingSObjectType!=null?bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__',''):'')+(String.isBlank(developerName)?'':developerName.toLowerCase().trim());
++if(generatedKeyNames.containsKey(key)){
+@@ -219 +154 @@
+-Stringhash=String.valueOf(Math.abs((key).hashcode()));
++Stringhash=String.valueOf(Math.abs((key).hashCode()));
+@@ -224,3 +159 @@
+-@TestVisible
+-privateStringgetKeyName(StringdeveloperName,Schema.SObjectTypebindingSObjectType)
+-{
++@TestVisibleprivateStringgetKeyName(StringdeveloperName,Schema.SObjectTypebindingSObjectType){
+@@ -229,3 +162 @@
+-@TestVisible
+-privateStringgetKeyName(di_Bindingbinding)
+-{
++@TestVisibleprivateStringgetKeyName(di_Bindingbinding){
+@@ -234,3 +165 @@
+-@TestVisible
+-privateStringgetKeyIndexName()
+-{
++@TestVisibleprivateStringgetKeyIndexName(){
+@@ -239,3 +168 @@
+-@TestVisible
+-privatestaticBooleanlog(Exceptionexcp)
+-{
++@TestVisibleprivatestaticBooleanlog(Exceptionexcp){
+@@ -248,7 +175,4 @@
+-@TestVisible
+-privatestaticBooleanlog(Stringmessage)
+-{
+-BooleandoLog=DEBUGGING&&string.isNotBlank(message);
+-if(doLog)
+-{
+-system.debug('+++di_PlatformCache.message:'+message);
++@TestVisibleprivatestaticBooleanlog(Stringmessage){
++BooleandoLog=DEBUGGING&&String.isNotBlank(message);
++if(doLog){
++System.debug('+++di_PlatformCache.message:'+message);

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 https://pmd.github.io/schema/report_2_0_0.xsd" version="7.21.0" timestamp="2026-02-24T18:30:08.822">
+<file name="C:\Users\ronald\force-di\refactoring\strategy_pattern_result_codestral-2501\iteration_03\pmd_after\subset_src\classes\di_BindingParam.cls">
+<violation beginline="1" endline="430" begincolumn="21" endcolumn="2" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The class 'di_BindingParam' has a total cognitive complexity of 149 (highest 72), current threshold is 50
+</violation>
+<violation beginline="24" endline="36" begincolumn="16" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'execute(Object, Request)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="54" endline="66" begincolumn="16" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'execute(Object, Request)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="84" endline="96" begincolumn="16" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'execute(Object, Request)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="114" endline="126" begincolumn="16" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'execute(Object, Request)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="144" endline="156" begincolumn="16" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'execute(Object, Request)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="175" endline="241" begincolumn="19" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'invoke(List&lt;Request&gt;)' has a cognitive complexity of 72, current threshold is 1
+</violation>
+<violation beginline="243" endline="245" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toLongValue(Decimal)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="247" endline="249" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toLongValue(String)' has a cognitive complexity of 2, current threshold is 1
+</violation>
+<violation beginline="251" endline="253" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toLongValue(Boolean)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="255" endline="259" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toLongValue(Date)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="261" endline="263" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toLongValue(Datetime)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="265" endline="267" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDecimalValue(String)' has a cognitive complexity of 2, current threshold is 1
+</violation>
+<violation beginline="269" endline="271" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDecimalValue(Boolean)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="273" endline="277" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDecimalValue(Date)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="279" endline="281" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDecimalValue(Datetime)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="283" endline="285" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toStringValue(Date)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="287" endline="289" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toStringValue(Datetime)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="291" endline="293" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toStringValue(Object)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="295" endline="297" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toBooleanValue(Decimal)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="299" endline="301" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toBooleanValue(String)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="303" endline="305" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toBooleanValue(Date)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="307" endline="309" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toBooleanValue(Datetime)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="311" endline="313" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDateValue(Decimal)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="315" endline="321" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDateValue(String)' has a cognitive complexity of 2, current threshold is 1
+</violation>
+<violation beginline="327" endline="329" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDateValue(Datetime)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="331" endline="333" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDateTimeValue(Decimal)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="335" endline="341" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDateTimeValue(String)' has a cognitive complexity of 2, current threshold is 1
+</violation>
+<violation beginline="347" endline="349" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toDateTimeValue(Date)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+</file>
+</pmd>

@@ -1,0 +1,227 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -3,14 +3,7 @@
+-@AuraEnabled
+-publicStringBindingTypeAsString{get{returnBindingType.name();}}
+-@AuraEnabled
+-publicStringNamespacePrefix{get;privateset;}
+-@AuraEnabled
+-publicStringDeveloperName{get;privateset;}
+-@AuraEnabled
+-publicSObjectTypeBindingObject{get;privateset;}
+-@AuraEnabled
+-publicIntegerBindingSequence{get;privateset;}
+-@AuraEnabled
+-publicObjectTo{get;privateset;}
+-@AuraEnabled
+-publicObjectData{get;privateset;}
++@AuraEnabledpublicStringBindingTypeAsString{get{returnBindingType.name();}}
++@AuraEnabledpublicStringNamespacePrefix{get;privateset;}
++@AuraEnabledpublicStringDeveloperName{get;privateset;}
++@AuraEnabledpublicSObjectTypeBindingObject{get;privateset;}
++@AuraEnabledpublicIntegerBindingSequence{get;privateset;}
++@AuraEnabledpublicObjectTo{get;privateset;}
++@AuraEnabledpublicObjectData{get;privateset;}
+@@ -28 +21,2 @@
+-}elseif(newInstance==true){
++}
++if(newInstance){
+@@ -30 +24,2 @@
+-}elseif(Injected==null){
++}
++if(Injected==null){
+@@ -85,2 +80 @@
+-publicResolverreplaceBindingWith(ObjectmockType)
+-{
++publicResolverreplaceBindingWith(ObjectmockType){
+@@ -88,4 +82,2 @@
+-for(IntegercurrentBindingsIndex=0;currentBindingsIndex<this.bindings.size();currentBindingsIndex++)
+-{
+-if(isBindingMatchByFilteringCriteria(this.bindings[currentBindingsIndex]))
+-{
++for(IntegercurrentBindingsIndex=0;currentBindingsIndex<this.bindings.size();currentBindingsIndex++){
++if(isBindingMatchByFilteringCriteria(this.bindings[currentBindingsIndex])){
+@@ -100,2 +92 @@
+-privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind)
+-{
++privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind){
+@@ -103,7 +94,2 @@
+-if(String.isNotBlank(this.developerName)&&this.bindingObject!=null)
+-{
+-if((this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-&&this.bindingObject==bind.BindingObject)
+-{
++if(String.isNotBlank(this.developerName)&&this.bindingObject!=null){
++if((this.developerName.equalsIgnoreCase(bind.DeveloperName)||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))&&this.bindingObject==bind.BindingObject){
+@@ -112,8 +98,2 @@
+-}
+-else{
+-if(String.isNotBlank(this.developerName)
+-&&(this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-)
+-{
++}else{
++if(String.isNotBlank(this.developerName)&&(this.developerName.equalsIgnoreCase(bind.DeveloperName)||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))){
+@@ -121,3 +101 @@
+-}
+-elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject)
+-{
++}elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject){
+@@ -129,4 +107,2 @@
+-privatevoidloadBindings()
+-{
+-if(this.bindings==null)
+-{
++privatevoidloadBindings(){
++if(this.bindings==null){
+@@ -134,2 +110 @@
+-for(di_Modulemodule:modules)
+-{
++for(di_Modulemodule:modules){
+@@ -149,7 +124,3 @@
+-publicList<di_Binding>get()
+-{
+-list<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
+-if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())
+-||!di_PlatformCache.isStoringBindingInPlatformCache()
+-)
+-{
++publicList<di_Binding>get(){
++List<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
++if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())||!di_PlatformCache.isStoringBindingInPlatformCache()){
+@@ -157,4 +128,2 @@
+-for(di_Bindingbind:bindings)
+-{
+-if(isBindingMatchByFilteringCriteria(bind))
+-{
++for(di_Bindingbind:bindings){
++if(isBindingMatchByFilteringCriteria(bind)){
+@@ -180,2 +149 @@
+-ObjectbindingData)
+-{
++ObjectbindingData){
+@@ -203,6 +171,3 @@
+-privateclassApexBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassApexBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -211,2 +176 @@
+-if(toType==null)
+-{
++if(toType==null){
+@@ -217,2 +181 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -220,3 +183 @@
+-}
+-elseif(params!=null)
+-{
++}elseif(params!=null){
+@@ -230,6 +191,3 @@
+-privateclassVisualForceComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassVisualForceComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -238,2 +196 @@
+-if(toType==null)
+-{
++if(toType==null){
+@@ -244,2 +201 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -253,13 +209,8 @@
+-privateclassLightningComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-returnTo;
+-}
+-}
+-privateclassFlowBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassLightningComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++returnTo;
++}
++}
++privateclassFlowBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -267,2 +218 @@
+-if(paramsinstanceofMap<String,Object>)
+-{
++if(paramsinstanceofMap<String,Object>){
+
+--- backup/classes\di_Injector.cls
++++ refactored/classes\di_Injector.cls
+@@ -31 +31 @@
+-if(bindingsFound==null||bindingsFound.isEmpty()){
++if(bindingsFound.isEmpty()){
+@@ -35,6 +34,0 @@
+-}
+-publicObjectgetInstance(TypedeveloperNameByType,Schema.SObjectTypebindingSObjectType){
+-returngetInstance(developerNameByType,bindingSObjectType,null);
+-}
+-publicObjectgetInstance(TypedeveloperNameByType,Schema.SObjectTypebindingSObjectType,Objectparams){
+-returngetInstance(developerNameByType==null?null:developerNameByType.getName().toLowerCase(),bindingSObjectType,params);
+@@ -49,4 +43,2 @@
+-List<di_Binding>bindingsFound=this.Bindings.bySObject(bindingSObjectType)
+-.byName(developerName.toLowerCase().trim())
+-.get();
+-if(bindingsFound==null||bindingsFound.isEmpty()||bindingsFound[0]==null){
++List<di_Binding>bindingsFound=this.Bindings.bySObject(bindingSObjectType).byName(developerName.toLowerCase().trim()).get();
++if(bindingsFound.isEmpty()){
+@@ -66,11 +58 @@
+-List<di_Binding__mdt>bindingMDTRec=[SELECTQualifiedAPIName
+-,DeveloperName
+-,BindingName__c
+-,NamespacePrefix
+-,Type__c
+-,To__c
+-,BindingObject__c
+-,BindingObject__r.QualifiedApiName
+-,BindingObjectAlternate__c
+-,BindingSequence__c
+-FROMdi_Binding__mdt];
++List<di_Binding__mdt>bindingMDTRec=[SELECTQualifiedAPIName,DeveloperName,BindingName__c,NamespacePrefix,Type__c,To__c,BindingObject__c,BindingObject__r.QualifiedApiName,BindingObjectAlternate__c,BindingSequence__cFROMdi_Binding__mdt];
+@@ -87,5 +69,2 @@
+-if(String.isNotBlank(bindingConfig.BindingObject)
+-||String.isNotBlank(bindingConfig.BindingObjectAlternate)){
+-bindingObjectApiName=String.isNotBlank(bindingConfig.BindingObject)
+-?bindingConfig.bindingObjectQualifiedApiName.toLowerCase().trim()
+-:bindingConfig.BindingObjectAlternate.toLowerCase().trim();
++if(String.isNotBlank(bindingConfig.BindingObject)||String.isNotBlank(bindingConfig.BindingObjectAlternate)){
++bindingObjectApiName=String.isNotBlank(bindingConfig.BindingObject)?bindingConfig.bindingObjectQualifiedApiName.toLowerCase().trim():bindingConfig.BindingObjectAlternate.toLowerCase().trim();
+
+--- backup/classes\di_InjectorComponentFlowProxyController.cls
++++ refactored/classes\di_InjectorComponentFlowProxyController.cls
+@@ -7,8 +7 @@
+-if(InputVariablesValueinstanceofMap<Object,Object>){
+-Map<Object,Object>oldMap=(Map<Object,Object>)InputVariablesValue;
+-Map<String,Object>newMap=newMap<String,Object>();
+-for(Objectkey:oldMap.keySet()){
+-newMap.put(String.valueOf(key),oldMap.get(key));
+-}
+-di_BindingParam.parameters=newMap;
+-}elseif(InputVariablesValueinstanceofMap<String,Object>){
++if(InputVariablesValueinstanceofMap<String,Object>){

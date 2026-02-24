@@ -1,0 +1,113 @@
+{
+  "iteration": 3,
+  "timestamp": "2026-02-24T19:22:07.487547",
+  "refactoring": "refactoring/coc_reduktion",
+  "changed_files_scope": [
+    "classes\\di_Binding.cls"
+  ],
+  "test": {
+    "status": "passed",
+    "success": true,
+    "level": 2
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: n/a",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T19:21:41.150347",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_nvidia-llama-3.1-nemotron-ultra-253b-v1\\iteration_03\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_Binding.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_nvidia-llama-3.1-nemotron-ultra-253b-v1\\iteration_03\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_nvidia-llama-3.1-nemotron-ultra-253b-v1\\iteration_03\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 261,
+        "loc": 394,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 261,
+        "loc": 394,
+        "count": 1
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T19:21:42.838068",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_nvidia-llama-3.1-nemotron-ultra-253b-v1\\iteration_03\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_Binding.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_nvidia-llama-3.1-nemotron-ultra-253b-v1\\iteration_03\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_nvidia-llama-3.1-nemotron-ultra-253b-v1\\iteration_03\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 261,
+        "loc": 259,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 261,
+        "loc": 259,
+        "count": 1
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": 0,
+      "loc": -135,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": 0,
+      "loc": -135,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "coc_reduktion",
+    "targets": {},
+    "ok": true,
+    "checks": {
+      "coc_reduktion": {
+        "passed": true,
+        "pmd_delta_total_complexity": 0,
+        "rule": "delta<=0"
+      }
+    }
+  }
+}

@@ -10,7 +10,7 @@ from unittest import result
 import difflib
 import time
 import json
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET 
 '''
 python refactoring/refactoring.py
 python refactoring/refactoring.py --all-refactorings
@@ -27,25 +27,28 @@ REFACTORINGS = [
     "strategy_pattern",
 ]
 REFACTORING_BASE_DIR = "refactoring"
-DEFAULT_REFACTORING = "strategy_pattern" \
+DEFAULT_REFACTORING = "coc_reduktion" \
 ""
-RESULT_PATH = "_result2_"
+RESULT_PATH = "_result_"
 PATH = 'force-di/main'
-ITERATIONS = 8
+ITERATIONS = 10
 GEMMA = 'gemma-3-27b-it'
 GEMINI3 = 'gemini-3-pro-preview'
 GEMINI2 = 'gemini-2.5-flash'
 LLAMA = 'llama-3.3-70b-versatile'
 MISTRAL = 'mistral-large-2512'
 CODESTRAL = 'codestral-2501'
+NVIDIA = 'nvidia/llama-3.1-nemotron-ultra-253b-v1'
 MODEL_OLLAMA = 'devstral-2_123b-cloud'
 MODEL_GROQ = LLAMA
 MODEL_GEMINI = GEMINI3
 MODEL_MISTRAL = CODESTRAL
+MODEL_NVIDIA = NVIDIA
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 MISTRAL_API_KEY = os.environ.get('MISTRAL_API_KEY2')
-LLM_API_KEY = GEMINI_API_KEY    
+NVIDIA_API_KEY = os.environ.get('NVIDIA_API_KEY')
+LLM_API_KEY = NVIDIA_API_KEY    
 client = None
 MODEL = None
 
@@ -76,6 +79,21 @@ elif LLM_API_KEY == GROQ_API_KEY:
     except Exception as e:
         print(f"Fehler beim Laden des API-Keys: {e}")
         exit(1)
+elif LLM_API_KEY == NVIDIA_API_KEY:
+    from openai import OpenAI
+    MODEL = MODEL_NVIDIA
+    try:
+        client = OpenAI(
+            base_url="https://integrate.api.nvidia.com/v1",
+            api_key=LLM_API_KEY
+        )
+        print("NVIDIA API Key aus Umgebungsvariable geladen")
+    except Exception as e:
+        print(f"Fehler beim Laden des API-Keys: {e}")
+        exit(1)
+
+# Sanitize MODEL for use in file paths (replace / with -)
+MODEL_SAFE = MODEL.replace('/', '-') if MODEL else None
 
 parser = argparse.ArgumentParser(description="Projektpfad angeben")
 parser.add_argument("--project-path", type=str, default=PATH, help="Pfad des Projekts")
@@ -265,6 +283,8 @@ def get_all_apex_files(project_dir: Path) -> str:
 
 def parse_ai_response(response_text: str) -> dict:
     files = {}
+    if not response_text:
+        return files
     pattern = r"File\s+`([^`]+)`:\s*```apex\s*(.*?)\s*```"
     matches = re.findall(pattern, response_text, re.DOTALL)
     for filename, code in matches:
@@ -412,7 +432,7 @@ def save_results(
         f.write(diff_text or "")
 
 def write_summary(results_dir: Path, text: str) -> None:
-    with open(results_dir / f"{MODEL}_summary_results.txt", "a", encoding="utf-8") as f:
+    with open(results_dir / f"{MODEL_SAFE}_summary_results.txt", "a", encoding="utf-8") as f:
         f.write(text)
 
 
@@ -448,10 +468,13 @@ def format_token_usage(usage: dict | None) -> str:
 def groq_generate(final_prompt: str) -> tuple[str, dict | None]:
     resp = client.chat.completions.create(
         model=MODEL,
-        content=final_prompt
+        messages=[{"role": "user", "content": final_prompt}]
     )
     usage = _usage_to_dict(getattr(resp, "usage", None))
-    return resp.choices[0].message.content, usage
+    content = resp.choices[0].message.content
+    if content is None:
+        raise ValueError("Leere Antwort von Groq API erhalten")
+    return content, usage
 
 def gemini_generate(final_prompt: str) -> tuple[str, dict | None]:
     response = client.models.generate_content(
@@ -487,7 +510,29 @@ def mistral_generate(prompt: str) -> tuple[str, dict | None]:
         stream=False
     )
     usage = _usage_to_dict(getattr(res, "usage", None))
-    return res.choices[0].message.content, usage
+    content = res.choices[0].message.content
+    if content is None:
+        raise ValueError("Leere Antwort von Mistral API erhalten")
+    return content, usage
+
+def nvidia_generate(prompt: str) -> tuple[str, dict | None]:
+    resp = client.chat.completions.create(
+        model=MODEL,
+        messages=[{"role": "system", "content": prompt}],
+        temperature=0.6,
+        top_p=0.95,
+        frequency_penalty=0,
+        presence_penalty=0,
+        stream=True
+    )
+    content = ""
+    for chunk in resp:
+        if chunk.choices[0].delta.content is not None:
+            content += chunk.choices[0].delta.content
+    
+    if not content:
+        raise ValueError("Leere Antwort von NVIDIA API erhalten")
+    return content, None
 
 def _is_rate_limit_error(e: Exception) -> bool:
     msg = str(e).lower()
@@ -1388,8 +1433,8 @@ def main():
         REFACTORING = f"{REFACTORING_BASE_DIR}/{ref_name}"
 
         PROMPT_TEMPLATE = Path(f"{REFACTORING}.txt").read_text(encoding="utf-8")
-        RESULTS_DIR = Path(REFACTORING + RESULT_PATH + MODEL)
-        RESULTS_DIR.mkdir(exist_ok=True)
+        RESULTS_DIR = Path(REFACTORING + RESULT_PATH + MODEL_SAFE)
+        RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
         YOUR_PROMPT = PROMPT_TEMPLATE
 
@@ -1419,6 +1464,8 @@ def main():
                     response_text, usage = gemini_generate(final_prompt)
                 elif LLM_API_KEY == GROQ_API_KEY:
                     response_text, usage = groq_generate(final_prompt)
+                elif LLM_API_KEY == NVIDIA_API_KEY:
+                    response_text, usage = nvidia_generate(final_prompt)
                 else:
                     raise RuntimeError("Kein gültiger LLM_API_KEY gesetzt")
 

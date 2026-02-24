@@ -1,0 +1,122 @@
+{
+  "iteration": 4,
+  "timestamp": "2026-02-24T19:00:50.608497",
+  "refactoring": "refactoring/coc_reduktion",
+  "changed_files_scope": [
+    "classes\\di_Binding.cls",
+    "classes\\di_Injector.cls",
+    "classes\\di_Module.cls",
+    "classes\\di_PlatformCache.cls"
+  ],
+  "test": {
+    "status": "passed",
+    "success": true,
+    "level": 2
+  },
+  "diff": {
+    "status": "failed",
+    "has_diff": false
+  },
+  "tokens": "Tokens: prompt=12075, completion=7269, total=19344",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T19:00:21.997292",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_04\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_Binding.cls",
+        "classes/di_Injector.cls",
+        "classes/di_Module.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_04\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_04\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 510,
+        "loc": 1032,
+        "count": 4
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 510,
+        "loc": 1032,
+        "count": 4
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T19:00:23.919257",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_04\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_Binding.cls",
+        "classes/di_Injector.cls",
+        "classes/di_Module.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_04\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_codestral-2501\\iteration_04\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 346,
+        "loc": 1047,
+        "count": 4
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 346,
+        "loc": 1047,
+        "count": 4
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": -164,
+      "loc": 15,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": -164,
+      "loc": 15,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "coc_reduktion",
+    "targets": {},
+    "ok": true,
+    "checks": {
+      "coc_reduktion": {
+        "passed": true,
+        "pmd_delta_total_complexity": -164,
+        "rule": "delta<=0"
+      }
+    }
+  }
+}

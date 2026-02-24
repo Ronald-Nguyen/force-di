@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 https://pmd.github.io/schema/report_2_0_0.xsd" version="7.21.0" timestamp="2026-02-24T19:27:23.671">
+<file name="C:\Users\ronald\force-di\refactoring\coc_reduktion_result_nvidia-llama-3.1-nemotron-ultra-253b-v1\iteration_06\pmd_after\subset_src\classes\di_Binding.cls">
+<violation beginline="1" endline="257" begincolumn="17" endcolumn="2" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The class 'di_Binding' has a total cognitive complexity of 182 (highest 3), current threshold is 50
+</violation>
+<violation beginline="14" endline="16" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance()' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="18" endline="20" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(Object)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="22" endline="31" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(Object, Boolean)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="35" endline="38" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'compareTo(Object)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="40" endline="46" begincolumn="21" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'toString()' has a cognitive complexity of 2, current threshold is 1
+</violation>
+<violation beginline="70" endline="74" begincolumn="16" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'add(di_Module)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="91" endline="109" begincolumn="16" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'replaceBindingWith(Object)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="111" endline="129" begincolumn="17" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'isBindingMatchByFilteringCriteria(di_Binding)' has a cognitive complexity of 13, current threshold is 1
+</violation>
+<violation beginline="131" endline="147" begincolumn="17" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'loadBindings()' has a cognitive complexity of 11, current threshold is 1
+</violation>
+<violation beginline="149" endline="163" begincolumn="16" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'get()' has a cognitive complexity of 8, current threshold is 1
+</violation>
+<violation beginline="170" endline="189" begincolumn="19" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'newInstance(BindingType, String, SObjectType, Integer, Object, Object)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="200" endline="217" begincolumn="25" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'newInstance(Object)' has a cognitive complexity of 15, current threshold is 1
+</violation>
+<violation beginline="221" endline="236" begincolumn="25" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'newInstance(Object)' has a cognitive complexity of 14, current threshold is 1
+</violation>
+<violation beginline="246" endline="255" begincolumn="25" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'newInstance(Object)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+</file>
+<file name="C:\Users\ronald\force-di\refactoring\coc_reduktion_result_nvidia-llama-3.1-nemotron-ultra-253b-v1\iteration_06\pmd_after\subset_src\classes\di_Injector.cls">
+<violation beginline="1" endline="78" begincolumn="8" endcolumn="2" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The class 'di_Injector' has a total cognitive complexity of 80 (highest 4), current threshold is 50
+</violation>
+<violation beginline="9" endline="9" begincolumn="12" endcolumn="133" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(Type)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="10" endline="10" begincolumn="12" endcolumn="150" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(Type, Object)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="11" endline="11" begincolumn="12" endcolumn="97" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(String)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="12" endline="21" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(String, Object)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="22" endline="24" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(Type, Schema.SObjectType)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="25" endline="27" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(Type, Schema.SObjectType, Object)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="28" endline="40" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance(String, Schema.SObjectType, Object)' has a cognitive complexity of 4, current threshold is 1
+</violation>
+<violation beginline="45" endline="56" begincolumn="17" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getDIBinding()' has a cognitive complexity of 4, current threshold is 1
+</violation>
+<violation beginline="57" endline="75" begincolumn="25" endcolumn="10" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'configure()' has a cognitive complexity of 12, current threshold is 1
+</violation>
+</file>
+</pmd>

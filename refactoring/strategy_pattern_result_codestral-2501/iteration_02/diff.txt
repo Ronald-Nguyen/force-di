@@ -1,0 +1,203 @@
+--- backup/classes\di_BindingParam.cls
++++ refactored/classes\di_BindingParam.cls
+@@ -3,11 +3,18 @@
+-@InvocableMethod(
+-label='GetValue'
+-)
+-publicstaticList<Response>invoke(List<Request>requests){
+-List<Response>responses=newList<Response>();
+-for(Requestreq:requests){
+-Responseres=newResponse();
+-if(parameters!=null){
+-Objectvalue=parameters.get(req.paramName);
+-if(value!=null){
+-if(valueinstanceofDecimal){
++privateinterfaceParamStrategy{
++Responseexecute(Objectvalue,Requestreq);
++}
++privatestaticMap<Type,ParamStrategy>STRATEGIES=newMap<Type,ParamStrategy>{
++Decimal.class=>newDecimalStrategy(),
++Decimal[].class=>newDecimalArrayStrategy(),
++String.class=>newStringStrategy(),
++String[].class=>newStringArrayStrategy(),
++Boolean.class=>newBooleanStrategy(),
++Boolean[].class=>newBooleanArrayStrategy(),
++Date.class=>newDateStrategy(),
++Date[].class=>newDateArrayStrategy(),
++DateTime.class=>newDateTimeStrategy(),
++DateTime[].class=>newDateTimeArrayStrategy()
++};
++privatestaticclassDecimalStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -21 +28,6 @@
+-}elseif(valueinstanceofDecimal[]){
++returnres;
++}
++}
++privatestaticclassDecimalArrayStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -31 +43,6 @@
+-}elseif(valueinstanceofString){
++returnres;
++}
++}
++privatestaticclassStringStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -39 +56,6 @@
+-}elseif(valueinstanceofString[]){
++returnres;
++}
++}
++privatestaticclassStringArrayStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -49 +71,6 @@
+-}elseif(valueinstanceofBoolean){
++returnres;
++}
++}
++privatestaticclassBooleanStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -57 +84,6 @@
+-}elseif(valueinstanceofBoolean[]){
++returnres;
++}
++}
++privatestaticclassBooleanArrayStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -67 +99,6 @@
+-}elseif(valueinstanceofDate){
++returnres;
++}
++}
++privatestaticclassDateStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -75 +112,6 @@
+-}elseif(valueinstanceofDate[]){
++returnres;
++}
++}
++privatestaticclassDateArrayStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -85 +127,6 @@
+-}elseif(valueinstanceofDateTime){
++returnres;
++}
++}
++privatestaticclassDateTimeStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -93 +140,6 @@
+-}elseif(valueinstanceofDateTime[]){
++returnres;
++}
++}
++privatestaticclassDateTimeArrayStrategyimplementsParamStrategy{
++publicResponseexecute(Objectvalue,Requestreq){
++Responseres=newResponse();
+@@ -103,13 +155,52 @@
+-}
+-if(res.longValue==null&&!res.longValues.isEmpty()){res.longValue=res.longValues[0];}
+-if(res.decimalValue==null&&!res.decimalValues.isEmpty()){res.decimalValue=res.decimalValues[0];}
+-if(res.stringValue==null&&!res.stringValues.isEmpty()){res.stringValue=res.stringValues[0];}
+-if(res.booleanValue==null&&!res.booleanValues.isEmpty()){res.booleanValue=res.booleanValues[0];}
+-if(res.dateValue==null&&!res.dateValues.isEmpty()){res.dateValue=res.dateValues[0];}
+-if(res.dateTimeValue==null&&!res.dateTimeValues.isEmpty()){res.dateTimeValue=res.dateTimeValues[0];}
+-if(res.longValue!=null&&res.longValues.isEmpty()){res.longValues.add(res.longValue);}
+-if(res.decimalValue!=null&&res.decimalValues.isEmpty()){res.decimalValues.add(res.decimalValue);}
+-if(res.stringValue!=null&&res.stringValues.isEmpty()){res.stringValues.add(res.stringValue);}
+-if(res.booleanValue!=null&&res.booleanValues.isEmpty()){res.booleanValues.add(res.booleanValue);}
+-if(res.dateValue!=null&&res.dateValues.isEmpty()){res.dateValues.add(res.dateValue);}
+-if(res.dateTimeValue!=null&&res.dateTimeValues.isEmpty()){res.dateTimeValues.add(res.dateTimeValue);}
++returnres;
++}
++}
++@InvocableMethod(
++label='GetValue'
++)
++publicstaticList<Response>invoke(List<Request>requests){
++List<Response>responses=newList<Response>();
++for(Requestreq:requests){
++Responseres=newResponse();
++if(parameters!=null){
++Objectvalue=parameters.get(req.paramName);
++if(value!=null){
++if(STRATEGIES.containsKey(value.getClass())){
++res=STRATEGIES.get(value.getClass()).execute(value,req);
++}
++if(res.longValue==null&&!res.longValues.isEmpty()){
++res.longValue=res.longValues[0];
++}
++if(res.decimalValue==null&&!res.decimalValues.isEmpty()){
++res.decimalValue=res.decimalValues[0];
++}
++if(res.stringValue==null&&!res.stringValues.isEmpty()){
++res.stringValue=res.stringValues[0];
++}
++if(res.booleanValue==null&&!res.booleanValues.isEmpty()){
++res.booleanValue=res.booleanValues[0];
++}
++if(res.dateValue==null&&!res.dateValues.isEmpty()){
++res.dateValue=res.dateValues[0];
++}
++if(res.dateTimeValue==null&&!res.dateTimeValues.isEmpty()){
++res.dateTimeValue=res.dateTimeValues[0];
++}
++if(res.longValue!=null&&res.longValues.isEmpty()){
++res.longValues.add(res.longValue);
++}
++if(res.decimalValue!=null&&res.decimalValues.isEmpty()){
++res.decimalValues.add(res.decimalValue);
++}
++if(res.stringValue!=null&&res.stringValues.isEmpty()){
++res.stringValues.add(res.stringValue);
++}
++if(res.booleanValue!=null&&res.booleanValues.isEmpty()){
++res.booleanValues.add(res.booleanValue);
++}
++if(res.dateValue!=null&&res.dateValues.isEmpty()){
++res.dateValues.add(res.dateValue);
++}
++if(res.dateTimeValue!=null&&res.dateTimeValues.isEmpty()){
++res.dateTimeValues.add(res.dateTimeValue);
++}
+@@ -214 +305 @@
+-label='ParameterName'
++label='ParameterName',
+@@ -221 +312 @@
+-label='Number'
++label='Number',
+@@ -226 +317 @@
+-label='Decimal'
++label='Decimal',
+@@ -231 +322 @@
+-label='Text'
++label='Text',
+@@ -236 +327 @@
+-label='Boolean'
++label='Boolean',
+@@ -249 +340 @@
+-label='NumberCollection'
++label='NumberCollection',
+@@ -254 +345 @@
+-label='DecimalCollection'
++label='DecimalCollection',
+@@ -259 +350 @@
+-label='TextCollection'
++label='TextCollection',
+@@ -264 +355 @@
+-label='BooleanCollection'
++label='BooleanCollection',
+@@ -269 +360 @@
+-label='DateCollection'
++label='DateCollection',
+@@ -274 +365 @@
+-label='Date/TimeCollection'
++label='Date/TimeCollection',

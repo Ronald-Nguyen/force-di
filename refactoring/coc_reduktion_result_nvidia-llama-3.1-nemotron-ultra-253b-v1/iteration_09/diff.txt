@@ -1,0 +1,315 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -3,14 +3,7 @@
+-@AuraEnabled
+-publicStringBindingTypeAsString{get{returnBindingType.name();}}
+-@AuraEnabled
+-publicStringNamespacePrefix{get;privateset;}
+-@AuraEnabled
+-publicStringDeveloperName{get;privateset;}
+-@AuraEnabled
+-publicSObjectTypeBindingObject{get;privateset;}
+-@AuraEnabled
+-publicIntegerBindingSequence{get;privateset;}
+-@AuraEnabled
+-publicObjectTo{get;privateset;}
+-@AuraEnabled
+-publicObjectData{get;privateset;}
++@AuraEnabledpublicStringBindingTypeAsString{get{returnBindingType.name();}}
++@AuraEnabledpublicStringNamespacePrefix{get;privateset;}
++@AuraEnabledpublicStringDeveloperName{get;privateset;}
++@AuraEnabledpublicSObjectTypeBindingObject{get;privateset;}
++@AuraEnabledpublicIntegerBindingSequence{get;privateset;}
++@AuraEnabledpublicObjectTo{get;privateset;}
++@AuraEnabledpublicObjectData{get;privateset;}
+@@ -28 +21,2 @@
+-}elseif(newInstance==true){
++}
++if(newInstance){
+@@ -30 +24,2 @@
+-}elseif(Injected==null){
++}
++if(Injected==null){
+@@ -41,4 +36 @@
+-StringhashValue=
+-(BindingObject!=null)?
+-BindingObject.getDescribe().getName():
+-DeveloperName;
++StringhashValue=(BindingObject!=null)?BindingObject.getDescribe().getName():DeveloperName;
+@@ -57,2 +49,2 @@
+-privateList<di_Module>modules=null;
+-privateList<di_Binding>bindings=null;
++privateList<di_Module>modules=newList<di_Module>();
++privateList<di_Binding>bindings=newList<di_Binding>();
+@@ -85,2 +77 @@
+-publicResolverreplaceBindingWith(ObjectmockType)
+-{
++publicResolverreplaceBindingWith(ObjectmockType){
+@@ -88,5 +79,3 @@
+-for(IntegercurrentBindingsIndex=0;currentBindingsIndex<this.bindings.size();currentBindingsIndex++)
+-{
+-if(isBindingMatchByFilteringCriteria(this.bindings[currentBindingsIndex]))
+-{
+-this.bindings[currentBindingsIndex]=di_Binding.newInstance(di_Binding.BindingType.Apex,this.developerName,this.bindingObject,null,mockType,null);
++for(Integeri=0;i<bindings.size();i++){
++if(isBindingMatch(bindings[i])){
++bindings[i]=di_Binding.newInstance(BindingType.Apex,developerName,bindingObject,null,mockType,null);
+@@ -96,6 +85,5 @@
+-this.developerName=null;
+-this.bindingObject=null;
+-returnthis;
+-}
+-privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind)
+-{
++developerName=null;
++bindingObject=null;
++returnthis;
++}
++privateBooleanisBindingMatch(di_Bindingbind){
+@@ -103,23 +91,6 @@
+-if(String.isNotBlank(this.developerName)&&this.bindingObject!=null)
+-{
+-if((this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-&&this.bindingObject==bind.BindingObject)
+-{
+-isMatch=true;
+-}
+-}
+-else{
+-if(String.isNotBlank(this.developerName)
+-&&(this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-)
+-{
+-isMatch=true;
+-}
+-elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject)
+-{
+-isMatch=true;
+-}
++if(String.isNotBlank(developerName)&&bindingObject!=null){
++isMatch=(developerName.equalsIgnoreCase(bind.DeveloperName)||developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))&&bindingObject==bind.BindingObject;
++}elseif(String.isNotBlank(developerName)){
++isMatch=developerName.equalsIgnoreCase(bind.DeveloperName)||developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName);
++}elseif(bindingObject!=null){
++isMatch=bind.BindingObject==bindingObject;
+@@ -129,7 +100,4 @@
+-privatevoidloadBindings()
+-{
+-if(this.bindings==null)
+-{
+-this.bindings=newList<di_Binding>();
+-for(di_Modulemodule:modules)
+-{
++privatevoidloadBindings(){
++if(bindings==null){
++bindings=newList<di_Binding>();
++for(di_Modulemodule:modules){
+@@ -138 +106 @@
+-if(bind.BindingType==di_Binding.BindingType.Module){
++if(bind.BindingType==BindingType.Module){
+@@ -141 +109 @@
+-this.bindings.addAll(embeddedModule.getBindings());
++bindings.addAll(embeddedModule.getBindings());
+@@ -143,13 +111,9 @@
+-this.bindings.add(bind);
+-}
+-}
+-}
+-}
+-}
+-publicList<di_Binding>get()
+-{
+-list<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
+-if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())
+-||!di_PlatformCache.isStoringBindingInPlatformCache()
+-)
+-{
++bindings.add(bind);
++}
++}
++}
++}
++}
++publicList<di_Binding>get(){
++List<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(developerName,bindingObject);
++if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())||!di_PlatformCache.isStoringBindingInPlatformCache()){
+@@ -157,4 +121,2 @@
+-for(di_Bindingbind:bindings)
+-{
+-if(isBindingMatchByFilteringCriteria(bind))
+-{
++for(di_Bindingbind:bindings){
++if(isBindingMatch(bind)){
+@@ -165,2 +127,2 @@
+-this.developerName=null;
+-this.bindingObject=null;
++developerName=null;
++bindingObject=null;
+@@ -168 +130 @@
+-this.bindingsAreRequired=true;
++bindingsAreRequired=true;
+@@ -180,2 +142 @@
+-ObjectbindingData)
+-{
++ObjectbindingData){
+@@ -195,2 +156 @@
+-privatestaticfinalMap<BindingType,Type>BINDING_IMPLS_BY_TYPE=
+-newMap<BindingType,Type>{
++privatestaticfinalMap<BindingType,Type>BINDING_IMPLS_BY_TYPE=newMap<BindingType,Type>{
+@@ -203,6 +163,3 @@
+-privateclassApexBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassApexBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -210,3 +167,2 @@
+-TypetoType=NameSpacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
+-if(toType==null)
+-{
++TypetoType=String.isBlank(NamespacePrefix)?Type.forName(className):Type.forName(NamespacePrefix,className);
++if(toType==null){
+@@ -217,2 +173 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -220,3 +175 @@
+-}
+-elseif(params!=null)
+-{
++}elseif(params!=null){
+@@ -230,6 +183,3 @@
+-privateclassVisualForceComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassVisualForceComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -237,3 +187,2 @@
+-TypetoType=NamespacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
+-if(toType==null)
+-{
++TypetoType=String.isBlank(NamespacePrefix)?Type.forName(className):Type.forName(NamespacePrefix,className);
++if(toType==null){
+@@ -244,2 +193 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -253,13 +201,8 @@
+-privateclassLightningComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-returnTo;
+-}
+-}
+-privateclassFlowBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassLightningComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++returnTo;
++}
++}
++privateclassFlowBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -267,2 +210 @@
+-if(paramsinstanceofMap<String,Object>)
+-{
++if(paramsinstanceofMap<String,Object>){
+
+--- backup/classes\di_Injector.cls
++++ refactored/classes\di_Injector.cls
+@@ -4,5 +4 @@
+-publicstaticfinaldi_InjectorOrg=
+-newdi_Injector(
+-newList<di_Module>{
+-newCustomMetadataModule()
+-});
++publicstaticfinaldi_InjectorOrg=newdi_Injector(newList<di_Module>{newCustomMetadataModule()});
+@@ -17,6 +12,0 @@
+-publicObjectgetInstance(TypedeveloperNameByType){
+-returngetInstance(developerNameByType?.getName()?.toLowerCase(),null);
+-}
+-publicObjectgetInstance(TypedeveloperNameByType,Objectparams){
+-returngetInstance(developerNameByType?.getName()?.toLowerCase(),params);
+-}
+@@ -30,2 +20,2 @@
+-List<di_Binding>bindingsFound=this.Bindings.byName(developerName.toLowerCase().trim()).get();
+-if(bindingsFound==null||bindingsFound.isEmpty()){
++List<di_Binding>bindingsFound=Bindings.byName(developerName.toLowerCase().trim()).get();
++if(bindingsFound.isEmpty()){
+@@ -35,6 +24,0 @@
+-}
+-publicObjectgetInstance(TypedeveloperNameByType,Schema.SObjectTypebindingSObjectType){
+-returngetInstance(developerNameByType,bindingSObjectType,null);
+-}
+-publicObjectgetInstance(TypedeveloperNameByType,Schema.SObjectTypebindingSObjectType,Objectparams){
+-returngetInstance(developerNameByType==null?null:developerNameByType.getName().toLowerCase(),bindingSObjectType,params);
+@@ -49,4 +33,2 @@
+-List<di_Binding>bindingsFound=this.Bindings.bySObject(bindingSObjectType)
+-.byName(developerName.toLowerCase().trim())
+-.get();
+-if(bindingsFound==null||bindingsFound.isEmpty()||bindingsFound[0]==null){
++List<di_Binding>bindingsFound=Bindings.bySObject(bindingSObjectType).byName(developerName.toLowerCase().trim()).get();
++if(bindingsFound.isEmpty()||bindingsFound[0]==null){
+@@ -59 +41 @@
+-privatestringbindingObjectApiName=null;
++privateStringbindingObjectApiName=null;
+@@ -62,20 +44 @@
+-List<di_BindingConfigWrapper>recordList=newList<di_BindingConfigWrapper>();
+-if(di_Injector.mock_BindingConfigurationWrappersOuter!=null){
+-recordList=di_Injector.mock_BindingConfigurationWrappersOuter;
+-}else{
+-List<di_Binding__mdt>bindingMDTRec=[SELECTQualifiedAPIName
+-,DeveloperName
+-,BindingName__c
+-,NamespacePrefix
+-,Type__c
+-,To__c
+-,BindingObject__c
+-,BindingObject__r.QualifiedApiName
+-,BindingObjectAlternate__c
+-,BindingSequence__c
+-FROMdi_Binding__mdt];
+-for(di_Binding__mdtrecords:bindingMDTRec){
+-recordList.add(newdi_BindingConfigWrapper(records));
+-}
+-}
+-returnrecordList;
++returnmock_BindingConfigurationWrappersOuter!=null?mock_BindingConfigurationWrappersOuter:[SELECTQualifiedAPIName,DeveloperName,BindingName__c,NamespacePrefix,Type__c,To__c,BindingObject__c,BindingObject__r.QualifiedApiName,BindingObjectAlternate__c,BindingSequence__cFROMdi_Binding__mdt].convert(newdi_BindingConfigWrapper());
+@@ -87,7 +50,4 @@
+-if(String.isNotBlank(bindingConfig.BindingObject)
+-||String.isNotBlank(bindingConfig.BindingObjectAlternate)){
+-bindingObjectApiName=String.isNotBlank(bindingConfig.BindingObject)
+-?bindingConfig.bindingObjectQualifiedApiName.toLowerCase().trim()
+-:bindingConfig.BindingObjectAlternate.toLowerCase().trim();
+-Schema.DescribeSobjectResult[]results=Schema.describeSObjects(newString[]{bindingObjectApiName});
+-if(results.size()!=1){
++if(String.isNotBlank(bindingConfig.BindingObject)||String.isNotBlank(bindingConfig.BindingObjectAlternate)){
++bindingObjectApiName=String.isNotBlank(bindingConfig.BindingObject)?bindingConfig.bindingObjectQualifiedApiName.toLowerCase().trim():bindingConfig.BindingObjectAlternate.toLowerCase().trim();
++Schema.SObjectTypesObjectType=Schema.getGlobalDescribe().get(bindingObjectApiName);
++if(sObjectType==null){
+@@ -96 +56 @@
+-bind(results[0].getSObjectType());
++bind(sObjectType);
+
+--- backup/classes\di_Module.cls
++++ refactored/classes\di_Module.cls
+@@ -81 +81 @@
+-returnthis.bindings;
++returnbindings;

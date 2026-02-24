@@ -1,0 +1,468 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -3,14 +3,7 @@
+-@AuraEnabled
+-publicStringBindingTypeAsString{get{returnBindingType.name();}}
+-@AuraEnabled
+-publicStringNamespacePrefix{get;privateset;}
+-@AuraEnabled
+-publicStringDeveloperName{get;privateset;}
+-@AuraEnabled
+-publicSObjectTypeBindingObject{get;privateset;}
+-@AuraEnabled
+-publicIntegerBindingSequence{get;privateset;}
+-@AuraEnabled
+-publicObjectTo{get;privateset;}
+-@AuraEnabled
+-publicObjectData{get;privateset;}
++@AuraEnabledpublicStringBindingTypeAsString{get{returnBindingType.name();}}
++@AuraEnabledpublicStringNamespacePrefix{get;privateset;}
++@AuraEnabledpublicStringDeveloperName{get;privateset;}
++@AuraEnabledpublicSObjectTypeBindingObject{get;privateset;}
++@AuraEnabledpublicIntegerBindingSequence{get;privateset;}
++@AuraEnabledpublicObjectTo{get;privateset;}
++@AuraEnabledpublicObjectData{get;privateset;}
+@@ -28 +21 @@
+-}elseif(newInstance==true){
++}elseif(newInstance){
+@@ -41,2 +34 @@
+-StringhashValue=
+-(BindingObject!=null)?
++StringhashValue=(BindingObject!=null)?
+@@ -85,2 +77 @@
+-publicResolverreplaceBindingWith(ObjectmockType)
+-{
++publicResolverreplaceBindingWith(ObjectmockType){
+@@ -88,5 +79,10 @@
+-for(IntegercurrentBindingsIndex=0;currentBindingsIndex<this.bindings.size();currentBindingsIndex++)
+-{
+-if(isBindingMatchByFilteringCriteria(this.bindings[currentBindingsIndex]))
+-{
+-this.bindings[currentBindingsIndex]=di_Binding.newInstance(di_Binding.BindingType.Apex,this.developerName,this.bindingObject,null,mockType,null);
++for(Integeri=0;i<bindings.size();i++){
++if(isBindingMatchByFilteringCriteria(bindings[i])){
++bindings[i]=di_Binding.newInstance(
++di_Binding.BindingType.Apex,
++this.developerName,
++this.bindingObject,
++null,
++mockType,
++null
++);
+@@ -100,2 +96 @@
+-privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind)
+-{
++privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind){
+@@ -103,7 +98,4 @@
+-if(String.isNotBlank(this.developerName)&&this.bindingObject!=null)
+-{
+-if((this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-&&this.bindingObject==bind.BindingObject)
+-{
++if(String.isNotBlank(this.developerName)&&this.bindingObject!=null){
++if((this.developerName.equalsIgnoreCase(bind.DeveloperName)||
++this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))&&
++this.bindingObject==bind.BindingObject){
+@@ -112,8 +104,4 @@
+-}
+-else{
+-if(String.isNotBlank(this.developerName)
+-&&(this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-)
+-{
++}else{
++if(String.isNotBlank(this.developerName)&&
++(this.developerName.equalsIgnoreCase(bind.DeveloperName)||
++this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))){
+@@ -121,3 +109 @@
+-}
+-elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject)
+-{
++}elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject){
+@@ -129,7 +115,4 @@
+-privatevoidloadBindings()
+-{
+-if(this.bindings==null)
+-{
+-this.bindings=newList<di_Binding>();
+-for(di_Modulemodule:modules)
+-{
++privatevoidloadBindings(){
++if(bindings==null){
++bindings=newList<di_Binding>();
++for(di_Modulemodule:modules){
+@@ -141 +124 @@
+-this.bindings.addAll(embeddedModule.getBindings());
++bindings.addAll(embeddedModule.getBindings());
+@@ -143,13 +126,10 @@
+-this.bindings.add(bind);
+-}
+-}
+-}
+-}
+-}
+-publicList<di_Binding>get()
+-{
+-list<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
+-if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())
+-||!di_PlatformCache.isStoringBindingInPlatformCache()
+-)
+-{
++bindings.add(bind);
++}
++}
++}
++}
++}
++publicList<di_Binding>get(){
++List<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
++if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())||
++!di_PlatformCache.isStoringBindingInPlatformCache()){
+@@ -157,4 +137,2 @@
+-for(di_Bindingbind:bindings)
+-{
+-if(isBindingMatchByFilteringCriteria(bind))
+-{
++for(di_Bindingbind:bindings){
++if(isBindingMatchByFilteringCriteria(bind)){
+@@ -195,2 +173 @@
+-privatestaticfinalMap<BindingType,Type>BINDING_IMPLS_BY_TYPE=
+-newMap<BindingType,Type>{
++privatestaticfinalMap<BindingType,Type>BINDING_IMPLS_BY_TYPE=newMap<BindingType,Type>{
+@@ -203,6 +180,3 @@
+-privateclassApexBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassApexBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -210,3 +184,2 @@
+-TypetoType=NameSpacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
+-if(toType==null)
+-{
++TypetoType=NamespacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
++if(toType==null){
+@@ -217,2 +190 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -220,3 +192 @@
+-}
+-elseif(params!=null)
+-{
++}elseif(params!=null){
+@@ -230,6 +200,3 @@
+-privateclassVisualForceComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassVisualForceComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -238,2 +205 @@
+-if(toType==null)
+-{
++if(toType==null){
+@@ -244,2 +210 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -253,13 +218,8 @@
+-privateclassLightningComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-returnTo;
+-}
+-}
+-privateclassFlowBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassLightningComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++returnTo;
++}
++}
++privateclassFlowBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -267,2 +227 @@
+-if(paramsinstanceofMap<String,Object>)
+-{
++if(paramsinstanceofMap<String,Object>){
+
+--- backup/classes\di_PlatformCache.cls
++++ refactored/classes\di_PlatformCache.cls
+@@ -1,4 +1,2 @@
+-publicwithsharingclassdi_PlatformCache
+-{
+-publicstaticfinalIntegerNUM_OF_SECS_IN24HR=86400;
+-@TestVisible
++publicwithsharingclassdi_PlatformCache{
++privatestaticfinalIntegerNUM_OF_SECS_IN24HR=86400;
+@@ -6 +3,0 @@
+-@TestVisible
+@@ -8 +4,0 @@
+-@TestVisible
+@@ -10 +5,0 @@
+-@TestVisible
+@@ -12 +6,0 @@
+-@TestVisible
+@@ -14,7 +8,3 @@
+-privatedi_PlatformCache()
+-{
+-}
+-publicstaticdi_PlatformCachegetInstance()
+-{
+-if(instance==null)
+-{
++privatedi_PlatformCache(){}
++publicstaticdi_PlatformCachegetInstance(){
++if(instance==null){
+@@ -25,3 +15,4 @@
+-publicstaticBooleanisStoringBindingInPlatformCache()
+-{
+-returngetConfig().UsePlatformCacheToStoreBindings__c==null?false:(getConfig().UsePlatformCacheToStoreBindings__c&&getPartition()!=null);
++publicstaticBooleanisStoringBindingInPlatformCache(){
++returngetConfig().UsePlatformCacheToStoreBindings__c!=null&&
++getConfig().UsePlatformCacheToStoreBindings__c&&
++getPartition()!=null;
+@@ -29,6 +20,3 @@
+-publicMap<String,Map<Schema.SObjectType,Set<String>>>getCacheKeyIndexMap()
+-{
+-if(cacheKeyIndexMap.isEmpty())
+-{
+-try
+-{
++publicMap<String,Map<Schema.SObjectType,Set<String>>>getCacheKeyIndexMap(){
++if(cacheKeyIndexMap.isEmpty()){
++try{
+@@ -36,2 +24 @@
+-if(orgPartition!=null)
+-{
++if(orgPartition!=null){
+@@ -40,3 +27 @@
+-}
+-catch(Cache.Org.OrgCacheExceptionex)
+-{
++}catch(Cache.Org.OrgCacheExceptionex){
+@@ -45,2 +30 @@
+-if(cacheKeyIndexMap==null)
+-{
++if(cacheKeyIndexMap==null){
+@@ -52,2 +36 @@
+-publicBooleanaddBindingToPlatformCache(di_Bindingbinding)
+-{
++publicBooleanaddBindingToPlatformCache(di_Bindingbinding){
+@@ -55,2 +38 @@
+-if(isStoringBindingInPlatformCache())
+-{
++if(isStoringBindingInPlatformCache()){
+@@ -58,2 +40 @@
+-if(orgPartition!=null)
+-{
++if(orgPartition!=null){
+@@ -62,3 +43,2 @@
+-if(orgPartition.contains(theKeyName))
+-{
+-workingBindings.addAll((List<di_Binding>)orgPartition.get(theKeyName));
++if(orgPartition.contains(theKeyName)){
++workingBindings=(List<di_Binding>)orgPartition.get(theKeyName);
+@@ -67,3 +47,2 @@
+-log('Addingbindingforhash=>'+theKeyName+'&&developerName=>'+binding.developerName+'&&object=>'+binding.bindingObject);
+-try
+-{
++log('Addingbindingforhash=>'+theKeyName+'&&developerName=>'+binding.DeveloperName+'&&object=>'+binding.BindingObject);
++try{
+@@ -71,3 +50 @@
+-}
+-catch(cache.Org.OrgCacheExceptionoce)
+-{
++}catch(Cache.Org.OrgCacheExceptionoce){
+@@ -82,7 +59,5 @@
+-publiclist<di_Binding>retrieveBindings(StringdeveloperName,Schema.SObjectTypebindingSObjectType)
+-{
+-list<di_Binding>bindings=newlist<di_Binding>();
+-if(isStoringBindingInPlatformCache()
+-&&string.isNotBlank(developerName)
+-&&bindingSObjectType!=null)
+-{
++publicList<di_Binding>retrieveBindings(StringdeveloperName,Schema.SObjectTypebindingSObjectType){
++List<di_Binding>bindings=newList<di_Binding>();
++if(isStoringBindingInPlatformCache()&&
++String.isNotBlank(developerName)&&
++bindingSObjectType!=null){
+@@ -92,2 +67 @@
+-if(keyIndexBySObjectTypeMap!=null&&orgPartition!=null)
+-{
++if(keyIndexBySObjectTypeMap!=null&&orgPartition!=null){
+@@ -95,8 +69,4 @@
+-if(cacheKeys!=null)
+-{
+-ObjectcachedObject=null;
+-for(StringcacheKey:cacheKeys)
+-{
+-cachedObject=orgPartition.get(cacheKey);
+-if(cachedObject!=null)
+-{
++if(cacheKeys!=null){
++for(StringcacheKey:cacheKeys){
++ObjectcachedObject=orgPartition.get(cacheKey);
++if(cachedObject!=null){
+@@ -113,2 +83 @@
+-if(keys!=null)
+-{
++if(keys!=null){
+@@ -117,4 +86,2 @@
+-for(Stringkey:partition.getKeys())
+-{
+-try
+-{
++for(Stringkey:partition.getKeys()){
++try{
+@@ -122,3 +89 @@
+-}
+-catch(Exceptionex)
+-{
++}catch(Exceptionex){
+@@ -130,2 +95 @@
+-publicstaticSet<String>getPartitionKeys()
+-{
++publicstaticSet<String>getPartitionKeys(){
+@@ -134,2 +98 @@
+-if(partition!=null)
+-{
++if(partition!=null){
+@@ -140,3 +103 @@
+-@TestVisible
+-privatestaticdi_Configurations__cgetConfig()
+-{
++privatestaticdi_Configurations__cgetConfig(){
+@@ -144,2 +105 @@
+-if(config==null)
+-{
++if(config==null){
+@@ -148,2 +108 @@
+-if(di_Configurations__c.SObjectType.getDescribe().isCreateable())
+-{
++if(di_Configurations__c.SObjectType.getDescribe().isCreateable()){
+@@ -155,3 +114 @@
+-@TestVisible
+-privatestaticStringgetPartitionName()
+-{
++privatestaticStringgetPartitionName(){
+@@ -160,3 +117 @@
+-@TestVisible
+-privateIntegergetPartitionTTL()
+-{
++privateIntegergetPartitionTTL(){
+@@ -165,3 +120 @@
+-@TestVisible
+-privatestaticCache.OrgPartitiongetPartition()
+-{
++privatestaticCache.OrgPartitiongetPartition(){
+@@ -169,2 +122 @@
+-try
+-{
++try{
+@@ -172,3 +124 @@
+-}
+-catch(Exceptionexcp)
+-{
++}catch(Exceptionexcp){
+@@ -179,3 +129 @@
+-@TestVisible
+-privatebooleanpushCacheKeyIndexMapToCache()
+-{
++privateBooleanpushCacheKeyIndexMapToCache(){
+@@ -183,3 +131,2 @@
+-if(orgPartition!=null)
+-{
+-orgPartition.put(getKeyIndexName(),this.cacheKeyIndexMap,getPartitionTTL(),Cache.Visibility.ALL,false);
++if(orgPartition!=null){
++orgPartition.put(getKeyIndexName(),cacheKeyIndexMap,getPartitionTTL(),Cache.Visibility.ALL,false);
+@@ -189,3 +136 @@
+-@TestVisible
+-privatevoidaddBindingToKeyIndex(di_Bindingbinding)
+-{
++privatevoidaddBindingToKeyIndex(di_Bindingbinding){
+@@ -195,3 +140,2 @@
+-StringworkingDeveloperName=binding.developerName.toLowerCase().trim();
+-if(!getCacheKeyIndexMap().containsKey(workingDeveloperName))
+-{
++StringworkingDeveloperName=binding.DeveloperName.toLowerCase().trim();
++if(!getCacheKeyIndexMap().containsKey(workingDeveloperName)){
+@@ -200,3 +144,2 @@
+-if(!getCacheKeyIndexMap().get(workingDeveloperName).containsKey(binding.bindingObject))
+-{
+-getCacheKeyIndexMap().get(workingDeveloperName).put(binding.bindingObject,newSet<String>());
++if(!getCacheKeyIndexMap().get(workingDeveloperName).containsKey(binding.BindingObject)){
++getCacheKeyIndexMap().get(workingDeveloperName).put(binding.BindingObject,newSet<String>());
+@@ -204 +147 @@
+-getCacheKeyIndexMap().get(workingDeveloperName).get(binding.bindingObject).add(getKeyName(binding));
++getCacheKeyIndexMap().get(workingDeveloperName).get(binding.BindingObject).add(getKeyName(binding));
+@@ -207,3 +150 @@
+-@TestVisible
+-privateStringconstructKeyName(Schema.SObjectTypebindingSObjectType,StringdeveloperName)
+-{
++privateStringconstructKeyName(Schema.SObjectTypebindingSObjectType,StringdeveloperName){
+@@ -213,4 +154,3 @@
+-Stringkey=((bindingSObjectType!=null)?bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__',''):'')
+-+(String.isBlank(developerName)?'':developerName.toLowerCase().trim());
+-if(generatedKeyNames.containsKey(key))
+-{
++Stringkey=(bindingSObjectType!=null?bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__',''):'')+
++(String.isBlank(developerName)?'':developerName.toLowerCase().trim());
++if(generatedKeyNames.containsKey(key)){
+@@ -219 +159 @@
+-Stringhash=String.valueOf(Math.abs((key).hashcode()));
++Stringhash=String.valueOf(Math.abs((key).hashCode()));
+@@ -224,3 +164 @@
+-@TestVisible
+-privateStringgetKeyName(StringdeveloperName,Schema.SObjectTypebindingSObjectType)
+-{
++privateStringgetKeyName(StringdeveloperName,Schema.SObjectTypebindingSObjectType){
+@@ -229,4 +167,2 @@
+-@TestVisible
+-privateStringgetKeyName(di_Bindingbinding)
+-{
+-returnconstructKeyName(binding.bindingObject,binding.developerName);
++privateStringgetKeyName(di_Bindingbinding){
++returnconstructKeyName(binding.BindingObject,binding.DeveloperName);
+@@ -234,3 +170 @@
+-@TestVisible
+-privateStringgetKeyIndexName()
+-{
++privatestaticStringgetKeyIndexName(){
+@@ -239,4 +173,2 @@
+-@TestVisible
+-privatestaticBooleanlog(Exceptionexcp)
+-{
+-Booleanbefore=DEBUGGING,result;
++privatestaticBooleanlog(Exceptionexcp){
++Booleanbefore=DEBUGGING;
+@@ -244 +176 @@
+-result=log('Exception:'+excp.getMessage());
++Booleanresult=log('Exception:'+excp.getMessage());
+@@ -248,6 +180,3 @@
+-@TestVisible
+-privatestaticBooleanlog(Stringmessage)
+-{
+-BooleandoLog=DEBUGGING&&string.isNotBlank(message);
+-if(doLog)
+-{
++privatestaticBooleanlog(Stringmessage){
++BooleandoLog=DEBUGGING&&String.isNotBlank(message);
++if(doLog){

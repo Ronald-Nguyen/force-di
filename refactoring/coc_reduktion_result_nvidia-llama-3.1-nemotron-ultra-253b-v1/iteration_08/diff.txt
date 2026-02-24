@@ -1,0 +1,189 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -3,14 +3,7 @@
+-@AuraEnabled
+-publicStringBindingTypeAsString{get{returnBindingType.name();}}
+-@AuraEnabled
+-publicStringNamespacePrefix{get;privateset;}
+-@AuraEnabled
+-publicStringDeveloperName{get;privateset;}
+-@AuraEnabled
+-publicSObjectTypeBindingObject{get;privateset;}
+-@AuraEnabled
+-publicIntegerBindingSequence{get;privateset;}
+-@AuraEnabled
+-publicObjectTo{get;privateset;}
+-@AuraEnabled
+-publicObjectData{get;privateset;}
++@AuraEnabledpublicStringBindingTypeAsString{get{returnBindingType.name();}}
++@AuraEnabledpublicStringNamespacePrefix{get;privateset;}
++@AuraEnabledpublicStringDeveloperName{get;privateset;}
++@AuraEnabledpublicSObjectTypeBindingObject{get;privateset;}
++@AuraEnabledpublicIntegerBindingSequence{get;privateset;}
++@AuraEnabledpublicObjectTo{get;privateset;}
++@AuraEnabledpublicObjectData{get;privateset;}
+@@ -28 +21 @@
+-}elseif(newInstance==true){
++}elseif(newInstance){
+@@ -41,4 +34 @@
+-StringhashValue=
+-(BindingObject!=null)?
+-BindingObject.getDescribe().getName():
+-DeveloperName;
++StringhashValue=(BindingObject!=null)?BindingObject.getDescribe().getName():DeveloperName;
+@@ -85,2 +75 @@
+-publicResolverreplaceBindingWith(ObjectmockType)
+-{
++publicResolverreplaceBindingWith(ObjectmockType){
+@@ -88,5 +77,10 @@
+-for(IntegercurrentBindingsIndex=0;currentBindingsIndex<this.bindings.size();currentBindingsIndex++)
+-{
+-if(isBindingMatchByFilteringCriteria(this.bindings[currentBindingsIndex]))
+-{
+-this.bindings[currentBindingsIndex]=di_Binding.newInstance(di_Binding.BindingType.Apex,this.developerName,this.bindingObject,null,mockType,null);
++for(IntegercurrentBindingsIndex=0;currentBindingsIndex<this.bindings.size();currentBindingsIndex++){
++if(isBindingMatchByFilteringCriteria(this.bindings[currentBindingsIndex])){
++this.bindings[currentBindingsIndex]=di_Binding.newInstance(
++di_Binding.BindingType.Apex,
++this.developerName,
++this.bindingObject,
++null,
++mockType,
++null
++);
+@@ -100,2 +94 @@
+-privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind)
+-{
++privateBooleanisBindingMatchByFilteringCriteria(di_Bindingbind){
+@@ -103,2 +96 @@
+-if(String.isNotBlank(this.developerName)&&this.bindingObject!=null)
+-{
++if(String.isNotBlank(this.developerName)&&this.bindingObject!=null){
+@@ -106,4 +98,2 @@
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-&&this.bindingObject==bind.BindingObject)
+-{
++||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))
++&&this.bindingObject==bind.BindingObject){
+@@ -112,2 +102 @@
+-}
+-else{
++}else{
+@@ -116,4 +105 @@
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-)
+-{
++||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName))){
+@@ -121,3 +107 @@
+-}
+-elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject)
+-{
++}elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject){
+@@ -129,4 +113,2 @@
+-privatevoidloadBindings()
+-{
+-if(this.bindings==null)
+-{
++privatevoidloadBindings(){
++if(this.bindings==null){
+@@ -134,2 +116 @@
+-for(di_Modulemodule:modules)
+-{
++for(di_Modulemodule:modules){
+@@ -149,3 +130,2 @@
+-publicList<di_Binding>get()
+-{
+-list<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
++publicList<di_Binding>get(){
++List<di_Binding>matchedBindings=di_PlatformCache.getInstance().retrieveBindings(this.developerName,this.bindingObject);
+@@ -153,3 +133 @@
+-||!di_PlatformCache.isStoringBindingInPlatformCache()
+-)
+-{
++||!di_PlatformCache.isStoringBindingInPlatformCache()){
+@@ -157,4 +135,2 @@
+-for(di_Bindingbind:bindings)
+-{
+-if(isBindingMatchByFilteringCriteria(bind))
+-{
++for(di_Bindingbind:bindings){
++if(isBindingMatchByFilteringCriteria(bind)){
+@@ -180,2 +156 @@
+-ObjectbindingData)
+-{
++ObjectbindingData){
+@@ -195,2 +170 @@
+-privatestaticfinalMap<BindingType,Type>BINDING_IMPLS_BY_TYPE=
+-newMap<BindingType,Type>{
++privatestaticfinalMap<BindingType,Type>BINDING_IMPLS_BY_TYPE=newMap<BindingType,Type>{
+@@ -203,6 +177,3 @@
+-privateclassApexBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassApexBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -210,3 +181,2 @@
+-TypetoType=NameSpacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
+-if(toType==null)
+-{
++TypetoType=NamespacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
++if(toType==null){
+@@ -217,2 +187 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -220,3 +189 @@
+-}
+-elseif(params!=null)
+-{
++}elseif(params!=null){
+@@ -230,6 +197,3 @@
+-privateclassVisualForceComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassVisualForceComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -238,2 +202 @@
+-if(toType==null)
+-{
++if(toType==null){
+@@ -244,2 +207 @@
+-if(IsProvider)
+-{
++if(IsProvider){
+@@ -253,13 +215,8 @@
+-privateclassLightningComponentBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-returnTo;
+-}
+-}
+-privateclassFlowBindingextendsdi_Binding
+-{
+-publicoverrideObjectnewInstance(Objectparams)
+-{
+-if(ToinstanceofString)
+-{
++privateclassLightningComponentBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++returnTo;
++}
++}
++privateclassFlowBindingextendsdi_Binding{
++publicoverrideObjectnewInstance(Objectparams){
++if(ToinstanceofString){
+@@ -267,2 +224 @@
+-if(paramsinstanceofMap<String,Object>)
+-{
++if(paramsinstanceofMap<String,Object>){
