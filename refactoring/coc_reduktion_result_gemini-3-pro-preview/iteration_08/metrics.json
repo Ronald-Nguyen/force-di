@@ -1,0 +1,122 @@
+{
+  "iteration": 8,
+  "timestamp": "2026-02-24T16:46:47.681156",
+  "refactoring": "refactoring/coc_reduktion",
+  "changed_files_scope": [
+    "classes\\di_Binding.cls",
+    "classes\\di_BindingParam.cls",
+    "classes\\di_Injector.cls",
+    "classes\\di_PlatformCache.cls"
+  ],
+  "test": {
+    "status": "passed",
+    "success": true,
+    "level": 2
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=13321, completion=8954, total=28869",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T16:46:19.817686",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_gemini-3-pro-preview\\iteration_08\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_Binding.cls",
+        "classes/di_BindingParam.cls",
+        "classes/di_Injector.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_gemini-3-pro-preview\\iteration_08\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_gemini-3-pro-preview\\iteration_08\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 824,
+        "loc": 1269,
+        "count": 4
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 824,
+        "loc": 1269,
+        "count": 4
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T16:46:21.842032",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_gemini-3-pro-preview\\iteration_08\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_Binding.cls",
+        "classes/di_BindingParam.cls",
+        "classes/di_Injector.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_gemini-3-pro-preview\\iteration_08\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\coc_reduktion_result_gemini-3-pro-preview\\iteration_08\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 627,
+        "loc": 994,
+        "count": 4
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 627,
+        "loc": 994,
+        "count": 4
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": -197,
+      "loc": -275,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": -197,
+      "loc": -275,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "coc_reduktion",
+    "targets": {},
+    "ok": true,
+    "checks": {
+      "coc_reduktion": {
+        "passed": true,
+        "pmd_delta_total_complexity": -197,
+        "rule": "delta<=0"
+      }
+    }
+  }
+}

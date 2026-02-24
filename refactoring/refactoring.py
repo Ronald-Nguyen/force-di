@@ -20,18 +20,18 @@ python refactoring/refactoring.py --refactoring rename
 
 REFACTORINGS = [
     "coc_reduktion",
-    "getter_setter",
+    #"getter_setter",
     "guard_clauses",
     "inline_variable",
-    "rename",
+    #"rename",
     "strategy_pattern",
 ]
 REFACTORING_BASE_DIR = "refactoring"
-DEFAULT_REFACTORING = "rename" \
+DEFAULT_REFACTORING = "strategy_pattern" \
 ""
-RESULT_PATH = "_result_"
+RESULT_PATH = "_result2_"
 PATH = 'force-di/main'
-ITERATIONS = 2
+ITERATIONS = 8
 GEMMA = 'gemma-3-27b-it'
 GEMINI3 = 'gemini-3-pro-preview'
 GEMINI2 = 'gemini-2.5-flash'
@@ -45,7 +45,7 @@ MODEL_MISTRAL = CODESTRAL
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 MISTRAL_API_KEY = os.environ.get('MISTRAL_API_KEY2')
-LLM_API_KEY = MISTRAL_API_KEY    
+LLM_API_KEY = GEMINI_API_KEY    
 client = None
 MODEL = None
 

@@ -1,0 +1,130 @@
+{
+  "iteration": 2,
+  "timestamp": "2026-02-24T16:59:54.451290",
+  "refactoring": "refactoring/guard_clauses",
+  "changed_files_scope": [
+    "classes\\di_PlatformCache.cls"
+  ],
+  "test": {
+    "status": "passed",
+    "success": true,
+    "level": 2
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=13702, completion=2388, total=25572",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T16:59:24.936401",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_02\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_02\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_02\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 131,
+        "loc": 340,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 131,
+        "loc": 340,
+        "count": 1
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T16:59:26.685043",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_02\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_02\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_02\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 97,
+        "loc": 322,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 97,
+        "loc": 322,
+        "count": 1
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": -34,
+      "loc": -18,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": -34,
+      "loc": -18,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "guard_clauses",
+    "targets": {},
+    "ok": true,
+    "checks": {
+      "guard_clauses": {
+        "passed": true,
+        "improved_files": [
+          "classes\\di_PlatformCache.cls"
+        ],
+        "comparisons": [
+          {
+            "file": "classes\\di_PlatformCache.cls",
+            "before_max_if_nesting": 4,
+            "after_max_if_nesting": 5,
+            "before_guard_clauses": 2,
+            "after_guard_clauses": 12,
+            "delta_max_if_nesting": 1,
+            "delta_guard_clauses": 10
+          }
+        ],
+        "totals": {
+          "delta_guard_clauses": 10,
+          "delta_max_if_nesting": 1
+        },
+        "note": "heuristic_early_exit_and_nesting"
+      }
+    }
+  }
+}

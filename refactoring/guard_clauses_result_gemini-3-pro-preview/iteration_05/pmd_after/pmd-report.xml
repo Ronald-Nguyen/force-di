@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 https://pmd.github.io/schema/report_2_0_0.xsd" version="7.21.0" timestamp="2026-02-24T17:07:06.111">
+<file name="C:\Users\ronald\force-di\refactoring\guard_clauses_result_gemini-3-pro-preview\iteration_05\pmd_after\subset_src\classes\di_PlatformCache.cls">
+<violation beginline="1" endline="321" begincolumn="21" endcolumn="2" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The class 'di_PlatformCache' has a total cognitive complexity of 54 (highest 8), current threshold is 50
+</violation>
+<violation beginline="21" endline="29" begincolumn="19" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInstance()' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="32" endline="35" begincolumn="19" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'isStoringBindingInPlatformCache()' has a cognitive complexity of 2, current threshold is 1
+</violation>
+<violation beginline="37" endline="63" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getCacheKeyIndexMap()' has a cognitive complexity of 4, current threshold is 1
+</violation>
+<violation beginline="65" endline="100" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'addBindingToPlatformCache(di_Binding)' has a cognitive complexity of 4, current threshold is 1
+</violation>
+<violation beginline="102" endline="141" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'retrieveBindings(String, Schema.SObjectType)' has a cognitive complexity of 8, current threshold is 1
+</violation>
+<violation beginline="143" endline="164" begincolumn="19" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'clearCachedBindings()' has a cognitive complexity of 6, current threshold is 1
+</violation>
+<violation beginline="167" endline="176" begincolumn="19" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getPartitionKeys()' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="179" endline="195" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getConfig()' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="210" endline="222" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getPartition()' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="225" endline="233" begincolumn="13" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'pushCacheKeyIndexMapToCache()' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="236" endline="256" begincolumn="13" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'addBindingToKeyIndex(di_Binding)' has a cognitive complexity of 3, current threshold is 1
+</violation>
+<violation beginline="259" endline="277" begincolumn="13" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'constructKeyName(Schema.SObjectType, String)' has a cognitive complexity of 4, current threshold is 1
+</violation>
+<violation beginline="299" endline="308" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'log(Exception)' has a cognitive complexity of 1, current threshold is 1
+</violation>
+<violation beginline="312" endline="320" begincolumn="20" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'log(String)' has a cognitive complexity of 2, current threshold is 1
+</violation>
+</file>
+</pmd>

@@ -1,0 +1,14 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -41,2 +41 @@
+-StringhashValue=
+-(BindingObject!=null)?
++return((BindingObject!=null)?
+@@ -44,5 +43,2 @@
+-DeveloperName;
+-if(BindingSequence!=null){
+-hashValue+='#'+String.valueOf(BindingSequence).leftPad(4,'0');
+-}
+-returnhashValue;
++DeveloperName)+
++((BindingSequence!=null)?'#'+String.valueOf(BindingSequence).leftPad(4,'0'):'');

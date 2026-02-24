@@ -1,0 +1,76 @@
+--- backup/classes\di_PlatformCache.cls
++++ refactored/classes\di_PlatformCache.cls
+@@ -31,2 +31,4 @@
+-if(cacheKeyIndexMap.isEmpty())
+-{
++if(!cacheKeyIndexMap.isEmpty())
++{
++returncacheKeyIndexMap;
++}
+@@ -49 +50,0 @@
+-}
+@@ -54,6 +55,7 @@
+-Booleanresult=false;
+-if(isStoringBindingInPlatformCache())
+-{
+-Cache.OrgPartitionorgPartition=getPartition();
+-if(orgPartition!=null)
+-{
++if(!isStoringBindingInPlatformCache()){
++returnfalse;
++}
++Cache.OrgPartitionorgPartition=getPartition();
++if(orgPartition==null){
++returnfalse;
++}
+@@ -77,4 +79 @@
+-result=true;
+-}
+-}
+-returnresult;
++returntrue;
+@@ -85,4 +84,4 @@
+-if(isStoringBindingInPlatformCache()
+-&&string.isNotBlank(developerName)
+-&&bindingSObjectType!=null)
+-{
++if(!isStoringBindingInPlatformCache()||String.isBlank(developerName)||bindingSObjectType==null)
++{
++returnbindings;
++}
+@@ -90,0 +90,3 @@
++if(orgPartition==null){
++returnbindings;
++}
+@@ -92,2 +94,4 @@
+-if(keyIndexBySObjectTypeMap!=null&&orgPartition!=null)
+-{
++if(keyIndexBySObjectTypeMap==null)
++{
++returnbindings;
++}
+@@ -95,2 +99,4 @@
+-if(cacheKeys!=null)
+-{
++if(cacheKeys==null)
++{
++returnbindings;
++}
+@@ -101,2 +107,4 @@
+-if(cachedObject!=null)
+-{
++if(cachedObject==null)
++{
++continue;
++}
+@@ -104,4 +111,0 @@
+-}
+-}
+-}
+-}
+@@ -213,2 +217,3 @@
+-Stringkey=((bindingSObjectType!=null)?bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__',''):'')
+-+(String.isBlank(developerName)?'':developerName.toLowerCase().trim());
++StringobjectNamePart=(bindingSObjectType!=null)?bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__',''):'';
++StringdevNamePart=String.isBlank(developerName)?'':developerName.toLowerCase().trim();
++Stringkey=objectNamePart+devNamePart;

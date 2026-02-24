@@ -1,0 +1,143 @@
+{
+  "iteration": 10,
+  "timestamp": "2026-02-24T17:20:49.988887",
+  "refactoring": "refactoring/guard_clauses",
+  "changed_files_scope": [
+    "classes\\di_BindingParam.cls",
+    "classes\\di_PlatformCache.cls"
+  ],
+  "test": {
+    "status": "passed",
+    "success": true,
+    "level": 2
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=13702, completion=5851, total=30337",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T17:20:17.386723",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_10\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_BindingParam.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_10\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_10\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 449,
+        "loc": 732,
+        "count": 2
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 449,
+        "loc": 732,
+        "count": 2
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T17:20:19.189397",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_10\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_BindingParam.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_10\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_gemini-3-pro-preview\\iteration_10\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 297,
+        "loc": 697,
+        "count": 2
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 297,
+        "loc": 697,
+        "count": 2
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": -152,
+      "loc": -35,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": -152,
+      "loc": -35,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "guard_clauses",
+    "targets": {},
+    "ok": true,
+    "checks": {
+      "guard_clauses": {
+        "passed": true,
+        "improved_files": [
+          "classes\\di_BindingParam.cls",
+          "classes\\di_PlatformCache.cls"
+        ],
+        "comparisons": [
+          {
+            "file": "classes\\di_BindingParam.cls",
+            "before_max_if_nesting": 24,
+            "after_max_if_nesting": 12,
+            "before_guard_clauses": 0,
+            "after_guard_clauses": 2,
+            "delta_max_if_nesting": -12,
+            "delta_guard_clauses": 2
+          },
+          {
+            "file": "classes\\di_PlatformCache.cls",
+            "before_max_if_nesting": 4,
+            "after_max_if_nesting": 5,
+            "before_guard_clauses": 2,
+            "after_guard_clauses": 10,
+            "delta_max_if_nesting": 1,
+            "delta_guard_clauses": 8
+          }
+        ],
+        "totals": {
+          "delta_guard_clauses": 10,
+          "delta_max_if_nesting": -11
+        },
+        "note": "heuristic_early_exit_and_nesting"
+      }
+    }
+  }
+}

@@ -1,0 +1,167 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -28 +28,2 @@
+-}elseif(newInstance==true){
++}
++if(newInstance==true){
+@@ -30 +31,2 @@
+-}elseif(Injected==null){
++}
++if(Injected==null){
+@@ -102,26 +104,21 @@
+-BooleanisMatch=false;
+-if(String.isNotBlank(this.developerName)&&this.bindingObject!=null)
+-{
+-if((this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-&&this.bindingObject==bind.BindingObject)
+-{
+-isMatch=true;
+-}
+-}
+-else{
+-if(String.isNotBlank(this.developerName)
+-&&(this.developerName.equalsIgnoreCase(bind.DeveloperName)
+-||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName)
+-)
+-)
+-{
+-isMatch=true;
+-}
+-elseif(this.bindingObject!=null&&bind.BindingObject==this.bindingObject)
+-{
+-isMatch=true;
+-}
+-}
+-returnisMatch;
++BooleannameMatches=isNameMatch(bind);
++BooleanobjectMatches=isObjectMatch(bind);
++if(String.isNotBlank(this.developerName)&&this.bindingObject!=null){
++returnnameMatches&&objectMatches;
++}
++if(String.isNotBlank(this.developerName)){
++returnnameMatches;
++}
++if(this.bindingObject!=null){
++returnobjectMatches;
++}
++returnfalse;
++}
++privateBooleanisNameMatch(di_Bindingbind){
++if(String.isBlank(this.developerName))returnfalse;
++returnthis.developerName.equalsIgnoreCase(bind.DeveloperName)
++||this.developerName.equalsIgnoreCase(di_NamespaceClass.CURRENTNAMESPACE+'.'+bind.DeveloperName);
++}
++privateBooleanisObjectMatch(di_Bindingbind){
++if(this.bindingObject==null)returnfalse;
++returnbind.BindingObject==this.bindingObject;
+@@ -131,2 +128 @@
+-if(this.bindings==null)
+-{
++if(this.bindings!=null)return;
+@@ -142 +138,2 @@
+-}else{
++continue;
++}
+@@ -147,2 +143,0 @@
+-}
+-}
+@@ -152,3 +147 @@
+-if((di_PlatformCache.isStoringBindingInPlatformCache()&&bindingsAreRequired&&matchedBindings.isEmpty())
+-||!di_PlatformCache.isStoringBindingInPlatformCache()
+-)
++if(shouldLoadBindings(matchedBindings))
+@@ -169,0 +163,6 @@
++}
++privateBooleanshouldLoadBindings(List<di_Binding>matchedBindings){
++if(!di_PlatformCache.isStoringBindingInPlatformCache()){
++returntrue;
++}
++returnbindingsAreRequired&&matchedBindings.isEmpty();
+@@ -207,2 +206,4 @@
+-if(ToinstanceofString)
+-{
++if(!(ToinstanceofString))
++{
++returnTo;
++}
+@@ -210 +211 @@
+-TypetoType=NameSpacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
++TypetoType=NamespacePrefix==null?Type.forName(className):Type.forName(NamespacePrefix,className);
+@@ -221 +222 @@
+-elseif(params!=null)
++if(params!=null)
+@@ -227,2 +227,0 @@
+-returnTo;
+-}
+@@ -234,2 +233,4 @@
+-if(ToinstanceofString)
+-{
++if(!(ToinstanceofString))
++{
++returnTo;
++}
+@@ -250,2 +250,0 @@
+-returnTo;
+-}
+
+--- backup/classes\di_PlatformCache.cls
++++ refactored/classes\di_PlatformCache.cls
+@@ -54,6 +54,7 @@
+-Booleanresult=false;
+-if(isStoringBindingInPlatformCache())
+-{
+-Cache.OrgPartitionorgPartition=getPartition();
+-if(orgPartition!=null)
+-{
++if(!isStoringBindingInPlatformCache()){
++returnfalse;
++}
++Cache.OrgPartitionorgPartition=getPartition();
++if(orgPartition==null){
++returnfalse;
++}
+@@ -77,4 +78 @@
+-result=true;
+-}
+-}
+-returnresult;
++returntrue;
+@@ -85,4 +83,4 @@
+-if(isStoringBindingInPlatformCache()
+-&&string.isNotBlank(developerName)
+-&&bindingSObjectType!=null)
+-{
++if(!isStoringBindingInPlatformCache()||String.isBlank(developerName)||bindingSObjectType==null)
++{
++returnbindings;
++}
+@@ -90,0 +89,3 @@
++if(orgPartition==null){
++returnbindings;
++}
+@@ -92,2 +93,4 @@
+-if(keyIndexBySObjectTypeMap!=null&&orgPartition!=null)
+-{
++if(keyIndexBySObjectTypeMap==null)
++{
++returnbindings;
++}
+@@ -95,2 +98,4 @@
+-if(cacheKeys!=null)
+-{
++if(cacheKeys==null)
++{
++returnbindings;
++}
+@@ -104,3 +108,0 @@
+-}
+-}
+-}
+@@ -213,2 +215,3 @@
+-Stringkey=((bindingSObjectType!=null)?bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__',''):'')
+-+(String.isBlank(developerName)?'':developerName.toLowerCase().trim());
++StringobjectNamePart=(bindingSObjectType!=null)?bindingSObjectType.getDescribe().getName().toLowerCase().replaceAll('__',''):'';
++StringdevNamePart=String.isBlank(developerName)?'':developerName.toLowerCase().trim();
++Stringkey=objectNamePart+devNamePart;
