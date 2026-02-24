@@ -1,0 +1,126 @@
+{
+  "iteration": 6,
+  "timestamp": "2026-02-24T16:18:53.201927",
+  "refactoring": "refactoring/rename",
+  "changed_files_scope": [
+    "classes\\di_InjectorComponentController.cls"
+  ],
+  "test": {
+    "status": "passed",
+    "success": true,
+    "level": 2
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=11913, completion=263, total=12176",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T16:18:36.925207",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\rename_result3_codestral-2501\\iteration_06\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_InjectorComponentController.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\rename_result3_codestral-2501\\iteration_06\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\rename_result3_codestral-2501\\iteration_06\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 1,
+        "loc": 39,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 1,
+        "loc": 39,
+        "count": 1
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T16:18:38.542174",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\rename_result3_codestral-2501\\iteration_06\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_InjectorComponentController.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\rename_result3_codestral-2501\\iteration_06\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\rename_result3_codestral-2501\\iteration_06\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 1,
+        "loc": 34,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 1,
+        "loc": 34,
+        "count": 1
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": 0,
+      "loc": -5,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": 0,
+      "loc": -5,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "rename",
+    "targets": {
+      "old_method": "getInject",
+      "file": "di_InjectorComponentController.cls",
+      "new_method": "getInjectedComponent"
+    },
+    "ok": true,
+    "checks": {
+      "rename": {
+        "passed": true,
+        "old_method": "getInject",
+        "new_method": "getInjectedComponent",
+        "file_hint": "di_InjectorComponentController.cls",
+        "resolved_file": "classes/di_InjectorComponentController.cls",
+        "decl_old_in_file": false,
+        "decl_new_in_file": true,
+        "old_method_hits": [],
+        "new_method_hits": [
+          "classes/di_InjectorComponentController.cls"
+        ],
+        "reasons": []
+      }
+    }
+  }
+}

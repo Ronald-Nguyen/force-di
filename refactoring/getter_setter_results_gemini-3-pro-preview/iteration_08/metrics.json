@@ -1,0 +1,129 @@
+{
+  "iteration": 8,
+  "timestamp": "2026-02-19T11:29:34.019150",
+  "refactoring": "refactoring/getter_setter",
+  "changed_files_scope": [
+    "classes\\di_InjectorComponentController.cls"
+  ],
+  "test": {
+    "status": "passed",
+    "success": true,
+    "level": 2
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=13119, completion=333, total=18637",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-19T11:29:18.230215",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\getter_setter_results_gemini-3-pro-preview\\iteration_08\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_InjectorComponentController.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\getter_setter_results_gemini-3-pro-preview\\iteration_08\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\getter_setter_results_gemini-3-pro-preview\\iteration_08\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 1,
+        "loc": 39,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 1,
+        "loc": 39,
+        "count": 1
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-19T11:29:19.773686",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\getter_setter_results_gemini-3-pro-preview\\iteration_08\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_InjectorComponentController.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\getter_setter_results_gemini-3-pro-preview\\iteration_08\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\getter_setter_results_gemini-3-pro-preview\\iteration_08\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 1,
+        "loc": 45,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 1,
+        "loc": 45,
+        "count": 1
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": 0,
+      "loc": 6,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": 0,
+      "loc": 6,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "getter_setter",
+    "targets": {
+      "attr": "BindingNameValue",
+      "class": "di_InjectorComponentController",
+      "file": "di_InjectorComponentController.cls"
+    },
+    "ok": true,
+    "checks": {
+      "getter_setter": {
+        "passed": true,
+        "file": "classes/di_InjectorComponentController.cls",
+        "file_hint": "di_InjectorComponentController.cls",
+        "class": "di_InjectorComponentController",
+        "attr": "BindingNameValue",
+        "expected_getter": "getBindingNameValue",
+        "expected_setter": "setBindingNameValue",
+        "has_getter": true,
+        "has_setter": true,
+        "public_field_still_present": false,
+        "private_field_present": true,
+        "direct_access_hits_count": 0,
+        "direct_access_hits_sample": [],
+        "reasons": [],
+        "note": "getter_setter_requires_methods_and_no_public_field; dot-access_is_soft_signal"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 https://pmd.github.io/schema/report_2_0_0.xsd" version="7.21.0" timestamp="2026-02-19T13:57:37.996">
+<file name="C:\Users\ronald\force-di\refactoring\rename_results_gemini-3-pro-preview\iteration_01\pmd_after\subset_src\classes\di_InjectorComponentController.cls">
+<violation beginline="8" endline="20" begincolumn="12" endcolumn="6" rule="CognitiveComplexity" ruleset="Design" externalInfoUrl="https://docs.pmd-code.org/snapshot/pmd_rules_apex_design.html#cognitivecomplexity" priority="3">
+The method 'getInjectedComponent()' has a cognitive complexity of 1, current threshold is 1
+</violation>
+</file>
+</pmd>

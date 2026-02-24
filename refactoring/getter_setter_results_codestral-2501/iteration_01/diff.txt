@@ -1,0 +1,18 @@
+--- backup/classes\di_InjectorComponentController.cls
++++ refactored/classes\di_InjectorComponentController.cls
+@@ -2 +2 @@
+-publicStringBindingNameValue{set;get;}
++privateStringBindingNameValue;
+@@ -7 +7 @@
+-di_BindingbindingInfo=getBinding(BindingNameValue);
++di_BindingbindingInfo=getBinding(getBindingNameValue());
+@@ -13 +13 @@
+-cmp=(ApexPages.Component)di_Injector.Org.getInstance(BindingNameValue,ParametersValue);
++cmp=(ApexPages.Component)di_Injector.Org.getInstance(getBindingNameValue(),ParametersValue);
+@@ -19,0 +20,6 @@
++}
++publicStringgetBindingNameValue(){
++returnBindingNameValue;
++}
++publicvoidsetBindingNameValue(Stringvalue){
++BindingNameValue=value;

@@ -34,7 +34,7 @@ public class CalculateSum {
 ```
 
 Task:
-1. Rename the method `calculateSum` in the file: `CalculateSum.cls` to `add`.
+1. Rename the method calculateSum` in the file: CalculateSum.cls to add.
 2. Update every relevant occurrence across the entire project.
 3. Output format (for EACH modified file):
 
@@ -74,7 +74,7 @@ public class FindMaximum {
 ```
 
 Task:
-1. Rename the method `findMaximum` in the file: `FindMaximum.cls` to `getMax`.
+1. Rename the method findMaximum in the file: FindMaximum.cls to getMax.
 2. Update every relevant occurrence across the entire project.
 3. Output format (for EACH modified file):
 

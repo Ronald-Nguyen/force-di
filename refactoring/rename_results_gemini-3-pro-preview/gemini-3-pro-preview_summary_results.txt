@@ -1,0 +1,10 @@
+iteration 1 passed test passed diff passed Tokens: prompt=13125, completion=292, total=17906 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 2 passed test passed diff passed Tokens: prompt=13125, completion=292, total=16899 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 3 passed test passed diff passed Tokens: prompt=13125, completion=292, total=16858 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 4 passed test passed diff passed Tokens: prompt=13125, completion=293, total=16310 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 5 passed test passed diff passed Tokens: prompt=13125, completion=292, total=17063 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 6 passed test passed diff passed Tokens: prompt=13125, completion=292, total=18181 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 7 passed test passed diff passed Tokens: prompt=13125, completion=292, total=18177 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 8 passed test passed diff passed Tokens: prompt=13125, completion=292, total=18995 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 9 passed test passed diff passed Tokens: prompt=13125, completion=292, total=15528 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
+iteration 10 passed test passed diff passed Tokens: prompt=13125, completion=293, total=17109 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:ok
