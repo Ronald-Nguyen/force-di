@@ -1,0 +1,134 @@
+--- backup/classes\di_BindingParam.cls
++++ refactored/classes\di_BindingParam.cls
+@@ -3,11 +3,9 @@
+-@InvocableMethod(
+-label='GetValue'
+-)
+-publicstaticList<Response>invoke(List<Request>requests){
+-List<Response>responses=newList<Response>();
+-for(Requestreq:requests){
+-Responseres=newResponse();
+-if(parameters!=null){
+-Objectvalue=parameters.get(req.paramName);
+-if(value!=null){
+-if(valueinstanceofDecimal){
++privateinterfaceBindingParamStrategy{
++Booleanmatches(Objectvalue);
++voidexecute(Objectvalue,Responseres);
++}
++privateclassDecimalStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofDecimal;
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -21 +19,7 @@
+-}elseif(valueinstanceofDecimal[]){
++}
++}
++privateclassDecimalArrayStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofDecimal[];
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -31 +35,7 @@
+-}elseif(valueinstanceofString){
++}
++}
++privateclassStringStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofString;
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -39 +49,7 @@
+-}elseif(valueinstanceofString[]){
++}
++}
++privateclassStringArrayStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofString[];
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -49 +65,7 @@
+-}elseif(valueinstanceofBoolean){
++}
++}
++privateclassBooleanStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofBoolean;
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -57 +79,7 @@
+-}elseif(valueinstanceofBoolean[]){
++}
++}
++privateclassBooleanArrayStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofBoolean[];
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -67 +95,7 @@
+-}elseif(valueinstanceofDate){
++}
++}
++privateclassDateStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofDate;
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -75 +109,7 @@
+-}elseif(valueinstanceofDate[]){
++}
++}
++privateclassDateArrayStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofDate[];
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -85 +125,7 @@
+-}elseif(valueinstanceofDateTime){
++}
++}
++privateclassDateTimeStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofDateTime;
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -93 +139,7 @@
+-}elseif(valueinstanceofDateTime[]){
++}
++}
++privateclassDateTimeArrayStrategyimplementsBindingParamStrategy{
++publicBooleanmatches(Objectvalue){
++returnvalueinstanceofDateTime[];
++}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -101,0 +154,29 @@
++}
++}
++}
++privatestaticfinalList<BindingParamStrategy>STRATEGIES=newList<BindingParamStrategy>{
++newDecimalStrategy(),
++newDecimalArrayStrategy(),
++newStringStrategy(),
++newStringArrayStrategy(),
++newBooleanStrategy(),
++newBooleanArrayStrategy(),
++newDateStrategy(),
++newDateArrayStrategy(),
++newDateTimeStrategy(),
++newDateTimeArrayStrategy()
++};
++@InvocableMethod(
++label='GetValue'
++)
++publicstaticList<Response>invoke(List<Request>requests){
++List<Response>responses=newList<Response>();
++for(Requestreq:requests){
++Responseres=newResponse();
++if(parameters!=null){
++Objectvalue=parameters.get(req.paramName);
++if(value!=null){
++for(BindingParamStrategystrategy:STRATEGIES){
++if(strategy.matches(value)){
++strategy.execute(value,res);
++break;

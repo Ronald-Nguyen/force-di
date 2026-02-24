@@ -1,0 +1,143 @@
+--- backup/classes\di_BindingParam.cls
++++ refactored/classes\di_BindingParam.cls
+@@ -3,11 +3,5 @@
+-@InvocableMethod(
+-label='GetValue'
+-)
+-publicstaticList<Response>invoke(List<Request>requests){
+-List<Response>responses=newList<Response>();
+-for(Requestreq:requests){
+-Responseres=newResponse();
+-if(parameters!=null){
+-Objectvalue=parameters.get(req.paramName);
+-if(value!=null){
+-if(valueinstanceofDecimal){
++privateinterfaceBindingValueStrategy{
++voidexecute(Objectvalue,Responseres);
++}
++privateclassDecimalStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -21 +15,4 @@
+-}elseif(valueinstanceofDecimal[]){
++}
++}
++privateclassDecimalArrayStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -31 +28,4 @@
+-}elseif(valueinstanceofString){
++}
++}
++privateclassStringStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -39 +39,4 @@
+-}elseif(valueinstanceofString[]){
++}
++}
++privateclassStringArrayStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -49 +52,4 @@
+-}elseif(valueinstanceofBoolean){
++}
++}
++privateclassBooleanStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -57 +63,4 @@
+-}elseif(valueinstanceofBoolean[]){
++}
++}
++privateclassBooleanArrayStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -67 +76,4 @@
+-}elseif(valueinstanceofDate){
++}
++}
++privateclassDateStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -75 +87,4 @@
+-}elseif(valueinstanceofDate[]){
++}
++}
++privateclassDateArrayStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -85 +100,4 @@
+-}elseif(valueinstanceofDateTime){
++}
++}
++privateclassDateTimeStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -93 +111,4 @@
+-}elseif(valueinstanceofDateTime[]){
++}
++}
++privateclassDateTimeArrayStrategyimplementsBindingValueStrategy{
++publicvoidexecute(Objectvalue,Responseres){
+@@ -103,0 +125,54 @@
++}
++privatestaticfinalMap<String,BindingValueStrategy>STRATEGIES=newMap<String,BindingValueStrategy>{
++'Decimal'=>newDecimalStrategy(),
++'Decimal[]'=>newDecimalArrayStrategy(),
++'String'=>newStringStrategy(),
++'String[]'=>newStringArrayStrategy(),
++'Boolean'=>newBooleanStrategy(),
++'Boolean[]'=>newBooleanArrayStrategy(),
++'Date'=>newDateStrategy(),
++'Date[]'=>newDateArrayStrategy(),
++'DateTime'=>newDateTimeStrategy(),
++'DateTime[]'=>newDateTimeArrayStrategy()
++};
++privatestaticStringresolveType(Objectvalue){
++if(valueinstanceofDecimal)return'Decimal';
++if(valueinstanceofDecimal[])return'Decimal[]';
++if(valueinstanceofString)return'String';
++if(valueinstanceofString[])return'String[]';
++if(valueinstanceofBoolean)return'Boolean';
++if(valueinstanceofBoolean[])return'Boolean[]';
++if(valueinstanceofDate)return'Date';
++if(valueinstanceofDate[])return'Date[]';
++if(valueinstanceofDateTime)return'DateTime';
++if(valueinstanceofDateTime[])return'DateTime[]';
++returnnull;
++}
++@InvocableMethod(
++label='GetValue'
++)
++publicstaticList<Response>invoke(List<Request>requests){
++List<Response>responses=newList<Response>();
++for(Requestreq:requests){
++Responseres=newResponse();
++if(parameters!=null){
++Objectvalue=parameters.get(req.paramName);
++if(value!=null){
++StringtypeKey=resolveType(value);
++if(typeKey!=null&&STRATEGIES.containsKey(typeKey)){
++STRATEGIES.get(typeKey).execute(value,res);
++}
++populateMissingValues(res);
++}else{
++System.debug(LoggingLevel.WARN,'BindingParam.parameters.get("'+req+'")isnull');
++}
++}else{
++System.debug(LoggingLevel.WARN,'BindingParam.parametersisnull');
++}
++System.debug('paramName='+req);
++System.debug(res);
++responses.add(res);
++}
++returnresponses;
++}
++privatestaticvoidpopulateMissingValues(Responseres){
+@@ -116,12 +191,2 @@
+-}else{
+-System.debug(LoggingLevel.WARN,'BindingParam.parameters.get("'+req+'")isnull');
+-}
+-}else{
+-System.debug(LoggingLevel.WARN,'BindingParam.parametersisnull');
+-}
+-System.debug('paramName='+req);
+-System.debug(res);
+-responses.add(res);
+-}
+-returnresponses;
+-}
++}
++//Helpermethods

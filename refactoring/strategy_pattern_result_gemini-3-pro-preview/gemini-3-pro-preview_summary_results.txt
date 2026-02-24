@@ -1,3 +1,0 @@
-iteration 1 passed test passed diff passed Tokens: prompt=13527, completion=3642, total=30498 PMD:ok CoCΔ(total=-110, prod=-110, test=0) REF:ok
-iteration 2 passed test passed diff passed Tokens: prompt=13527, completion=3752, total=27434 PMD:ok CoCΔ(total=-110, prod=-110, test=0) REF:ok
-iteration 3 failed test failed diff passed Tokens: prompt=13527, completion=3810, total=28309 PMD:ok CoCΔ(total=198, prod=198, test=0) REF:ok

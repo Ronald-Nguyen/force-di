@@ -195,6 +195,9 @@ Code:
 
 File `classes\di_Binding.cls`:
 ```apex
+
+
+
 public abstract class di_Binding implements Comparable {
 
     public BindingType BindingType {get; private set;}
@@ -256,10 +259,14 @@ public abstract class di_Binding implements Comparable {
 
     
     public override String toString() {
-        return ((BindingObject != null) ? 
+        String hashValue = 
+            (BindingObject != null) ? 
             BindingObject.getDescribe().getName() : 
-            DeveloperName) + 
-            (BindingSequence != null ? '#' + String.valueOf(BindingSequence).leftPad(4,'0') : '');
+            DeveloperName;
+        if(BindingSequence != null) {
+            hashValue += '#' + String.valueOf(BindingSequence).leftPad(4,'0');
+        }
+        return hashValue;
     }
 
     

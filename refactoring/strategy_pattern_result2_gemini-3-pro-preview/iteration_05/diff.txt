@@ -1,0 +1,140 @@
+--- backup/classes\di_BindingParam.cls
++++ refactored/classes\di_BindingParam.cls
+@@ -3,11 +3,7 @@
+-@InvocableMethod(
+-label='GetValue'
+-)
+-publicstaticList<Response>invoke(List<Request>requests){
+-List<Response>responses=newList<Response>();
+-for(Requestreq:requests){
+-Responseres=newResponse();
+-if(parameters!=null){
+-Objectvalue=parameters.get(req.paramName);
+-if(value!=null){
+-if(valueinstanceofDecimal){
++privateinterfaceParamStrategy{
++Booleanmatches(Objectvalue);
++voidexecute(Objectvalue,Responseres);
++}
++privateclassDecimalStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofDecimal;}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -21 +17,5 @@
+-}elseif(valueinstanceofDecimal[]){
++}
++}
++privateclassDecimalArrayStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofDecimal[];}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -31 +31,5 @@
+-}elseif(valueinstanceofString){
++}
++}
++privateclassStringStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofString;}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -39 +43,5 @@
+-}elseif(valueinstanceofString[]){
++}
++}
++privateclassStringArrayStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofString[];}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -49 +57,5 @@
+-}elseif(valueinstanceofBoolean){
++}
++}
++privateclassBooleanStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofBoolean;}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -57 +69,5 @@
+-}elseif(valueinstanceofBoolean[]){
++}
++}
++privateclassBooleanArrayStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofBoolean[];}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -67 +83,5 @@
+-}elseif(valueinstanceofDate){
++}
++}
++privateclassDateStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofDate;}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -75 +95,5 @@
+-}elseif(valueinstanceofDate[]){
++}
++}
++privateclassDateArrayStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofDate[];}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -85 +109,5 @@
+-}elseif(valueinstanceofDateTime){
++}
++}
++privateclassDateTimeStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofDateTime;}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -93 +121,5 @@
+-}elseif(valueinstanceofDateTime[]){
++}
++}
++privateclassDateTimeArrayStrategyimplementsParamStrategy{
++publicBooleanmatches(Objectvalue){returnvalueinstanceofDateTime[];}
++publicvoidexecute(Objectvalue,Responseres){
+@@ -103,0 +136,43 @@
++}
++privatestaticfinalList<ParamStrategy>STRATEGIES=newList<ParamStrategy>{
++newDecimalStrategy(),
++newDecimalArrayStrategy(),
++newStringStrategy(),
++newStringArrayStrategy(),
++newBooleanStrategy(),
++newBooleanArrayStrategy(),
++newDateStrategy(),
++newDateArrayStrategy(),
++newDateTimeStrategy(),
++newDateTimeArrayStrategy()
++};
++@InvocableMethod(
++label='GetValue'
++)
++publicstaticList<Response>invoke(List<Request>requests){
++List<Response>responses=newList<Response>();
++for(Requestreq:requests){
++Responseres=newResponse();
++if(parameters!=null){
++Objectvalue=parameters.get(req.paramName);
++if(value!=null){
++for(ParamStrategystrategy:STRATEGIES){
++if(strategy.matches(value)){
++strategy.execute(value,res);
++break;
++}
++}
++syncResponse(res);
++}else{
++System.debug(LoggingLevel.WARN,'BindingParam.parameters.get("'+req+'")isnull');
++}
++}else{
++System.debug(LoggingLevel.WARN,'BindingParam.parametersisnull');
++}
++System.debug('paramName='+req);
++System.debug(res);
++responses.add(res);
++}
++returnresponses;
++}
++privatestaticvoidsyncResponse(Responseres){
+@@ -116,11 +190,0 @@
+-}else{
+-System.debug(LoggingLevel.WARN,'BindingParam.parameters.get("'+req+'")isnull');
+-}
+-}else{
+-System.debug(LoggingLevel.WARN,'BindingParam.parametersisnull');
+-}
+-System.debug('paramName='+req);
+-System.debug(res);
+-responses.add(res);
+-}
+-returnresponses;
