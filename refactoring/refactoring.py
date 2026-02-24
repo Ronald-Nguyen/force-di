@@ -19,7 +19,7 @@ python refactoring/refactoring.py --refactoring rename
 
 
 REFACTORINGS = [
-    "coc_reduktion",
+    #"coc_reduktion",
     #"getter_setter",
     "guard_clauses",
     "inline_variable",
@@ -48,7 +48,7 @@ GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 MISTRAL_API_KEY = os.environ.get('MISTRAL_API_KEY2')
 NVIDIA_API_KEY = os.environ.get('NVIDIA_API_KEY')
-LLM_API_KEY = NVIDIA_API_KEY    
+LLM_API_KEY = MISTRAL_API_KEY    
 client = None
 MODEL = None
 
@@ -1361,7 +1361,7 @@ def build_refactoring_check(
                     delta_total = None
 
         if delta_total is not None:
-            passed = delta_total <= 0
+            passed = delta_total < 0
             _record(
                 "coc_reduktion",
                 passed,

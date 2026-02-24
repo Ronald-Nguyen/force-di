@@ -1,5 +1,5 @@
 Iteration 1
-Timestamp: 2026-02-24T18:29:26.282504
+Timestamp: 2026-02-24T20:42:35.766259
 Success: False
 
 ============================================================
@@ -15,35 +15,26 @@ Stages:
 
 ▶ Preparing…
    Deploying v63.0 metadata to test-ph0z53tqd9bo@example.com using the v66.0 SOAP API.
-   Deploy ID: 0AfAs00000UEfbVKAT
+   Deploy ID: 0AfAs00000UEpKjKAL
    Target Org: test-ph0z53tqd9bo@example.com
-✔ Preparing (226ms)
+✔ Preparing (230ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
-   Components: 0/44 (0%)
-✘ Deploying Metadata (4.66s)
-   Components: 38/44 (86%)
+   Components: 0/2 (0%)
+✘ Deploying Metadata (1.20s)
+   Components: 1/2 (50%)
 
 Deploying v63.0 metadata to test-ph0z53tqd9bo@example.com using the v66.0 SOAP API.
 Status: Failed
-Deploy ID: 0AfAs00000UEfbVKAT
+Deploy ID: 0AfAs00000UEpKjKAL
 Target Org: test-ph0z53tqd9bo@example.com
 
-Elapsed time: 4.88s
+Elapsed time: 1.43s
 
-[1m[31mComponent Failures [6][39m[22m
- Type           Name                                     Problem                                                                                                               Line:Column 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- ApexClass      di_BindingParam                          Method does not exist or incorrect signature: void getClass() from the type Object (229:44)                           229:44      
- ApexClass      di_BindingParamTest                      Dependent class is invalid and needs recompilation:                                                                   229:44      
-                                                         Class di_BindingParam : Method does not exist or incorrect signature: void getClass() from the type Object (229:44)               
- ApexClass      di_InjectorCMPFlowProxyControllerTest    Dependent class is invalid and needs recompilation:                                                                   229:44      
-                                                         Class di_InjectorComponentFlowProxyController : Dependent class is invalid and needs recompilation:                               
-                                                         Class di_BindingParam : Method does not exist or incorrect signature: void getClass() from the type Object (229:44)               
- ApexClass      di_InjectorComponentFlowProxyController  Dependent class is invalid and needs recompilation:                                                                   229:44      
-                                                         Class di_BindingParam : Method does not exist or incorrect signature: void getClass() from the type Object (229:44)               
- ApexComponent  di_injectorFlowProxy                     Apex class 'di_InjectorComponentFlowProxyController' does not exist                                                               
- ApexTestSuite  force_di_teststuite                      No classes found for di_BindingParamTest.                                                                                         
+[1m[31mComponent Failures [1][39m[22m
+ Type       Name             Problem                                                                                      Line:Column 
+--------------------------------------------------------------------------------------------------------------------------------------
+ ApexClass  di_BindingParam  Method does not exist or incorrect signature: void getClass() from the type Object (328:32)  328:32      
 
 
 

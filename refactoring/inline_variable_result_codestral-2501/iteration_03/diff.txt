@@ -1,0 +1,9 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -41,2 +41 @@
+-StringhashValue=
+-(BindingObject!=null)?
++return(BindingObject!=null)?
+@@ -46 +45 @@
+-hashValue+='#'+String.valueOf(BindingSequence).leftPad(4,'0');
++returnhashValue+'#'+String.valueOf(BindingSequence).leftPad(4,'0');

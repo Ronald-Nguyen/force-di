@@ -1,6 +1,6 @@
 {
   "iteration": 3,
-  "timestamp": "2026-02-24T18:30:23.602226",
+  "timestamp": "2026-02-24T20:44:20.548509",
   "refactoring": "refactoring/strategy_pattern",
   "changed_files_scope": [
     "classes\\di_BindingParam.cls"
@@ -14,10 +14,10 @@
     "status": "passed",
     "has_diff": true
   },
-  "tokens": "Tokens: prompt=12297, completion=3176, total=15473",
+  "tokens": "Tokens: prompt=12101, completion=4695, total=16796",
   "pmd_before": {
     "ok": true,
-    "timestamp": "2026-02-24T18:30:07.908190",
+    "timestamp": "2026-02-24T20:44:13.881130",
     "scope": {
       "mode": "subset_changed_files_only",
       "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
@@ -50,7 +50,7 @@
   },
   "pmd_after": {
     "ok": true,
-    "timestamp": "2026-02-24T18:30:09.748501",
+    "timestamp": "2026-02-24T20:44:15.718867",
     "scope": {
       "mode": "subset_changed_files_only",
       "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
@@ -65,8 +65,8 @@
     },
     "summary": {
       "prod": {
-        "complexity": 260,
-        "loc": 430,
+        "complexity": 382,
+        "loc": 571,
         "count": 1
       },
       "test": {
@@ -75,16 +75,16 @@
         "count": 0
       },
       "total": {
-        "complexity": 260,
-        "loc": 430,
+        "complexity": 382,
+        "loc": 571,
         "count": 1
       }
     }
   },
   "pmd_delta": {
     "prod": {
-      "complexity": -58,
-      "loc": 38,
+      "complexity": 64,
+      "loc": 179,
       "count": 0
     },
     "test": {
@@ -93,8 +93,8 @@
       "count": 0
     },
     "total": {
-      "complexity": -58,
-      "loc": 38,
+      "complexity": 64,
+      "loc": 179,
       "count": 0
     }
   },
@@ -112,15 +112,15 @@
         "file_hint": "di_BindingParam.cls",
         "method": "invoke",
         "else_if_before": 9,
-        "else_if_after": 0,
+        "else_if_after": 9,
         "has_map": true,
         "has_containsKey": true,
         "variant": "map_dispatch",
         "interfaces_found": [
-          "ParamStrategy"
+          "ValueConversionStrategy"
         ],
         "implements_interfaces": [
-          "ParamStrategy"
+          "ValueConversionStrategy"
         ],
         "has_delegation_call": true,
         "has_new_assignment_in_method": true,

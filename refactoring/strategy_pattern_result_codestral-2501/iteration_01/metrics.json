@@ -1,6 +1,6 @@
 {
   "iteration": 1,
-  "timestamp": "2026-02-24T18:29:26.284000",
+  "timestamp": "2026-02-24T20:42:35.767205",
   "refactoring": "refactoring/strategy_pattern",
   "changed_files_scope": [
     "classes\\di_BindingParam.cls"
@@ -14,10 +14,10 @@
     "status": "passed",
     "has_diff": true
   },
-  "tokens": "Tokens: prompt=12297, completion=3279, total=15576",
+  "tokens": "Tokens: prompt=12101, completion=4300, total=16401",
   "pmd_before": {
     "ok": true,
-    "timestamp": "2026-02-24T18:29:15.705791",
+    "timestamp": "2026-02-24T20:42:30.187007",
     "scope": {
       "mode": "subset_changed_files_only",
       "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
@@ -50,7 +50,7 @@
   },
   "pmd_after": {
     "ok": true,
-    "timestamp": "2026-02-24T18:29:17.487893",
+    "timestamp": "2026-02-24T20:42:31.986553",
     "scope": {
       "mode": "subset_changed_files_only",
       "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
@@ -65,8 +65,8 @@
     },
     "summary": {
       "prod": {
-        "complexity": 188,
-        "loc": 436,
+        "complexity": 330,
+        "loc": 527,
         "count": 1
       },
       "test": {
@@ -75,16 +75,16 @@
         "count": 0
       },
       "total": {
-        "complexity": 188,
-        "loc": 436,
+        "complexity": 330,
+        "loc": 527,
         "count": 1
       }
     }
   },
   "pmd_delta": {
     "prod": {
-      "complexity": -130,
-      "loc": 44,
+      "complexity": 12,
+      "loc": 135,
       "count": 0
     },
     "test": {
@@ -93,8 +93,8 @@
       "count": 0
     },
     "total": {
-      "complexity": -130,
-      "loc": 44,
+      "complexity": 12,
+      "loc": 135,
       "count": 0
     }
   },
@@ -112,7 +112,7 @@
         "file_hint": "di_BindingParam.cls",
         "method": "invoke",
         "else_if_before": 9,
-        "else_if_after": 0,
+        "else_if_after": 9,
         "has_map": true,
         "has_containsKey": true,
         "variant": "map_dispatch",

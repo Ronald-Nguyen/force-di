@@ -5,7 +5,157 @@ public with sharing class di_BindingParam {
     public static Map<String, Object> parameters { get; set; }
 
     private interface ParamStrategy {
-        Response execute(Object value, Request req);
+        Response execute(Request req);
+    }
+
+    private class DecimalStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            Decimal decimalValue = (Decimal) di_BindingParam.parameters.get(req.paramName);
+            res.longValue = toLongValue(decimalValue);
+            res.decimalValue = decimalValue;
+            res.stringValue = toStringValue(decimalValue);
+            res.booleanValue = toBooleanValue(decimalValue);
+            res.dateValue = toDateValue(decimalValue);
+            res.dateTimeValue = toDateTimeValue(decimalValue);
+            return res;
+        }
+    }
+
+    private class DecimalArrayStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            Decimal[] decimalValues = (Decimal[]) di_BindingParam.parameters.get(req.paramName);
+            res.decimalValues = decimalValues;
+            for (Decimal decimalValue : decimalValues) {
+                res.longValues.add(toLongValue(decimalValue));
+                res.stringValues.add(toStringValue(decimalValue));
+                res.booleanValues.add(toBooleanValue(decimalValue));
+                res.dateValues.add(toDateValue(decimalValue));
+                res.dateTimeValues.add(toDateTimeValue(decimalValue));
+            }
+            return res;
+        }
+    }
+
+    private class StringStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            String stringValue = (String) di_BindingParam.parameters.get(req.paramName);
+            res.longValue = toLongValue(stringValue);
+            res.decimalValue = toDecimalValue(stringValue);
+            res.stringValue = stringValue;
+            res.booleanValue = toBooleanValue(stringValue);
+            res.dateValue = toDateValue(stringValue);
+            res.dateTimeValue = toDateTimeValue(stringValue);
+            return res;
+        }
+    }
+
+    private class StringArrayStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            String[] stringValues = (String[]) di_BindingParam.parameters.get(req.paramName);
+            res.stringValues = stringValues;
+            for (String stringValue : stringValues) {
+                res.longValues.add(toLongValue(stringValue));
+                res.decimalValues.add(toDecimalValue(stringValue));
+                res.booleanValues.add(toBooleanValue(stringValue));
+                res.dateValues.add(toDateValue(stringValue));
+                res.dateTimeValues.add(toDateTimeValue(stringValue));
+            }
+            return res;
+        }
+    }
+
+    private class BooleanStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            Boolean booleanValue = (Boolean) di_BindingParam.parameters.get(req.paramName);
+            res.longValue = toLongValue(booleanValue);
+            res.decimalValue = toDecimalValue(booleanValue);
+            res.stringValue = toStringValue(booleanValue);
+            res.booleanValue = booleanValue;
+            res.dateValue = toDateValue(booleanValue);
+            res.dateTimeValue = toDateTimeValue(booleanValue);
+            return res;
+        }
+    }
+
+    private class BooleanArrayStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            Boolean[] booleanValues = (Boolean[]) di_BindingParam.parameters.get(req.paramName);
+            res.booleanValues = booleanValues;
+            for (Boolean booleanValue : booleanValues) {
+                res.longValues.add(toLongValue(booleanValue));
+                res.decimalValues.add(toDecimalValue(booleanValue));
+                res.stringValues.add(toStringValue(booleanValue));
+                res.dateValues.add(toDateValue(booleanValue));
+                res.dateTimeValues.add(toDateTimeValue(booleanValue));
+            }
+            return res;
+        }
+    }
+
+    private class DateStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            Date dateValue = (Date) di_BindingParam.parameters.get(req.paramName);
+            res.longValue = toLongValue(dateValue);
+            res.decimalValue = toDecimalValue(dateValue);
+            res.stringValue = toStringValue(dateValue);
+            res.booleanValue = toBooleanValue(dateValue);
+            res.dateValue = dateValue;
+            res.dateTimeValue = toDateTimeValue(dateValue);
+            return res;
+        }
+    }
+
+    private class DateArrayStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            Date[] dateValues = (Date[]) di_BindingParam.parameters.get(req.paramName);
+            res.dateValues = dateValues;
+            for (Date dateValue : dateValues) {
+                res.longValues.add(toLongValue(dateValue));
+                res.decimalValues.add(toDecimalValue(dateValue));
+                res.stringValues.add(toStringValue(dateValue));
+                res.booleanValues.add(toBooleanValue(dateValue));
+                res.dateTimeValues.add(toDateTimeValue(dateValue));
+            }
+            return res;
+        }
+    }
+
+    private class DateTimeStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            DateTime dateTimeValue = (DateTime) di_BindingParam.parameters.get(req.paramName);
+            res.longValue = toLongValue(dateTimeValue);
+            res.decimalValue = toDecimalValue(dateTimeValue);
+            res.stringValue = toStringValue(dateTimeValue);
+            res.booleanValue = toBooleanValue(dateTimeValue);
+            res.dateValue = toDateValue(dateTimeValue);
+            res.dateTimeValue = dateTimeValue;
+            return res;
+        }
+    }
+
+    private class DateTimeArrayStrategy implements ParamStrategy {
+        public Response execute(Request req) {
+            Response res = new Response();
+            DateTime[] dateTimeValues = (DateTime[]) di_BindingParam.parameters.get(req.paramName);
+            res.dateTimeValues = dateTimeValues;
+            for (DateTime dateTimeValue : dateTimeValues) {
+                res.longValues.add(toLongValue(dateTimeValue));
+                res.decimalValues.add(toDecimalValue(dateTimeValue));
+                res.stringValues.add(toStringValue(dateTimeValue));
+                res.booleanValues.add(toBooleanValue(dateTimeValue));
+                res.dateValues.add(toDateValue(dateTimeValue));
+            }
+            return res;
+        }
     }
 
     private static Map<Type, ParamStrategy> STRATEGIES = new Map<Type, ParamStrategy>{
@@ -21,156 +171,6 @@ public with sharing class di_BindingParam {
         DateTime[].class => new DateTimeArrayStrategy()
     };
 
-    private static class DecimalStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            Decimal decimalValue = (Decimal) value;
-            res.longValue = toLongValue(decimalValue);
-            res.decimalValue = decimalValue;
-            res.stringValue = toStringValue(decimalValue);
-            res.booleanValue = toBooleanValue(decimalValue);
-            res.dateValue = toDateValue(decimalValue);
-            res.dateTimeValue = toDateTimeValue(decimalValue);
-            return res;
-        }
-    }
-
-    private static class DecimalArrayStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            Decimal[] decimalValues = (Decimal[]) value;
-            res.decimalValues = decimalValues;
-            for (Decimal decimalValue : decimalValues) {
-                res.longValues.add(toLongValue(decimalValue));
-                res.stringValues.add(toStringValue(decimalValue));
-                res.booleanValues.add(toBooleanValue(decimalValue));
-                res.dateValues.add(toDateValue(decimalValue));
-                res.dateTimeValues.add(toDateTimeValue(decimalValue));
-            }
-            return res;
-        }
-    }
-
-    private static class StringStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            String stringValue = (String) value;
-            res.longValue = toLongValue(stringValue);
-            res.decimalValue = toDecimalValue(stringValue);
-            res.stringValue = stringValue;
-            res.booleanValue = toBooleanValue(stringValue);
-            res.dateValue = toDateValue(stringValue);
-            res.dateTimeValue = toDateTimeValue(stringValue);
-            return res;
-        }
-    }
-
-    private static class StringArrayStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            String[] stringValues = (String[]) value;
-            res.stringValues = stringValues;
-            for (String stringValue : stringValues) {
-                res.longValues.add(toLongValue(stringValue));
-                res.decimalValues.add(toDecimalValue(stringValue));
-                res.booleanValues.add(toBooleanValue(stringValue));
-                res.dateValues.add(toDateValue(stringValue));
-                res.dateTimeValues.add(toDateTimeValue(stringValue));
-            }
-            return res;
-        }
-    }
-
-    private static class BooleanStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            Boolean booleanValue = (Boolean) value;
-            res.longValue = toLongValue(booleanValue);
-            res.decimalValue = toDecimalValue(booleanValue);
-            res.stringValue = toStringValue(booleanValue);
-            res.booleanValue = booleanValue;
-            res.dateValue = toDateValue(booleanValue);
-            res.dateTimeValue = toDateTimeValue(booleanValue);
-            return res;
-        }
-    }
-
-    private static class BooleanArrayStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            Boolean[] booleanValues = (Boolean[]) value;
-            res.booleanValues = booleanValues;
-            for (Boolean booleanValue : booleanValues) {
-                res.longValues.add(toLongValue(booleanValue));
-                res.decimalValues.add(toDecimalValue(booleanValue));
-                res.stringValues.add(toStringValue(booleanValue));
-                res.dateValues.add(toDateValue(booleanValue));
-                res.dateTimeValues.add(toDateTimeValue(booleanValue));
-            }
-            return res;
-        }
-    }
-
-    private static class DateStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            Date dateValue = (Date) value;
-            res.longValue = toLongValue(dateValue);
-            res.decimalValue = toDecimalValue(dateValue);
-            res.stringValue = toStringValue(dateValue);
-            res.booleanValue = toBooleanValue(dateValue);
-            res.dateValue = dateValue;
-            res.dateTimeValue = toDateTimeValue(dateValue);
-            return res;
-        }
-    }
-
-    private static class DateArrayStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            Date[] dateValues = (Date[]) value;
-            res.dateValues = dateValues;
-            for (Date dateValue : dateValues) {
-                res.longValues.add(toLongValue(dateValue));
-                res.decimalValues.add(toDecimalValue(dateValue));
-                res.stringValues.add(toStringValue(dateValue));
-                res.booleanValues.add(toBooleanValue(dateValue));
-                res.dateTimeValues.add(toDateTimeValue(dateValue));
-            }
-            return res;
-        }
-    }
-
-    private static class DateTimeStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            DateTime dateTimeValue = (DateTime) value;
-            res.longValue = toLongValue(dateTimeValue);
-            res.decimalValue = toDecimalValue(dateTimeValue);
-            res.stringValue = toStringValue(dateTimeValue);
-            res.booleanValue = toBooleanValue(dateTimeValue);
-            res.dateValue = toDateValue(dateTimeValue);
-            res.dateTimeValue = dateTimeValue;
-            return res;
-        }
-    }
-
-    private static class DateTimeArrayStrategy implements ParamStrategy {
-        public Response execute(Object value, Request req) {
-            Response res = new Response();
-            DateTime[] dateTimeValues = (DateTime[]) value;
-            res.dateTimeValues = dateTimeValues;
-            for (DateTime dateTimeValue : dateTimeValues) {
-                res.longValues.add(toLongValue(dateTimeValue));
-                res.decimalValues.add(toDecimalValue(dateTimeValue));
-                res.stringValues.add(toStringValue(dateTimeValue));
-                res.booleanValues.add(toBooleanValue(dateTimeValue));
-                res.dateValues.add(toDateValue(dateTimeValue));
-            }
-            return res;
-        }
-    }
-
     @InvocableMethod(
         label = 'Get Value'
     )
@@ -184,8 +184,9 @@ public with sharing class di_BindingParam {
                 Object value = parameters.get(req.paramName);
 
                 if (value != null) {
-                    if (STRATEGIES.containsKey(value.getClass())) {
-                        res = STRATEGIES.get(value.getClass()).execute(value, req);
+                    Type valueType = value.getClass();
+                    if (STRATEGIES.containsKey(valueType)) {
+                        res = STRATEGIES.get(valueType).execute(req);
                     }
 
                     if (res.longValue == null && !res.longValues.isEmpty()) {
@@ -351,7 +352,7 @@ public with sharing class di_BindingParam {
 
     public class Request {
         @InvocableVariable(
-            label = 'Parameter Name',
+            label = 'Parameter Name'
             required = true
         )
         public String paramName;
@@ -359,25 +360,25 @@ public with sharing class di_BindingParam {
 
     public class Response {
         @InvocableVariable(
-            label = 'Number',
+            label = 'Number'
             description = 'Whole number (no decimals)'
         )
         public Long longValue;
 
         @InvocableVariable(
-            label = 'Decimal',
+            label = 'Decimal'
             description = 'Number that may include decimal places'
         )
         public Decimal decimalValue;
 
         @InvocableVariable(
-            label = 'Text',
+            label = 'Text'
             description = 'Text value'
         )
         public String stringValue;
 
         @InvocableVariable(
-            label = 'Boolean',
+            label = 'Boolean'
             description = 'true/false'
         )
         public Boolean booleanValue;
@@ -393,40 +394,40 @@ public with sharing class di_BindingParam {
         public DateTime dateTimeValue;
 
         @InvocableVariable(
-            label = 'Number Collection',
+            label = 'Number Collection'
             description = 'Collection of whole numbers'
         )
-        public Long[] longValues = new Long[] {};
+        public Long[] longValues = new Long[]{};
 
         @InvocableVariable(
-            label = 'Decimal Collection',
+            label = 'Decimal Collection'
             description = 'Collection of numbers that may include decimal places'
         )
-        public Decimal[] decimalValues = new Decimal[] {};
+        public Decimal[] decimalValues = new Decimal[]{};
 
         @InvocableVariable(
-            label = 'Text Collection',
+            label = 'Text Collection'
             description = 'Collection of text values'
         )
-        public String[] stringValues = new String[] {};
+        public String[] stringValues = new String[]{};
 
         @InvocableVariable(
-            label = 'Boolean Collection',
+            label = 'Boolean Collection'
             description = 'Collection of true/false values'
         )
-        public Boolean[] booleanValues = new Boolean[] {};
+        public Boolean[] booleanValues = new Boolean[]{};
 
         @InvocableVariable(
-            label = 'Date Collection',
+            label = 'Date Collection'
             description = 'Collection of date values'
         )
-        public Date[] dateValues = new Date[] {};
+        public Date[] dateValues = new Date[]{};
 
         @InvocableVariable(
-            label = 'Date/Time Collection',
+            label = 'Date/Time Collection'
             description = 'Collection of date/time values'
         )
-        public DateTime[] dateTimeValues = new DateTime[] {};
+        public DateTime[] dateTimeValues = new DateTime[]{};
     }
 }
 ```

@@ -1,0 +1,132 @@
+{
+  "iteration": 9,
+  "timestamp": "2026-02-24T20:48:46.826206",
+  "refactoring": "refactoring/strategy_pattern",
+  "changed_files_scope": [
+    "classes\\di_BindingParam.cls"
+  ],
+  "test": {
+    "status": "failed",
+    "success": false,
+    "level": 0
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=12101, completion=4759, total=16860",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T20:48:41.247938",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\strategy_pattern_result_codestral-2501\\iteration_09\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_BindingParam.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\strategy_pattern_result_codestral-2501\\iteration_09\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\strategy_pattern_result_codestral-2501\\iteration_09\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 318,
+        "loc": 392,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 318,
+        "loc": 392,
+        "count": 1
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T20:48:43.080620",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\strategy_pattern_result_codestral-2501\\iteration_09\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_BindingParam.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\strategy_pattern_result_codestral-2501\\iteration_09\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\strategy_pattern_result_codestral-2501\\iteration_09\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 472,
+        "loc": 563,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 472,
+        "loc": 563,
+        "count": 1
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": 154,
+      "loc": 171,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": 154,
+      "loc": 171,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "strategy_pattern",
+    "targets": {
+      "method": "invoke",
+      "file": "di_BindingParam.cls"
+    },
+    "ok": true,
+    "checks": {
+      "strategy_pattern": {
+        "passed": true,
+        "file": "classes/di_BindingParam.cls",
+        "file_hint": "di_BindingParam.cls",
+        "method": "invoke",
+        "else_if_before": 9,
+        "else_if_after": 9,
+        "has_map": true,
+        "has_containsKey": true,
+        "variant": "map_dispatch",
+        "interfaces_found": [
+          "ConversionStrategy"
+        ],
+        "implements_interfaces": [
+          "ConversionStrategy"
+        ],
+        "has_delegation_call": true,
+        "has_new_assignment_in_method": true,
+        "reasons": [],
+        "note": "heuristic_strategy_interface_impl_delegation"
+      }
+    }
+  }
+}

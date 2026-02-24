@@ -1,0 +1,43 @@
+Iteration 6
+Timestamp: 2026-02-24T20:40:00.140532
+Success: False
+
+============================================================
+STDOUT:
+───── Deploying Metadata ─────
+Stages:
+1. Preparing
+2. Waiting for the org to respond
+3. Deploying Metadata
+4. Running Tests
+5. Updating Source Tracking
+6. Done
+
+▶ Preparing…
+   Deploying v63.0 metadata to test-ph0z53tqd9bo@example.com using the v66.0 SOAP API.
+   Deploy ID: 0AfAs00000UEmwMKAT
+   Target Org: test-ph0z53tqd9bo@example.com
+✔ Preparing (247ms)
+◯ Waiting for the org to respond - Skipped
+▶ Deploying Metadata…
+   Components: 0/1 (0%)
+✘ Deploying Metadata (895ms)
+
+Deploying v63.0 metadata to test-ph0z53tqd9bo@example.com using the v66.0 SOAP API.
+Status: Failed
+Deploy ID: 0AfAs00000UEmwMKAT
+Target Org: test-ph0z53tqd9bo@example.com
+
+Elapsed time: 1.14s
+
+[1m[31mComponent Failures [1][39m[22m
+ Type       Name        Problem                       Line:Column 
+------------------------------------------------------------------
+ ApexClass  di_Binding  Unreachable statement (59:9)  59:9        
+
+
+
+============================================================
+STDERR:
+DEPLOY FAILED (Level 0):
+ »   Warning: @salesforce/cli update available from [92m2.122.6[39m to [92m2.123.1[39m.

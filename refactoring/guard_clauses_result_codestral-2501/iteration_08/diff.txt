@@ -1,0 +1,138 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -28 +28,2 @@
+-}elseif(newInstance==true){
++}
++if(newInstance){
+@@ -30 +31,2 @@
+-}elseif(Injected==null){
++}
++if(Injected==null){
+@@ -113,2 +115 @@
+-else{
+-if(String.isNotBlank(this.developerName)
++elseif(String.isNotBlank(this.developerName)
+@@ -125 +125,0 @@
+-}
+@@ -221 +221 @@
+-elseif(params!=null)
++if(params!=null)
+
+--- backup/classes\di_BindingParam.cls
++++ refactored/classes\di_BindingParam.cls
+@@ -10 +10,5 @@
+-if(parameters!=null){
++if(parameters==null){
++System.debug(LoggingLevel.WARN,'BindingParam.parametersisnull');
++responses.add(res);
++continue;
++}
+@@ -12 +16,5 @@
+-if(value!=null){
++if(value==null){
++System.debug(LoggingLevel.WARN,'BindingParam.parameters.get("'+req+'")isnull');
++responses.add(res);
++continue;
++}
+@@ -21 +29,2 @@
+-}elseif(valueinstanceofDecimal[]){
++}
++elseif(valueinstanceofDecimal[]){
+@@ -31 +40,2 @@
+-}elseif(valueinstanceofString){
++}
++elseif(valueinstanceofString){
+@@ -39 +49,2 @@
+-}elseif(valueinstanceofString[]){
++}
++elseif(valueinstanceofString[]){
+@@ -49 +60,2 @@
+-}elseif(valueinstanceofBoolean){
++}
++elseif(valueinstanceofBoolean){
+@@ -57 +69,2 @@
+-}elseif(valueinstanceofBoolean[]){
++}
++elseif(valueinstanceofBoolean[]){
+@@ -67 +80,2 @@
+-}elseif(valueinstanceofDate){
++}
++elseif(valueinstanceofDate){
+@@ -75 +89,2 @@
+-}elseif(valueinstanceofDate[]){
++}
++elseif(valueinstanceofDate[]){
+@@ -85 +100,2 @@
+-}elseif(valueinstanceofDateTime){
++}
++elseif(valueinstanceofDateTime){
+@@ -93 +109,2 @@
+-}elseif(valueinstanceofDateTime[]){
++}
++elseif(valueinstanceofDateTime[]){
+@@ -116,6 +132,0 @@
+-}else{
+-System.debug(LoggingLevel.WARN,'BindingParam.parameters.get("'+req+'")isnull');
+-}
+-}else{
+-System.debug(LoggingLevel.WARN,'BindingParam.parametersisnull');
+-}
+
+--- backup/classes\di_PlatformCache.cls
++++ refactored/classes\di_PlatformCache.cls
+@@ -55,5 +55,9 @@
+-if(isStoringBindingInPlatformCache())
+-{
+-Cache.OrgPartitionorgPartition=getPartition();
+-if(orgPartition!=null)
+-{
++if(!isStoringBindingInPlatformCache())
++{
++returnresult;
++}
++Cache.OrgPartitionorgPartition=getPartition();
++if(orgPartition==null)
++{
++returnresult;
++}
+@@ -78,2 +81,0 @@
+-}
+-}
+@@ -85,4 +87,6 @@
+-if(isStoringBindingInPlatformCache()
+-&&string.isNotBlank(developerName)
+-&&bindingSObjectType!=null)
+-{
++if(!isStoringBindingInPlatformCache()
++||string.isBlank(developerName)
++||bindingSObjectType==null)
++{
++returnbindings;
++}
+@@ -92,2 +96,4 @@
+-if(keyIndexBySObjectTypeMap!=null&&orgPartition!=null)
+-{
++if(keyIndexBySObjectTypeMap==null||orgPartition==null)
++{
++returnbindings;
++}
+@@ -95,2 +101,4 @@
+-if(cacheKeys!=null)
+-{
++if(cacheKeys==null)
++{
++returnbindings;
++}
+@@ -106,3 +113,0 @@
+-}
+-}
+-}
+@@ -113,2 +118,4 @@
+-if(keys!=null)
+-{
++if(keys==null)
++{
++return;
++}
+@@ -126 +132,0 @@
+-}

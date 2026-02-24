@@ -1,0 +1,19 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -28 +28,2 @@
+-}elseif(newInstance==true){
++}
++if(newInstance==true){
+@@ -30 +31,2 @@
+-}elseif(Injected==null){
++}
++if(Injected==null){
+@@ -113,2 +115 @@
+-else{
+-if(String.isNotBlank(this.developerName)
++elseif(String.isNotBlank(this.developerName)
+@@ -125 +125,0 @@
+-}
+@@ -221 +221 @@
+-elseif(params!=null)
++if(params!=null)

@@ -1,0 +1,11 @@
+iteration 1 failed test failed diff passed Tokens: prompt=11448, completion=2107, total=13555 PMD:ok CoCΔ(total=2, prod=2, test=0) REF:ok
+iteration 2 failed test failed diff passed Tokens: prompt=11448, completion=2115, total=13563 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:fail(inline_variable)
+iteration 3 failed test failed diff passed Tokens: prompt=11448, completion=2120, total=13568 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:fail(inline_variable)
+iteration 4 failed test failed diff passed Tokens: prompt=11448, completion=2134, total=13582 PMD:ok CoCΔ(total=12, prod=12, test=0) REF:ok
+iteration 5 failed test failed diff passed Tokens: prompt=11448, completion=2120, total=13568 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:fail(inline_variable)
+iteration 6 failed test failed diff passed Tokens: prompt=11448, completion=2134, total=13582 PMD:ok CoCΔ(total=12, prod=12, test=0) REF:ok
+iteration 7 failed test failed diff passed Tokens: prompt=11448, completion=2134, total=13582 PMD:ok CoCΔ(total=12, prod=12, test=0) REF:ok
+iteration 8 failed test failed diff passed Tokens: prompt=11448, completion=2107, total=13555 PMD:ok CoCΔ(total=2, prod=2, test=0) REF:ok
+iteration 9 failed test failed diff passed Tokens: prompt=11448, completion=2115, total=13563 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:fail(inline_variable)
+iteration 10 failed test failed diff passed Tokens: prompt=11448, completion=2115, total=13563 PMD:ok CoCΔ(total=0, prod=0, test=0) REF:fail(inline_variable)
+Fertig. Erfolgsrate: 0.0% (0/10)

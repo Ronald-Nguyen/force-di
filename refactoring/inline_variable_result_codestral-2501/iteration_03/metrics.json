@@ -1,0 +1,124 @@
+{
+  "iteration": 3,
+  "timestamp": "2026-02-24T20:38:05.473973",
+  "refactoring": "refactoring/inline_variable",
+  "changed_files_scope": [
+    "classes\\di_Binding.cls"
+  ],
+  "test": {
+    "status": "failed",
+    "success": false,
+    "level": 0
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=11448, completion=2120, total=13568",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T20:37:59.981581",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\inline_variable_result_codestral-2501\\iteration_03\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_Binding.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\inline_variable_result_codestral-2501\\iteration_03\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\inline_variable_result_codestral-2501\\iteration_03\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 261,
+        "loc": 394,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 261,
+        "loc": 394,
+        "count": 1
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T20:38:01.661236",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\inline_variable_result_codestral-2501\\iteration_03\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_Binding.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\inline_variable_result_codestral-2501\\iteration_03\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\inline_variable_result_codestral-2501\\iteration_03\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 261,
+        "loc": 344,
+        "count": 1
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 261,
+        "loc": 344,
+        "count": 1
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": 0,
+      "loc": -50,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": 0,
+      "loc": -50,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "inline_variable",
+    "targets": {
+      "var": "hashValue",
+      "method": "toString",
+      "file": "di_Binding.cls"
+    },
+    "ok": false,
+    "checks": {
+      "inline_variable": {
+        "passed": false,
+        "file": "classes/di_Binding.cls",
+        "file_hint": "di_Binding.cls",
+        "method": "toString",
+        "var": "hashValue",
+        "had_declaration_before": true,
+        "reasons": [
+          "return_var_still_present",
+          "var_usage_still_present"
+        ]
+      }
+    }
+  }
+}

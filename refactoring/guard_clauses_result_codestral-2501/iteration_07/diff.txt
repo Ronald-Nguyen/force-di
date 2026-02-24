@@ -1,0 +1,43 @@
+--- backup/classes\di_Binding.cls
++++ refactored/classes\di_Binding.cls
+@@ -28 +28,2 @@
+-}elseif(newInstance==true){
++}
++if(newInstance==true){
+@@ -30 +31,2 @@
+-}elseif(Injected==null){
++}
++if(Injected==null){
+@@ -113,2 +115 @@
+-else{
+-if(String.isNotBlank(this.developerName)
++elseif(String.isNotBlank(this.developerName)
+@@ -125 +125,0 @@
+-}
+@@ -221 +221 @@
+-elseif(params!=null)
++if(params!=null)
+
+--- backup/classes\di_BindingParam.cls
++++ refactored/classes\di_BindingParam.cls
+@@ -10 +10,5 @@
+-if(parameters!=null){
++if(parameters==null){
++System.debug(LoggingLevel.WARN,'BindingParam.parametersisnull');
++responses.add(res);
++continue;
++}
+@@ -12 +16,5 @@
+-if(value!=null){
++if(value==null){
++System.debug(LoggingLevel.WARN,'BindingParam.parameters.get("'+req+'")isnull');
++responses.add(res);
++continue;
++}
+@@ -116,6 +123,0 @@
+-}else{
+-System.debug(LoggingLevel.WARN,'BindingParam.parameters.get("'+req+'")isnull');
+-}
+-}else{
+-System.debug(LoggingLevel.WARN,'BindingParam.parametersisnull');
+-}

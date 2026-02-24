@@ -1,0 +1,164 @@
+{
+  "iteration": 5,
+  "timestamp": "2026-02-24T20:31:59.293207",
+  "refactoring": "refactoring/guard_clauses",
+  "changed_files_scope": [
+    "classes\\di_Binding.cls",
+    "classes\\di_Injector.cls",
+    "classes\\di_Module.cls",
+    "classes\\di_PlatformCache.cls"
+  ],
+  "test": {
+    "status": "passed",
+    "success": true,
+    "level": 2
+  },
+  "diff": {
+    "status": "passed",
+    "has_diff": true
+  },
+  "tokens": "Tokens: prompt=12362, completion=6244, total=18606",
+  "pmd_before": {
+    "ok": true,
+    "timestamp": "2026-02-24T20:31:30.874052",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_codestral-2501\\iteration_05\\pmd_before\\subset_src",
+      "files": [
+        "classes/di_Binding.cls",
+        "classes/di_Injector.cls",
+        "classes/di_Module.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_codestral-2501\\iteration_05\\pmd_before\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_codestral-2501\\iteration_05\\pmd_before\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 510,
+        "loc": 1032,
+        "count": 4
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 510,
+        "loc": 1032,
+        "count": 4
+      }
+    }
+  },
+  "pmd_after": {
+    "ok": true,
+    "timestamp": "2026-02-24T20:31:32.624319",
+    "scope": {
+      "mode": "subset_changed_files_only",
+      "source_root": "C:\\Users\\ronald\\force-di\\force-di\\main",
+      "subset_root": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_codestral-2501\\iteration_05\\pmd_after\\subset_src",
+      "files": [
+        "classes/di_Binding.cls",
+        "classes/di_Injector.cls",
+        "classes/di_Module.cls",
+        "classes/di_PlatformCache.cls"
+      ]
+    },
+    "pmd": {
+      "ruleset_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_codestral-2501\\iteration_05\\pmd_after\\pmd-ruleset.xml",
+      "report_file": "C:\\Users\\ronald\\force-di\\refactoring\\guard_clauses_result_codestral-2501\\iteration_05\\pmd_after\\pmd-report.xml"
+    },
+    "summary": {
+      "prod": {
+        "complexity": 519,
+        "loc": 901,
+        "count": 4
+      },
+      "test": {
+        "complexity": 0,
+        "loc": 0,
+        "count": 0
+      },
+      "total": {
+        "complexity": 519,
+        "loc": 901,
+        "count": 4
+      }
+    }
+  },
+  "pmd_delta": {
+    "prod": {
+      "complexity": 9,
+      "loc": -131,
+      "count": 0
+    },
+    "test": {
+      "complexity": 0,
+      "loc": 0,
+      "count": 0
+    },
+    "total": {
+      "complexity": 9,
+      "loc": -131,
+      "count": 0
+    }
+  },
+  "refactoring_check": {
+    "type": "guard_clauses",
+    "targets": {},
+    "ok": false,
+    "checks": {
+      "guard_clauses": {
+        "passed": false,
+        "improved_files": [],
+        "comparisons": [
+          {
+            "file": "classes\\di_Binding.cls",
+            "before_max_if_nesting": 4,
+            "after_max_if_nesting": 4,
+            "before_guard_clauses": 16,
+            "after_guard_clauses": 16,
+            "delta_max_if_nesting": 0,
+            "delta_guard_clauses": 0
+          },
+          {
+            "file": "classes\\di_Injector.cls",
+            "before_max_if_nesting": 3,
+            "after_max_if_nesting": 3,
+            "before_guard_clauses": 2,
+            "after_guard_clauses": 2,
+            "delta_max_if_nesting": 0,
+            "delta_guard_clauses": 0
+          },
+          {
+            "file": "classes\\di_Module.cls",
+            "before_max_if_nesting": 1,
+            "after_max_if_nesting": 1,
+            "before_guard_clauses": 2,
+            "after_guard_clauses": 2,
+            "delta_max_if_nesting": 0,
+            "delta_guard_clauses": 0
+          },
+          {
+            "file": "classes\\di_PlatformCache.cls",
+            "before_max_if_nesting": 4,
+            "after_max_if_nesting": 4,
+            "before_guard_clauses": 2,
+            "after_guard_clauses": 2,
+            "delta_max_if_nesting": 0,
+            "delta_guard_clauses": 0
+          }
+        ],
+        "totals": {
+          "delta_guard_clauses": 0,
+          "delta_max_if_nesting": 0
+        },
+        "note": "heuristic_early_exit_and_nesting"
+      }
+    }
+  }
+}

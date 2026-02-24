@@ -1,0 +1,55 @@
+Iteration 6
+Timestamp: 2026-02-24T20:46:40.531017
+Success: False
+
+============================================================
+STDOUT:
+───── Deploying Metadata ─────
+Stages:
+1. Preparing
+2. Waiting for the org to respond
+3. Deploying Metadata
+4. Running Tests
+5. Updating Source Tracking
+6. Done
+
+▶ Preparing…
+   Deploying v63.0 metadata to test-ph0z53tqd9bo@example.com using the v66.0 SOAP API.
+   Deploy ID: 0AfAs00000UElAgKAL
+   Target Org: test-ph0z53tqd9bo@example.com
+✔ Preparing (209ms)
+◯ Waiting for the org to respond - Skipped
+▶ Deploying Metadata…
+   Components: 0/2 (0%)
+✘ Deploying Metadata (1.10s)
+   Components: 1/13 (8%)
+
+Deploying v63.0 metadata to test-ph0z53tqd9bo@example.com using the v66.0 SOAP API.
+Status: Failed
+Deploy ID: 0AfAs00000UElAgKAL
+Target Org: test-ph0z53tqd9bo@example.com
+
+Elapsed time: 1.31s
+
+[1m[31mComponent Failures [12][39m[22m
+ Type       Name             Problem                                                                                      Line:Column 
+--------------------------------------------------------------------------------------------------------------------------------------
+ ApexClass  di_BindingParam  static is not allowed on classes (22:26)                                                     22:26       
+ ApexClass  di_BindingParam  static is not allowed on classes (36:26)                                                     36:26       
+ ApexClass  di_BindingParam  static is not allowed on classes (52:26)                                                     52:26       
+ ApexClass  di_BindingParam  static is not allowed on classes (66:26)                                                     66:26       
+ ApexClass  di_BindingParam  static is not allowed on classes (82:26)                                                     82:26       
+ ApexClass  di_BindingParam  static is not allowed on classes (96:26)                                                     96:26       
+ ApexClass  di_BindingParam  static is not allowed on classes (112:26)                                                    112:26      
+ ApexClass  di_BindingParam  static is not allowed on classes (126:26)                                                    126:26      
+ ApexClass  di_BindingParam  static is not allowed on classes (142:26)                                                    142:26      
+ ApexClass  di_BindingParam  static is not allowed on classes (156:26)                                                    156:26      
+ ApexClass  di_BindingParam  Method does not exist or incorrect signature: void getClass() from the type Object (185:54)  185:54      
+ ApexClass  di_BindingParam  Method does not exist or incorrect signature: void getClass() from the type Object (186:52)  186:52      
+
+
+
+============================================================
+STDERR:
+DEPLOY FAILED (Level 0):
+ »   Warning: @salesforce/cli update available from [92m2.122.6[39m to [92m2.123.1[39m.
